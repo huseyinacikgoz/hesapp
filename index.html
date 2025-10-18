@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<title>Hesapp</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧮</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22white%22 rx=%2222%22/><text y=%22.9em%22 font-size=%2290%22>🧮</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  
+  <div class="device" role="application" aria-label="Hesapp">
+    <div class="screen">
+      <div class="display-top">
+        <button id="themeToggle" class="screen-icon-btn" title="Temayı Değiştir">
+            <span class="moon">🌙</span>
+            <span class="sun">☀️</span>
+        </button>
+        <button id="copyResultBtn" class="screen-icon-btn hidden-icon" title="Sonucu Kopyala">📋</button>
+      </div>
+      <div class="expr" id="expression"></div> 
+      <div class="result" id="display">0</div> 
+    </div>
+
+    <div class="pad" id="pad">
+      <button class="key func" data-action="clear">C</button>
+      <button class="key" data-action="percentage">%</button>
+      <button class="key" data-action="backspace">⌫</button>
+      <button class="key op" data-key="/">÷</button>
+
+      <button class="key" data-key="7">7</button>
+      <button class="key" data-key="8">8</button>
+      <button class="key" data-key="9">9</button>
+      <button class="key op" data-key="*">×</button>
+
+      <button class="key" data-key="4">4</button>
+      <button class="key" data-key="5">5</button>
+      <button class="key" data-key="6">6</button>
+      <button class="key op" data-key="-">−</button>
+
+      <button class="key" data-key="1">1</button>
+      <button class="key" data-key="2">2</button>
+      <button class="key" data-key="3">3</button>
+      <button class="key op" data-key="+">+</button>
+
+      <button class="key wide" data-key="0">0</button>
+      <button class="key" data-key=".">.</button>
+      <button class="key op" data-action="equals">=</button>
+    </div>
+
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <input type="file" id="importFileInput" accept=".json,application/json" style="display: none;" />
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <button class="security-close-btn" id="vaultBackBtn" style="display:none;">&#x2039;</button>
+        <h3 id="modalTitle">Kasa</h3>
+
+        <div id="headerActions" style="display:flex; align-items:center; gap: 10px; margin-left: auto;">
+            <div class="dropdown" id="settingsDropdownContainer" style="display: none;">
+                <button class="info-btn" id="settingsBtn" title="Ayarlar">⚙️</button>
+                <div id="settingsDropdown" class="dropdown-content">
+                    <a href="#" id="exportBtn">Yedekle</a>
+                    <a href="#" id="importBtn">Geri Yükle</a>
+                    <a href="#" id="deleteVaultBtnDropdown" class="destructive">Kasayı Sil</a>
+                </div>
+            </div>
+            <div class="dropdown" id="infoDropdownContainer" style="display: none;">
+                <button class="info-btn" id="infoBtn" title="Daha Fazla Bilgi">⋮</button>
+                <div id="infoDropdown" class="dropdown-content">
+                    <a href="#" id="securityInfoLink">Gizlilik & Güvenlik</a>
+                    <a href="#" id="termsInfoLink">Kullanım Koşulları</a>
+                    <a href="#" id="aboutLink">Hakkında</a>
+                </div>
+            </div>
+            <button class="security-close-btn" id="vaultCloseBtn" title="Çıkış Yap">&times;</button>
+        </div>
+      </div>
+      <div id="modalContent"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+        <div id="leftActions">
+        </div>
+        <div id="rightActions" style="display:flex;gap:8px;margin-left:auto;">
+            <button class="link-like" id="modalCancel" style="display:none;">Geri Dön</button> 
+            <button id="modalOK" class="vault-btn">Devam Et</button>
+        </div>
+      </div>
+      <div class="note" id="modalNote"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="securityBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Gizlilik & Güvenlik</h3>
+            <button class="security-close-btn" id="securityClose">&times;</button>
+        </div>
+        <div class="modal-scroll-content">
+            <!-- <h2>Güvenlik ve Gizlilik</h2> -->
+            
+            <h3>1. Verileriniz Sadece Sizinle Kalır</h3>
+            <p>Gizli mesajınız, <strong class="security-highlight">yalnızca sizin cihazınızdaki (tarayıcı belleği)</strong> yerel depolama alanında saklanır. Mesajınız, <strong class="security-highlight">internete veya herhangi bir sunucuya asla gönderilmez.</strong></p>
+            
+            <h3>Kırılması İmkansız Şifreleme</h3>
+            <p>Mesajınız, endüstri standardı olan <strong>AES-256</strong> şifreleme algoritmasıyla korunur. Anahtar üretimi için <strong>600.000 iterasyonlu PBKDF2</strong> kullanılır. Şifrenizi sadece siz bildiğiniz sürece, şifrelenmiş veriye erişim <strong>teknik olarak imkansızdır.</strong></p>
+            
+            <h3>Sıfır Bilgi Prensibi: Şifre Kurtarma</h3>
+            <p class="no-recovery-warning">
+                Hesapp, "sıfır bilgi" prensibiyle çalışır. Yani şifrenizi biz dahil kimse bilemez ve hiçbir yerde saklamayız. Bu nedenle, unutulan bir şifreyi kurtarma imkanı teknik olarak bulunmamaktadır.
+            </p>
+
+        </div>
+        <div class="security-footer">
+            <button class="vault-btn" id="securityOK" style="width: 100%;">Anladım</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="welcomeBackdrop" aria-hidden="true">
+    <div class="modal welcome-modal">
+      <div class="modal-header">
+        </div>
+      
+      <h3 id="welcomeTitle">Hesapp - Gizli Kasa</h3>
+      
+      <p>Bu akıllı hesap makinesi, bilgilerinizi tarayıcınızın belleğinde şifreli bir şekilde yerel olarak saklayan gizli bir kasaya sahiptir. Güvenlik detayları için Kasa ekranındaki bilgi ikonunu kullanabilirsiniz.</p>
+      
+      <p style="font-size: 16px; color: var(--prose-text); line-height: 1.5; margin-bottom: 15px; padding: 0px 5px;">🔐 Kasayı açmak için <strong class="fake-button-equals">=</strong> tuşuna 3 kez basın.</p>
+
+      <div class="welcome-actions">
+        <label class="checkbox-field">
+            <input type="checkbox" id="dontShowAgain"> 
+            Bir daha gösterme
+        </label>
+        <button class="vault-btn" id="welcomeClose">Başla</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="disclaimerBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Kullanım Koşulları</h3>
+            <button class="security-close-btn" id="disclaimerClose" title="Çıkış Yap">&times;</button>
+        </div>
+        <div class="modal-scroll-content">
+            <p>
+                Kasa şifrenizin güvenliği ve saklanması <strong>tamamen sizin sorumluluğunuzdadır.</strong> Bu uygulama, şifrenizi asla kaydetmez veya bilmez ("sıfır bilgi" prensibi). Bu nedenle, şifrenizi unutmanız durumunda verileriniz <strong>kalıcı olarak kaybolur ve kurtarılamaz.</strong>
+            </p>
+            <p>
+                <strong>Hesapp</strong> uygulamasının kullanımından veya şifrenin kaybedilmesinden kaynaklanabilecek hiçbir veri kaybından Geliştirici (Hüseyin Açıkgöz) sorumlu tutulamaz. Bu uygulamayı kullanarak bu şartları anladığınızı ve kabul ettiğinizi beyan edersiniz.
+            </p>
+            <div style="text-align: right; margin-top: 20px;">
+                <button class="vault-btn" id="disclaimerOK">Anladım</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="preLoginTermsBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1; padding: 0 5px;">Kullanım Koşulları</h3> <!-- Bu zaten doğru hizalıydı -->
+        </div>
+        <div class="modal-scroll-content">
+            <p>
+                Kasa şifrenizin güvenliği ve saklanması <strong>tamamen sizin sorumluluğunuzdadır.</strong> Bu uygulama, şifrenizi asla kaydetmez veya bilmez ("sıfır bilgi" prensibi). Bu nedenle, şifrenizi unutmanız durumunda verileriniz <strong>kalıcı olarak kaybolur ve kurtarılamaz.</strong>
+            </p>
+            <p>
+                <strong>Hesapp</strong> uygulamasının kullanımından veya şifrenin kaybedilmesinden kaynaklanabilecek hiçbir veri kaybından Geliştirici (Hüseyin Açıkgöz) sorumlu tutulamaz. Bu uygulamayı kullanarak bu şartları anladığınızı ve kabul ettiğinizi beyan edersiniz.
+            </p>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 20px; padding: 0 5px;">
+            <button class="link-like" id="cancelTermsBtn">Vazgeç</button>
+            <button class="vault-btn" id="acceptTermsBtn">Kabul Ediyorum</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="confirmBackdrop" aria-hidden="true">
+    <div class="modal" id="confirmModal">
+      <p id="confirmMessage"></p>
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button class="action-toggle-btn" id="confirmCancel">İptal</button>
+        <button class="delete-btn" id="confirmOK">Evet, Sil</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="aboutBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1; padding: 0 5px;">Hakkında</h3>
+            <button class="security-close-btn" id="aboutClose" title="Çıkış Yap">&times;</button>
+        </div>
+        <div class="modal-scroll-content">
+            <div class="about-logo">🧮</div>
+            <h2 class="about-title">Hesapp</h2>
+            <div class="about-version">v1.1.0</div>
+            <p>
+                <strong>Hesapp</strong>, standart bir hesap makinesi işlevselliğini, güçlü şifreleme ile korunan kişisel bir not kasasıyla birleştiren minimalist bir web uygulamasıdır.
+            </p>
+        </div>
+        <div class="security-footer">
+            Geliştirici: Hüseyin Açıkgöz
+            <br>
+            <a href="https://huseyinacikgoz.com.tr" target="_blank">huseyinacikgoz.com.tr</a> |
+            <a href="mailto:mail@huseyinacikgoz.com.tr" title="E-posta Gönder">mail@huseyinacikgoz.com.tr</a> 
+        </div>
+    </div>
+  </div>
+
+
+<script src="js/script.js" defer></script>
+</body>
+</html>
