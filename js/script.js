@@ -1,34 +1,21 @@
 (function() {
     const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
+    const docElement = document.documentElement;
     const themeKey = 'hesapp_theme_v1';
 
-    function applyTheme() {
-        const savedTheme = localStorage.getItem(themeKey);
-        if (savedTheme) {
-            body.setAttribute('data-theme', savedTheme);
-        } else {
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            if (prefersDark) {
-                body.setAttribute('data-theme', 'dark');
-            } else {
-                body.removeAttribute('data-theme');
-            }
-        }
-    }
-
+    // Başlangıç teması artık index.html içindeki inline script tarafından ayarlanıyor.
+    // Bu fonksiyon sadece butona tıklandığında temayı değiştirecek.
     themeToggle.addEventListener('click', () => {
-        const currentTheme = body.getAttribute('data-theme');
+        const currentTheme = docElement.getAttribute('data-theme');
         if (currentTheme === 'dark') {
-            body.removeAttribute('data-theme');
+            docElement.removeAttribute('data-theme');
             localStorage.setItem(themeKey, 'light');
         } else {
-            body.setAttribute('data-theme', 'dark');
+            docElement.setAttribute('data-theme', 'dark');
             localStorage.setItem(themeKey, 'dark');
         }
     });
 
-    applyTheme();
 })();
 
 (function(){
@@ -74,10 +61,20 @@
   let expr = '';
   let justEvaluated = false;
   
+  function formatNumber(numStr) {
+    if (!numStr || typeof numStr !== 'string') return numStr;
+    // JS'den gelen sayı string'i her zaman ondalık ayraç olarak '.' kullanır.
+    const parts = numStr.split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts.length > 1 ? parts[1] : null;
+    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Binlik ayraç olarak '.' kullan
+    return decimalPart !== null ? `${formattedIntegerPart},${decimalPart}` : formattedIntegerPart; // Ondalık ayraç olarak ',' kullan
+  }
+
   function updateDisplay(){ 
     exprEl.textContent = expr.includes('=') ? expr.split('=')[0] + '=' : '';
     let currentDisplay = expr.includes('=') ? expr.split('=').pop() : expr;
-    display.textContent = currentDisplay || '0'; 
+    display.textContent = formatNumber(currentDisplay || '0');
     window._fullExpression = expr;
 
     if (display.textContent === '0' || display.textContent === 'HATA') {
@@ -167,12 +164,12 @@
             resultStr = result.toFixed(10).replace(/\.?0+$/, "");
           }
           
-          expr = finalExpr.replace(/÷/g, '/').replace(/×/g, '*') + '=' + resultStr; 
+          expr = finalExpr.replace(/÷/g, '/').replace(/×/g, '*') + '=' + resultStr;
           
           justEvaluated=true; 
           updateDisplay(); 
           exprEl.textContent = finalExpr.replace(/÷/g, '÷').replace(/\*/g, '×') + '='; 
-          display.textContent = resultStr; 
+          display.textContent = formatNumber(resultStr);
       }catch(error){ 
           display.textContent='HATA'; 
           exprEl.textContent = finalExpr.replace(/÷/g, '÷').replace(/\*/g, '×') + '=';
@@ -233,11 +230,10 @@ const settingsDropdownContainer = document.getElementById('settingsDropdownConta
 const settingsBtn = document.getElementById('settingsBtn');
 const infoDropdown = document.getElementById('infoDropdown');
 const disclaimerClose = document.getElementById('disclaimerClose');
-const disclaimerOK = document.getElementById('disclaimerOK');
 const securityOK = document.getElementById('securityOK');
-const openDisclaimerFromSecurity = document.getElementById('openDisclaimerFromSecurity');
-const acceptTermsBtn = document.getElementById('acceptTermsBtn');
-const cancelTermsBtn = document.getElementById('cancelTermsBtn');
+const termsBackdrop = document.getElementById('termsBackdrop');
+const termsActions = document.getElementById('termsActions');
+
 const STORAGE_KEY='kasa_encrypted_v1';
 const TERMS_KEY = 'hesapp_terms_accepted_v1';
 let equalsPressCount=0;
@@ -307,9 +303,16 @@ function showModal(html,note='',isError=false, showDelete=false, showInfo=false,
         const deleteVaultBtn = document.createElement('button');
         deleteVaultBtn.id = 'deleteVaultBtn';
         deleteVaultBtn.className = 'delete-btn';
-        deleteVaultBtn.textContent = 'Kasayı Sil';
+        deleteVaultBtn.textContent = 'Kasayı Sil'; // Bu metin kalabilir, buton ayarlar menüsüne taşındı.
         deleteVaultBtn.onclick = async () => {
-            const confirmed = await showConfirmation("🚨 <strong>DİKKAT:</strong> Gizli kasayı ve <strong>TÜM MESAJLARI</strong> kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!");
+            const confirmed = await showConfirmation(`
+                <span class="confirm-icon destructive">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 0 1 1.032 0 11.209 11.209 0 0 0 7.877 3.08.75.75 0 0 1 .722.515 12.74 12.74 0 0 1 .635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 0 1-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 0 1 .722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75ZM12 15a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H12Z" clip-rule="evenodd" /></svg>
+                </span>
+                <div>
+                    <strong>DİKKAT:</strong> Gizli kasayı ve <strong>TÜM MESAJLARI</strong> kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!
+                </div>
+            `);
             if (confirmed) {
                 try {
                     localStorage.removeItem(STORAGE_KEY);
@@ -318,7 +321,7 @@ function showModal(html,note='',isError=false, showDelete=false, showInfo=false,
                     // ESKİ ALERT DEĞİŞTİRİLDİ: Yeni toast fonksiyonu çağrılıyor.
                     window.showCustomToast('Kasa başarıyla silindi!');
                 } catch (e) {
-                    alert('⚠️ Hata: Yerel depolama alanına erişilemiyor veya silme başarısız oldu.');
+                    alert('Hata: Yerel depolama alanına erişilemiyor veya silme başarısız oldu.');
                 }
             }
         };
@@ -365,7 +368,7 @@ function hideModal(){
         input.removeEventListener('keydown', modalInputKeyHandler);
     });
 
-    preLoginTermsBackdrop.style.display = 'none';
+    termsBackdrop.style.display = 'none';
     
     if(window._calculatorKeyHandlerAdded) {
          window.addEventListener('keydown', window._calculatorKeyHandler);
@@ -373,10 +376,30 @@ function hideModal(){
 }
 
 function showDisclaimerModal() { disclaimerBackdrop.style.display = 'flex'; }
-function hideDisclaimerModal() { disclaimerBackdrop.style.display = 'none'; }
+function hideDisclaimerModal() { disclaimerBackdrop.style.display = 'none'; } // Bu fonksiyon artık kullanılmıyor, ama başka bir yerde lazım olabilir diye bırakıyorum.
 
-function showPreLoginTermsModal() { preLoginTermsBackdrop.style.display = 'flex'; }
-function hidePreLoginTermsModal() { preLoginTermsBackdrop.style.display = 'none'; }
+function showTermsModal(isPreLogin = false) {
+    termsBackdrop.style.display = 'flex';
+    if (isPreLogin) {
+        termsActions.innerHTML = `
+            <button class="link-like" id="cancelTermsBtn">Vazgeç</button>
+            <button class="vault-btn" id="acceptTermsBtn">Kabul Ediyorum</button>
+        `;
+        termsActions.style.display = 'flex';
+        termsActions.style.justifyContent = 'space-between';
+        document.getElementById('cancelTermsBtn').onclick = () => termsBackdrop.style.display = 'none';
+        document.getElementById('acceptTermsBtn').onclick = () => {
+            localStorage.setItem(TERMS_KEY, 'true');
+            termsBackdrop.style.display = 'none';
+            openVaultAccessMode();
+        };
+    } else {
+        termsActions.innerHTML = `<button class="vault-btn" id="termsOK">Anladım</button>`;
+        termsActions.style.display = 'block'; // veya 'initial'
+        termsActions.style.justifyContent = 'flex-end';
+        document.getElementById('termsOK').onclick = () => termsBackdrop.style.display = 'none';
+    }
+}
 
 function showSecurityModal(){ 
     securityBackdrop.style.display = 'flex'; 
@@ -437,36 +460,29 @@ window.addEventListener('click', (event) => {
 });
 
 document.getElementById('securityInfoLink').onclick = (e) => { e.preventDefault(); showSecurityModal(); };
-document.getElementById('termsInfoLink').onclick = (e) => { e.preventDefault(); showDisclaimerModal(); };
+document.getElementById('termsInfoLink').onclick = (e) => { e.preventDefault(); showTermsModal(false); };
 document.getElementById('aboutLink').onclick = (e) => { e.preventDefault(); showAboutModal(); };
 
 
 // Eski infoBtn.onclick kaldırıldı, yeni dropdown linkleri kullanılıyor.
 // infoBtn.onclick = showSecurityModal; 
 
-disclaimerClose.onclick = hideDisclaimerModal;
-disclaimerOK.onclick = hideDisclaimerModal;
+disclaimerClose.onclick = hideDisclaimerModal; // Bu da artık kullanılmıyor.
 securityOK.onclick = () => { securityBackdrop.style.display = 'none'; };
 
 const aboutBackdrop = document.getElementById('aboutBackdrop');
 const aboutClose = document.getElementById('aboutClose');
-function showAboutModal() { aboutBackdrop.style.display = 'flex'; }
+function showAboutModal() { 
+    document.querySelector('.about-version').textContent = 'v1.1.1'; // Versiyonu dinamik olarak ayarla
+    aboutBackdrop.style.display = 'flex'; 
+}
 aboutClose.onclick = () => { aboutBackdrop.style.display = 'none'; };
 
-
-
-cancelTermsBtn.onclick = hidePreLoginTermsModal;
-
-acceptTermsBtn.onclick = () => {
-    localStorage.setItem(TERMS_KEY, 'true');
-    hidePreLoginTermsModal();
-    openVaultAccessMode();
-};
 
 function openVault(){ 
     const termsAccepted = localStorage.getItem(TERMS_KEY) === 'true';
     if (!termsAccepted) {
-        showPreLoginTermsModal();
+        showTermsModal(true);
     } else {
         openVaultAccessMode();
     }
@@ -539,8 +555,13 @@ function openVaultAccessMode(){
         showModal(`
             <div class="field"><label>Kasa Şifreniz (En az 8 karakter):</label><input id="pw1" type="password" autocomplete="off"></div> 
             <div class="field"><label>Şifrenizi Doğrulayın:</label><input id="pw2" type="password" autocomplete="off"></div> 
-            <div class="no-recovery-warning">
-                ⚠️ <strong>Bu şifre, kasanızın tek anahtarıdır.</strong> Unutmanız durumunda verilerinize erişmenin başka bir yolu yoktur. Lütfen güvende olduğundan emin olun.
+            <div class="no-recovery-warning" style="display: flex; align-items: flex-start; gap: 8px;">
+                <span class="confirm-icon warning" style="flex-shrink: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg>
+                </span>
+                <div>
+                    <strong>Bu şifre, kasanızın tek anahtarıdır.</strong> Unutmanız durumunda verilerinize erişmenin başka bir yolu yoktur. Lütfen güvende olduğundan emin olun.
+                </div>
             </div>
         `,'', false, false, true, false);
         
@@ -553,7 +574,7 @@ function openVaultAccessMode(){
     if (!hasVault()) {
         const restoreBtn = document.createElement('button');
         restoreBtn.className = 'action-toggle-btn';
-        restoreBtn.textContent = 'Yedekten Geri Yükle';
+        restoreBtn.textContent = 'Geri Yükle';
         restoreBtn.onclick = handleImport;
         leftActions.innerHTML = ''; // Önce temizle
         leftActions.appendChild(restoreBtn);
@@ -603,10 +624,15 @@ function handleImport() {
             }
 
             const confirmed = await showConfirmation(
-                "<strong>DİKKAT:</strong> Bu işlem, mevcut kasanızdaki (varsa) <strong>tüm notları kalıcı olarak silecek</strong> ve yedek dosyasındaki verilerle değiştirecektir." +
-                "<br><br>" +
-                "<strong>Veri kaybı yaşamamak için:</strong> Eğer mevcut kasanızda önemli notlarınız varsa, bu işleme devam etmeden önce <strong>mevcut kasanızı yedeklediğinizden</strong> emin olun." +
-                "<br><br>Devam etmek istiyor musunuz?",
+                `<span class="confirm-icon destructive">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 0 1 1.032 0 11.209 11.209 0 0 0 7.877 3.08.75.75 0 0 1 .722.515 12.74 12.74 0 0 1 .635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 0 1-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 0 1 .722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75ZM12 15a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H12Z" clip-rule="evenodd" /></svg>
+                </span>
+                <div>
+                    <strong>DİKKAT:</strong> Bu işlem, (varsa) mevcut kasanızdaki <strong>tüm notları kalıcı olarak silecek</strong> ve yedek dosyasındaki verilerle değiştirecektir.
+                    <br><br>
+                    <strong>Veri kaybı yaşamamak için:</strong> Eğer mevcut kasanızda önemli notlarınız varsa, bu işleme devam etmeden önce <strong>mevcut kasanızı yedeklediğinizden</strong> emin olun.
+                    <br><br>Devam etmek istiyor musunuz?
+                </div>`,
                 'Evet, Geri Yükle', 'Vazgeç'
             );
             if (confirmed) {
@@ -617,7 +643,7 @@ function handleImport() {
             }
 
         } catch (err) {
-            alert('Hata: Geçersiz veya bozuk yedekleme dosyası.');
+            alert('Hata: Geçersiz veya bozuk yedekleme dosyası. Lütfen doğru dosyayı seçtiğinizden emin olun.');
         } finally {
             // Input'u sıfırla ki aynı dosya tekrar seçilebilsin
             fileInput.value = '';
@@ -634,7 +660,9 @@ function showVaultManagementScreen(password, messages) {
     modalContent.innerHTML = `
         ${messages.length > 0 ? `
         <div class="search-field">
-            <span class="search-icon">🔍</span>
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+            </span>
             <input type="text" id="noteSearchInput" placeholder="Notlarda ara..." autocomplete="off">
         </div>` : ''}
         <div id="messageList" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;">
@@ -696,7 +724,14 @@ function showVaultManagementScreen(password, messages) {
     document.getElementById('importBtn').onclick = (e) => { e.preventDefault(); handleImport(); };
     document.getElementById('deleteVaultBtnDropdown').onclick = async (e) => {
         e.preventDefault();
-        const confirmed = await showConfirmation("🚨 <strong>DİKKAT:</strong> Gizli kasayı ve <strong>TÜM MESAJLARI</strong> kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!");
+        const confirmed = await showConfirmation(`
+            <span class="confirm-icon destructive">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 0 1 1.032 0 11.209 11.209 0 0 0 7.877 3.08.75.75 0 0 1 .722.515 12.74 12.74 0 0 1 .635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 0 1-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 0 1 .722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75ZM12 15a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H12Z" clip-rule="evenodd" /></svg>
+            </span>
+            <div>
+                <strong>DİKKAT:</strong> Gizli kasayı ve <strong>TÜM MESAJLARI</strong> kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!
+            </div>
+        `);
         if (confirmed) {
             try {
                 localStorage.removeItem(STORAGE_KEY);
@@ -704,7 +739,7 @@ function showVaultManagementScreen(password, messages) {
                 hideModal();
                 window.showCustomToast('Kasa başarıyla silindi!');
             } catch (err) {
-                alert('⚠️ Hata: Yerel depolama alanına erişilemiyor veya silme başarısız oldu.');
+                alert('Hata: Yerel depolama alanına erişilemiyor veya silme başarısız oldu.');
             }
         }
     };
@@ -715,7 +750,7 @@ function showVaultManagementScreen(password, messages) {
 
 function showMessageEditor(password, messages, index){
     const isNew = index === -1;
-    const msg = isNew ? { title: '', content: '', date: new Date().toISOString() } : messages[index];
+    const msg = isNew ? { title: '', content: '', date: new Date().toISOString(), creationDate: new Date().toISOString() } : messages[index];
     const isEditing = index !== -1; 
     
     let isCurrentlyEditing = isNew; 
@@ -732,18 +767,41 @@ function showMessageEditor(password, messages, index){
             <label>İçerik:</label>
             <div class="copy-container"> 
                 <textarea id="msgContent" rows="5" placeholder="Gizli mesajınızın içeriği">${msg.content}</textarea>
-                ${isEditing ? `<button class="icon-btn copy-btn" id="copyMsgBtn" title="Panoya Kopyala">📋</button>` : ''}
+                ${isEditing ? `
+                <div class="icon-actions">
+                    <button class="icon-btn visibility-btn" id="showContentBtn" title="İçeriği Göster" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                    </button>
+                    <button class="icon-btn visibility-btn" id="hideContentBtn" title="İçeriği Gizle">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+                    </button>
+                    <button class="icon-btn copy-btn" id="copyMsgBtn" title="Panoya Kopyala">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" /></svg>
+                    </button>
+                </div>
+                ` : ''}
             </div>
         </div>
         <div class="note" id="lastModifiedDate" style="text-align: right; margin-top: 0;"></div>
+        <div class="note" id="creationDate" style="text-align: right; margin-top: 0;"></div>
     `;
     
     leftActions.innerHTML = '';
     
     function updateEditorMode(isEditMode) {
-        const date = new Date(msg.date);
-        const formattedDate = `Son değişiklik: ${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-        document.getElementById('lastModifiedDate').textContent = isNew ? '' : formattedDate;
+        const lastModDate = new Date(msg.date);
+        const formattedLastModDate = `Son değişiklik: ${lastModDate.getDate().toString().padStart(2, '0')}.${(lastModDate.getMonth() + 1).toString().padStart(2, '0')}.${lastModDate.getFullYear()} ${lastModDate.getHours().toString().padStart(2, '0')}:${lastModDate.getMinutes().toString().padStart(2, '0')}`;
+        document.getElementById('lastModifiedDate').textContent = isNew ? '' : formattedLastModDate;
+
+        // Oluşturulma tarihini göster
+        const creationDateEl = document.getElementById('creationDate');
+        if (!isNew && msg.creationDate) {
+            const creationDate = new Date(msg.creationDate);
+            const formattedCreationDate = `Oluşturulma: ${creationDate.getDate().toString().padStart(2, '0')}.${(creationDate.getMonth() + 1).toString().padStart(2, '0')}.${creationDate.getFullYear()} ${creationDate.getHours().toString().padStart(2, '0')}:${creationDate.getMinutes().toString().padStart(2, '0')}`;
+            creationDateEl.textContent = formattedCreationDate;
+        } else {
+            creationDateEl.textContent = '';
+        }
 
         if (!isEditMode && !isNew) {
             // "Vazgeç" durumunda orijinal verileri geri yükle
@@ -751,8 +809,27 @@ function showMessageEditor(password, messages, index){
             document.getElementById('msgContent').value = msg.content;
         }
 
+    // Düzenleme moduna girildiğinde içeriğin her zaman görünür olmasını sağla
+    if (isEditMode) {
+        document.getElementById('msgContent').value = msg.content;
+    }
+
+
         document.getElementById('msgTitle').readOnly = !isEditMode;
         document.getElementById('msgContent').readOnly = !isEditMode;
+
+        // İkon aksiyonlarını sadece görüntüleme modunda göster
+        const iconActions = document.querySelector('.icon-actions');
+        if (iconActions) {
+            iconActions.style.display = isEditMode ? 'none' : 'flex';
+        }
+
+        // Göz ikonlarını sadece görüntüleme modunda göster
+        const visibilityBtns = document.querySelectorAll('.visibility-btn');
+        if (visibilityBtns) {
+            const displayValue = isEditMode ? 'none' : 'flex';
+            visibilityBtns.forEach(btn => btn.style.display = displayValue);
+        }
 
         vaultBackBtn.style.display = !isEditMode && !isNew ? 'flex' : 'none'; 
 
@@ -793,12 +870,40 @@ function showMessageEditor(password, messages, index){
 
             const copyBtn = document.getElementById('copyMsgBtn');
             if (copyBtn) {
-                copyBtn.onclick = (e) => copyMessageToClipboard(msg.content, e.target);
+                // SVG'nin kendisine tıklanırsa, parent butonu hedef al
+                copyBtn.onclick = (e) => {
+                    copyMessageToClipboard(msg.content, e.currentTarget);
+                }
+            }
+
+            // Göz ikonları olay dinleyicileri
+            const showBtn = document.getElementById('showContentBtn');
+            const hideBtn = document.getElementById('hideContentBtn');
+            const contentArea = document.getElementById('msgContent');
+
+            if (showBtn && hideBtn) {
+                hideBtn.onclick = () => {
+                    contentArea.value = '********************';
+                    hideBtn.style.display = 'none';
+                    showBtn.style.display = 'flex';
+                };
+                showBtn.onclick = () => {
+                    contentArea.value = msg.content;
+                    showBtn.style.display = 'none';
+                    hideBtn.style.display = 'flex';
+                };
+                // Başlangıçta içeriği göster
+                showBtn.click();
             }
         }
     }
 
     updateEditorMode(isCurrentlyEditing);
+
+    // Başlık alanına odaklan
+    setTimeout(() => {
+        document.getElementById('msgTitle').focus();
+    }, 50);
 }
 
 async function handleSaveMessage(password, messages, index){
@@ -810,6 +915,7 @@ async function handleSaveMessage(password, messages, index){
         return; 
     }
 
+    const originalMessage = index !== -1 ? messages[index] : null;
     let finalTitle = title;
     if (!finalTitle) {
         const baseTitle = 'Başlıksız Not';
@@ -824,7 +930,12 @@ async function handleSaveMessage(password, messages, index){
             finalTitle = `${baseTitle} ${counter}`;
         }
     }
-    const newMessage = { title: finalTitle, content: content, date: new Date().toISOString() };
+    const newMessage = { 
+        title: finalTitle, 
+        content: content, 
+        date: new Date().toISOString(),
+        creationDate: originalMessage ? (originalMessage.creationDate || originalMessage.date) : new Date().toISOString() // Eski notlar için `date` alanını kullan, yeniler için oluştur
+    };
 
     if (index === -1) {
         messages.push(newMessage); 
@@ -840,10 +951,18 @@ async function handleSaveMessage(password, messages, index){
             localStorage.setItem(STORAGE_KEY, JSON.stringify(enc));
             showVaultManagementScreen(password, messages);
         } catch (e) {
-             showModal(modalContent.innerHTML,'⚠️ Hata: Depolama alanına yazılamadı (Kotanız dolu olabilir veya Gizli Mod açık olabilir).', true, false, false, true);
+             const noteHTML = `<div style="display:flex; align-items:flex-start; gap: 8px;">
+                <span class="confirm-icon warning" style="flex-shrink: 0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg></span>
+                <div>Hata: Depolama alanına yazılamadı (Kotanız dolu olabilir veya Gizli Mod açık olabilir).</div>
+             </div>`;
+             showModal(modalContent.innerHTML, '', true, false, false, true);
+             modalNote.innerHTML = noteHTML;
         }
     } catch(e) {
-        modalNote.textContent = '⚠️ Hata: Şifreleme/kayıt işlemi başarısız oldu.';
+        modalNote.innerHTML = `<div style="display:flex; align-items:flex-start; gap: 8px;">
+            <span class="confirm-icon warning" style="flex-shrink: 0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg></span>
+            <div>Hata: Şifreleme/kayıt işlemi başarısız oldu.</div>
+        </div>`;
         modalNote.classList.add('error');
     }
 }
@@ -861,10 +980,10 @@ async function handleDeleteMessage(password, messages, index){
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(enc));
                 showVaultManagementScreen(password, messages);
             } catch (e) {
-                 alert('⚠️ Hata: Silme sonrası depolama alanına yazılamadı. Lütfen tekrar deneyin.');
+                 alert('Hata: Silme sonrası depolama alanına yazılamadı. Lütfen tekrar deneyin.');
             }
         } catch (e) {
-            alert('⚠️ Hata: Silme sonrası şifreleme başarısız oldu.');
+            alert('Hata: Silme sonrası şifreleme başarısız oldu.');
         }
     }
 }
@@ -872,9 +991,14 @@ async function handleDeleteMessage(password, messages, index){
 function copyMessageToClipboard(text, buttonElement) {
     navigator.clipboard.writeText(text)
         .then(() => { 
-            const originalText = '📋';
-            buttonElement.textContent = '✅'; 
-            setTimeout(() => { buttonElement.textContent = originalText; }, 1500); 
+            const originalIcon = buttonElement.innerHTML;
+            // Onay ikonu (yeşil tik)
+            buttonElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="color: #28a745;"><path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" /></svg>`;
+            
+            // SVG'nin stroke'unu da ayarlamak için
+            buttonElement.querySelector('svg').style.stroke = '#28a745';
+
+            setTimeout(() => { buttonElement.innerHTML = originalIcon; }, 1500); 
         });
 }
 

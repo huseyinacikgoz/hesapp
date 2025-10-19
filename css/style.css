@@ -21,7 +21,7 @@
   --prose-text: #333;
 }
 
-body[data-theme="dark"] {
+html[data-theme="dark"] {
     --bg:#1a1b26; 
     --panel:#24283b; 
     --accent:#82aaff; 
@@ -42,20 +42,30 @@ body[data-theme="dark"] {
     --modal-border: #3a3f58;
     --prose-text: #c0caf5;
     --security-highlight-text: #c0caf5; 
+    --logo-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 8px rgba(130, 170, 255, 0.2);
 }
 
+html {
+    padding: 0;
+    margin: 0;
+}
 * { box-sizing: border-box; }
 body {
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    margin:0; min-height:100vh; display:flex; flex-direction:column; 
-    align-items:stretch; justify-content:flex-start;
-    background:var(--bg); padding:0; 
+    margin: 0; 
+    padding: 0;
+    height: 100vh; /* Tam ekran yüksekliği */
+    overflow: hidden; /* Kaydırma çubuklarını engelle */
+    display:flex; 
+    align-items:center; /* Her zaman yatayda ortala */
+    justify-content:center; /* Her zaman dikeyde ortala */
+    background:var(--bg); 
     color: var(--prose-text);
     touch-action: manipulation; 
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 .device{
-    width:100%; max-width:100%; min-height:100vh; background:var(--panel);
+    width:100%; max-width:100%; height:100%; background:var(--panel);
     border-radius:0; padding: 18px; box-shadow:none; 
     display:flex; flex-direction:column; gap:16px; position:relative;
     touch-action: manipulation;
@@ -123,7 +133,7 @@ body {
     font-size: 20px;
     transition: background-color 0.2s ease, opacity 0.3s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    color: var(--key-text);
+    color: var(--accent);
 }
 .screen-icon-btn.hidden-icon {
     opacity: 0;
@@ -132,27 +142,51 @@ body {
 .screen-icon-btn:active {
     transform: scale(0.95);
 }
+#copyResultBtn svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+}
 
 #themeToggle {
     overflow: hidden;
+    position: relative;
+}
+
+#themeToggle svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
 }
 
 #themeToggle span {
-    font-size: 22px;
     transition: transform 0.3s ease, opacity 0.3s ease;
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
 }
 
-#themeToggle .moon { transform: translateY(0); opacity: 1; }
-#themeToggle .sun { transform: translateY(20px); opacity: 0; }
+#themeToggle .moon { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
+#themeToggle .sun { transform: translate(-50%, -50%) translateY(20px); opacity: 0; }
 
-body[data-theme="dark"] #themeToggle .moon { transform: translateY(-20px); opacity: 0; }
-body[data-theme="dark"] #themeToggle .sun { transform: translateY(0); opacity: 1; }
+html[data-theme="dark"] #themeToggle .sun {
+    color: #ffc107; /* Güneş ikonu için sarı renk */
+}
+
+html[data-theme="dark"] #themeToggle .sun svg {
+    width: 24px; /* Güneş ikonunu biraz büyüt */
+    height: 24px;
+}
+
+html[data-theme="dark"] #themeToggle .moon { transform: translate(-50%, -50%) translateY(-20px); opacity: 0; }
+html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
 
 .pad{
     display:grid; grid-template-columns:repeat(4,1fr); gap:12px; flex-grow: 1;
-    margin-top:auto; padding-bottom: 20px; 
-    touch-action: manipulation; 
+    margin-top:auto; padding-bottom: 20px; touch-action: manipulation;
 }
 
 /* Dropdown Menü Stilleri */
@@ -204,6 +238,15 @@ button.key{
     -webkit-user-select: none; 
     user-select: none;
 }
+button.key.func svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+    pointer-events: none; /* SVG'nin tıklama olayını engelle */
+}
+button.key.func {
+    display: flex; align-items: center; justify-content: center;
+}
 button.key:active{
     background: var(--key-active-bg);
 }
@@ -213,19 +256,27 @@ button.func{
     font-weight:600; 
 } 
 
+button.key.clear-btn {
+    font-family: "Arial", sans-serif;
+    font-weight: normal; /* Kalınlığı kaldırıp sayı tuşlarıyla aynı yap */
+    font-size: 26px; /* Görsel denge için hafifçe büyüt */
+}
+
 button.op{
     background: var(--op-key-bg);
     border:none; 
     color:var(--accent); 
-    font-weight:600;
+    font-weight:600; 
+    font-size: 28px; /* Operatörlerin sayılarla aynı boyutta görünmesi için */
 }
 button.op:active{
     background: var(--op-key-active-bg);
 }
 
 button.key.op[data-action="equals"] {
-    background-color: #ff9500; color: #fff; font-weight: 700; border: none;
+    background-color: #ff9500; color: #fff; font-weight: 700; border: none; font-size: 28px;
     box-shadow: 0 4px 6px rgba(255, 149, 0, 0.4); 
+    transition: background-color 0.2s, box-shadow 0.2s;
 }
 button.key.op[data-action="equals"]:active { background-color: #e08400; }
 
@@ -250,6 +301,7 @@ button.wide{grid-column:span 2}
 .modal{
     background:var(--panel);
     border-radius:18px; padding:20px; width:90%; max-width:400px; box-shadow:0 10px 20px rgba(0,0,0,0.2);
+    transform: scale(0.85); /* Orantılı küçültme */
     transition: background-color 0.2s ease;
 }
 .modal h3{margin:0; color:var(--input-text); font-size:22px;}
@@ -271,8 +323,8 @@ textarea[readonly]{
     resize:vertical; border-color:#e6eaf3; 
     border-color: var(--op-key-bg);
 }
-body[data-theme="dark"] input::placeholder,
-body[data-theme="dark"] textarea::placeholder {
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
     color: var(--muted);
     opacity: 1;
 }
@@ -297,31 +349,47 @@ textarea.show-icons {
 }
 
 .security-close-btn{
-    background: var(--key-bg);
-    color: var(--key-text);
-    border:none; 
+    background: transparent;
+    color: var(--delete-btn);
+    border: none;
     padding: 0; 
     font-size: 20px; 
     font-weight: 600; 
     cursor: pointer;
     line-height: 1; 
-    width: 30px; 
-    height: 30px; 
+    width: 32px; 
+    height: 32px; 
     border-radius: 50%; 
     display: flex; 
     align-items: center;
     justify-content: center;
-    transition: background-color 0.15s, color 0.15s;
+    transition: filter 0.15s;
     flex-shrink: 0; 
 }
 .security-close-btn:hover {
-    background: var(--key-active-bg);
-    color: var(--input-text);
+    filter: brightness(1.2);
+}
+.security-close-btn svg {
+    width: 26px;
+    height: 26px;
 }
 
 #vaultBackBtn {
     font-size: 24px; 
     font-weight: 800;
+    width: 28px; /* Buton boyutunu küçült */
+    height: 28px;
+    background: var(--action-toggle-bg);
+    color: var(--action-toggle-text);
+}
+#vaultBackBtn:hover {
+    background: var(--key-active-bg);
+}
+#vaultBackBtn svg {
+    width: 18px; /* İkonu orantılı olarak küçült */
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2.5;
 }
 
 .link-like{background:transparent;border:0;color:var(--accent);cursor:pointer;padding:0;font-size:16px}
@@ -336,8 +404,8 @@ textarea.show-icons {
     cursor: pointer; 
     font-size: 20px; 
     padding: 0;
-    width: 30px; 
-    height: 30px; 
+    width: 32px; 
+    height: 32px; 
     border-radius: 50%; 
     display: flex; 
     align-items: center; 
@@ -350,6 +418,12 @@ textarea.show-icons {
 .info-btn:hover {
     background: var(--key-active-bg);
 }
+.info-btn svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none; /* Bazı ikonlar fill kullanabilir, stroke'u zorlamak için */
+}
 
 .copy-container { 
     position: relative; 
@@ -358,28 +432,37 @@ textarea.show-icons {
     gap: 8px; 
 }
 .icon-btn{
-    background: transparent; 
-    color: var(--accent); 
-    border: none; 
-    width: 40px; 
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border-radius:8px;
-    cursor:pointer;
-    font-size: 22px; 
-    transition:color 0.1s;
-    position: absolute;
+    background: transparent; color: var(--accent); border: none; 
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    padding: 0; border-radius:8px; cursor:pointer; font-size: 22px; 
+    transition:color 0.1s; 
+    /* position: absolute; kaldırıldı */
     z-index: 10;
+}
+.icon-actions {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    display: flex;
+    gap: 5px;
 }
 .icon-btn.disabled{color:#cfd4dc;cursor:not-allowed;}
 
 .copy-btn{
-    right: 5px; 
-    bottom: 5px; 
+    /* Konumlandırma .icon-actions'a taşındı */
 }
+.copy-btn svg {
+    width: 22px;
+    height: 22px;
+}
+.visibility-btn {
+    /* Konumlandırma .icon-actions'a taşındı */
+}
+.visibility-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
 
 .security-modal { 
     text-align: left; 
@@ -435,6 +518,10 @@ textarea.show-icons {
     line-height: 1.4;
     font-weight: 600;
 }
+.no-recovery-warning .confirm-icon.warning svg {
+    width: 20px;
+    height: 20px;
+}
 .no-recovery-warning strong {
     color: var(--error);
 }
@@ -453,38 +540,84 @@ textarea.show-icons {
 .search-field .search-icon {
     position: absolute;
     left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 50%; 
+    transform: translateY(-50%); 
     color: var(--muted);
 }
+.search-field .search-icon svg {
+    width: 18px;
+    height: 18px;
+}
 @media (max-height: 700px) {
-    #securityBackdrop .modal.security-modal {
+    #securityBackdrop .modal.security-modal,
+    #termsBackdrop .modal.security-modal {
         height: calc(100vh - 40px);
         display: flex;
         flex-direction: column;
     }
-    #securityBackdrop .modal-scroll-content {
+    #securityBackdrop .modal-scroll-content,
+    #termsBackdrop .modal-scroll-content {
         overflow-y: auto;
         flex-grow: 1;
         padding-right: 15px;
     }
 }
 
+.welcome-logo {
+    line-height: 1;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.welcome-logo svg {
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    transition: box-shadow 0.2s ease;
+}
+html[data-theme="dark"] .welcome-logo svg {
+    box-shadow: var(--logo-shadow);
+}
+
 .welcome-modal h3 {
     color: var(--accent); 
     font-size: 26px; 
     font-weight: 800; 
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     margin-top: 0;
-    padding: 0 5px;
+    text-align: center;
+}
+.welcome-features {
+    text-align: left;
+    margin-bottom: 25px;
+}
+.feature-item {
+    margin-bottom: 15px;
+}
+.feature-item h4 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: var(--input-text);
+    font-weight: 700;
 }
 .welcome-modal p {
-    font-size: 16px; 
+    font-size: 15px; 
     color: var(--prose-text);
     line-height: 1.5; 
-    margin-bottom: 15px;
-    padding: 0 5px; 
+    margin: 0;
 }
+.welcome-instruction {
+    font-size: 16px; 
+    color: var(--prose-text); 
+    line-height: 1.5; 
+    margin-bottom: 20px; 
+    padding: 10px; 
+    text-align: center;
+    background-color: var(--key-bg);
+    border-radius: 10px;
+}
+.welcome-icon svg { width: 20px; height: 20px; color: var(--accent); }
+
 .welcome-secret {
     font-size: 18px; 
     font-weight: 700; 
@@ -502,9 +635,7 @@ textarea.show-icons {
     margin-top: 15px;
 }
 .checkbox-field {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: flex; align-items: center; gap: 8px;
     cursor: pointer;
     user-select: none;
     font-size: 14px;
@@ -515,18 +646,29 @@ textarea.show-icons {
     height: 16px;
     cursor: pointer;
 }
-.welcome-modal .modal-header {
-    justify-content: flex-end;
-    margin-bottom: 5px;
-}
 
 /* ONAY MODALI STİLLERİ */
 #confirmModal p {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
     color: var(--prose-text);
     text-align: left;
     font-size: 16px; 
     line-height: 1.5; 
     margin: 0 0 20px 0;
+}
+.confirm-icon {
+    flex-shrink: 0;
+}
+.confirm-icon svg {
+    width: 24px;
+    height: 24px;
+}
+.confirm-icon.destructive { color: var(--delete-btn); }
+.confirm-icon.warning { color: var(--delete-btn); } /* Veya farklı bir uyarı rengi */
+#confirmModal p .confirm-icon {
+    margin-top: 3px;
 }
 #confirmModal p strong {
     color: var(--delete-btn);
@@ -544,9 +686,18 @@ textarea.show-icons {
 }
 
 .about-logo {
-    font-size: 96px;
     line-height: 1;
     margin-bottom: 15px;
+}
+.about-logo svg {
+    width: 120px;
+    height: 120px;
+    border-radius: 28px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transition: box-shadow 0.2s ease;
+}
+html[data-theme="dark"] .about-logo svg {
+    box-shadow: var(--logo-shadow);
 }
 
 .about-title {
@@ -562,23 +713,64 @@ textarea.show-icons {
     margin-bottom: 30px;
 }
 
+.about-footer {
+    border-top: 1px solid var(--modal-border);
+    padding-top: 15px;
+    margin-top: auto; /* Footer'ı en alta iter */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+    color: var(--muted);
+}
+.developer-name {
+    font-weight: 600;
+    color: var(--input-text);
+    font-size: 16px;
+}
+.all-links {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.all-links a {
+    color: var(--muted);
+    transition: color 0.2s ease;
+    display: inline-flex;
+}
+.all-links a:hover {
+    color: var(--accent);
+}
+.all-links svg {
+    width: 24px;
+    height: 24px;
+}
+
 @media (min-width: 600px) {
-    body {
-        align-items: center;
-        justify-content: center;
-        padding: 20px 0;
-    }
     .device {
         max-width: 400px;
-        height: 85vh;
-        max-height: 800px;
-        min-height: 600px;
+        height: auto; /* Yüksekliği içeriğe göre ayarla */
+        min-height: 680px; /* Minimum yüksekliği koru */
+        max-height: 90vh; /* Ekran yüksekliğinin %90'ını geçmesin */
         border-radius: 24px;
+        transform: scale(0.85);
         box-shadow: 0 20px 50px rgba(0,0,0,0.15);
         border: 1px solid rgba(0,0,0,0.05);
     }
-    body[data-theme="dark"] .device {
+    html[data-theme="dark"] .device {
         border-color: rgba(255,255,255,0.1);
         box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+    .pad {
+        flex-grow: 1; /* Tuş takımının esneyerek boşluğu doldurmasını sağla */
+        padding-bottom: 20px; /* Alt boşluğu sabitle */
+        gap: 15px; /* Tuşlar arası boşluğu ayarla */
     }
 }
