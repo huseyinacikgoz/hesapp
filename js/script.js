@@ -244,6 +244,11 @@ const confirmOK = document.getElementById('confirmOK');
 const confirmCancel = document.getElementById('confirmCancel');
 let confirmationResolver;
 
+// Brute-Force Koruma Mantığı
+const LOGIN_ATTEMPTS_KEY = 'hesapp_login_attempts_v1';
+let lockoutInterval;
+
+
 // Otomatik Kilitleme Mantığı
 let inactivityTimer;
 const AUTOLOCK_KEY = 'hesapp_autolock_timeout_v1';
@@ -505,7 +510,7 @@ document.getElementById('securityOK').onclick = () => { securityBackdrop.style.d
 const aboutBackdrop = document.getElementById('aboutBackdrop');
 const aboutClose = document.getElementById('aboutClose');
 function showAboutModal() { 
-    document.querySelector('.about-version').textContent = 'v1.1.1'; // Versiyonu dinamik olarak ayarla
+    document.querySelector('.about-version').textContent = 'v1.2.0'; // Versiyonu dinamik olarak ayarla
     aboutBackdrop.style.display = 'flex'; 
 }
 aboutClose.onclick = () => { aboutBackdrop.style.display = 'none'; };
@@ -547,6 +552,79 @@ async function handleVaultSetup(){
     }
 }
 
+function getLoginAttempts() {
+    try {
+        const data = JSON.parse(localStorage.getItem(LOGIN_ATTEMPTS_KEY));
+        if (data && typeof data.count === 'number' && typeof data.lockoutUntil === 'number') {
+            return data;
+        }
+    } catch (e) { /* Geçersiz JSON'u yoksay */ }
+    return { count: 0, lockoutUntil: 0 };
+}
+
+function setLoginAttempts(attempts) {
+    localStorage.setItem(LOGIN_ATTEMPTS_KEY, JSON.stringify(attempts));
+}
+
+function updateLockoutUI() {
+    const attempts = getLoginAttempts();
+    const now = Date.now();
+
+    if (attempts.lockoutUntil > now) {
+        const remainingSeconds = Math.ceil((attempts.lockoutUntil - now) / 1000);
+        const remainingMinutes = Math.ceil(remainingSeconds / 60);
+        
+        modalNote.innerHTML = `Çok fazla hatalı deneme. Lütfen <strong>${remainingMinutes} dakika</strong> sonra tekrar deneyin.`;
+        modalNote.classList.add('error');
+        modalOK.style.display = 'none';
+        document.getElementById('pw').disabled = true;
+
+        clearInterval(lockoutInterval);
+        lockoutInterval = setInterval(updateLockoutUI, 5000); // Her 5 saniyede bir kontrol et
+        return true; // Kilitli
+    } else {
+        clearInterval(lockoutInterval);
+        modalNote.textContent = 'Kasanızı açmak için şifrenizi girin.';
+        modalNote.classList.remove('error');
+        modalOK.style.display = 'inline-block';
+        const pwInput = document.getElementById('pw');
+        if (pwInput) pwInput.disabled = false;
+        return false; // Kilitli değil
+    }
+}
+
+function handleFailedLoginAttempt() {
+    let attempts = getLoginAttempts();
+    attempts.count++;
+
+    const now = Date.now();
+    
+    if (attempts.count >= 9) {
+        attempts.lockoutUntil = now + 5 * 60 * 1000; // 5 dakika
+    } else if (attempts.count >= 6) {
+        attempts.lockoutUntil = now + 3 * 60 * 1000; // 3 dakika
+    } else if (attempts.count >= 3) {
+        attempts.lockoutUntil = now + 1 * 60 * 1000; // 1 dakika
+    }
+
+    setLoginAttempts(attempts);
+
+    if (attempts.lockoutUntil <= now) {
+        // Henüz kilitlenme yoksa, sadece hata mesajını göster ve butonu tekrar aktif et.
+        modalNote.textContent = 'Hatalı şifre. Lütfen tekrar deneyin.';
+        modalNote.classList.add('error');
+        modalOK.style.display = 'inline-block';
+    } else {
+        // Kilitlenme başladıysa, UI'ı güncelle.
+        updateLockoutUI();
+    }
+}
+
+function handleSuccessfulLogin() {
+    localStorage.removeItem(LOGIN_ATTEMPTS_KEY);
+    clearInterval(lockoutInterval);
+}
+
 async function handleVaultUnlock(){
     const pwVal = document.getElementById('pw').value||'';
     
@@ -563,12 +641,12 @@ async function handleVaultUnlock(){
         const enc=JSON.parse(localStorage.getItem(STORAGE_KEY));
         const plainJson = await decryptMessage(pwVal, enc);
         const messages = JSON.parse(plainJson);
-
+        
+        handleSuccessfulLogin();
         showVaultManagementScreen(pwVal, messages); 
         
     }catch(e){
-        modalOK.style.display = 'inline-block'; 
-        modalNote.textContent = 'Hatalı şifre. Lütfen tekrar deneyin.'; modalNote.classList.add('error');
+        handleFailedLoginAttempt();
     }
 }
 
@@ -578,6 +656,11 @@ function openVaultAccessMode(){
         showModal(`
             <div class="field"><label>Şifre:</label><input id="pw" type="password" autocomplete="off"></div> 
         `,'Kasanızı açmak için şifrenizi girin.', false, false, true, false);
+
+        if (updateLockoutUI()) {
+            // Eğer kilitliyse, fonksiyonun geri kalanını çalıştırma
+            return;
+        }
         
         modalOK.textContent = 'Giriş Yap';
         modalOK.onclick = handleVaultUnlock; 

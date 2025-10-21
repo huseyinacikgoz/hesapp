@@ -18,6 +18,8 @@ Hesapp, standart bir hesap makinesi işlevselliğini, güçlü şifreleme ile ko
 *   **Gizli Kasa:**
     *   Şifre korumalı not depolama.
     *   AES-GCM şifreleme ve PBKDF2 (600.000 iterasyon) ile anahtar türetme.
+    *   Brute-force saldırılarına karşı koruma (artan bekleme süreleri).
+    *   Ayarlanabilir otomatik kilitleme süresi.
     *   Verilerin yalnızca kullanıcının cihazında saklanması (zero-knowledge).
     *   Veri yedekleme (export) ve geri yükleme (import) yeteneği.
     *   Kasa verilerini silme seçeneği.
@@ -25,4 +27,4 @@ Hesapp, standart bir hesap makinesi işlevselliğini, güçlü şifreleme ile ko
     *   Duyarlı tasarım (responsive design).
     *   Açık ve koyu tema desteği (localStorage ve `prefers-color-scheme` ile).
     *   Sonuç kopyalama özelliği.
-    *   Bilgilendirme modalları (Gizlilik & Güvenlik, Kullanım Koşulları, Hakkında, Hoş Geldiniz).
+    *   Bilgilendirme modalları (Gizlilik & Güvenlik, Kullanım Koşulları, Hakkında, Hoş Geldiniz, Nasıl Kullanılır?).
