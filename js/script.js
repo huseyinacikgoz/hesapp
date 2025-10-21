@@ -230,7 +230,6 @@ const settingsDropdownContainer = document.getElementById('settingsDropdownConta
 const settingsBtn = document.getElementById('settingsBtn');
 const infoDropdown = document.getElementById('infoDropdown');
 const disclaimerClose = document.getElementById('disclaimerClose');
-const securityOK = document.getElementById('securityOK');
 const termsBackdrop = document.getElementById('termsBackdrop');
 const termsActions = document.getElementById('termsActions');
 
@@ -244,6 +243,36 @@ const confirmMessage = document.getElementById('confirmMessage');
 const confirmOK = document.getElementById('confirmOK');
 const confirmCancel = document.getElementById('confirmCancel');
 let confirmationResolver;
+
+// Otomatik Kilitleme Mantığı
+let inactivityTimer;
+const AUTOLOCK_KEY = 'hesapp_autolock_timeout_v1';
+const DEFAULT_AUTOLOCK_TIMEOUT = 3 * 60 * 1000; // 3 dakika (varsayılan)
+
+function getInactivityTimeout() {
+    const savedTimeout = localStorage.getItem(AUTOLOCK_KEY);
+    if (savedTimeout === null || isNaN(parseInt(savedTimeout))) {
+        return DEFAULT_AUTOLOCK_TIMEOUT;
+    }
+    const timeoutMs = parseInt(savedTimeout, 10);
+    return timeoutMs === 0 ? Infinity : timeoutMs; // 0 "Asla" anlamına gelir
+}
+
+function lockVaultDueToInactivity() {
+    if (modalBackdrop.style.display === 'flex' || securityBackdrop.style.display === 'flex') {
+        hideModal();
+        window.showCustomToast('Kasa, işlem yapılmadığı için kilitlendi.');
+    }
+}
+
+function resetInactivityTimer() {
+    const timeoutDuration = getInactivityTimeout();
+    clearTimeout(inactivityTimer);
+    if (timeoutDuration !== Infinity) {
+        inactivityTimer = setTimeout(lockVaultDueToInactivity, timeoutDuration);
+    }
+}
+
 
 // Onay Modalı Fonksiyonları
 function showConfirmation(message, okText = 'Evet, Sil', cancelText = 'İptal') {
@@ -373,10 +402,14 @@ function hideModal(){
     if(window._calculatorKeyHandlerAdded) {
          window.addEventListener('keydown', window._calculatorKeyHandler);
     }
-}
 
-function showDisclaimerModal() { disclaimerBackdrop.style.display = 'flex'; }
-function hideDisclaimerModal() { disclaimerBackdrop.style.display = 'none'; } // Bu fonksiyon artık kullanılmıyor, ama başka bir yerde lazım olabilir diye bırakıyorum.
+    // Otomatik kilitleme zamanlayıcısını ve dinleyicileri durdur
+    clearTimeout(inactivityTimer);
+    window.removeEventListener('mousemove', resetInactivityTimer);
+    window.removeEventListener('keydown', resetInactivityTimer);
+    window.removeEventListener('mousedown', resetInactivityTimer);
+    window.removeEventListener('touchstart', resetInactivityTimer);
+}
 
 function showTermsModal(isPreLogin = false) {
     termsBackdrop.style.display = 'flex';
@@ -446,6 +479,7 @@ function setupDropdown(trigger, dropdown) {
 
 setupDropdown(infoBtn, infoDropdown);
 setupDropdown(settingsBtn, document.getElementById('settingsDropdown'));
+document.getElementById('autoLockSettingsBtn').onclick = (e) => { e.preventDefault(); showAutoLockModal(); };
 
 window.addEventListener('click', (event) => {
     if (!event.target.matches('.info-btn')) {
@@ -461,14 +495,12 @@ window.addEventListener('click', (event) => {
 
 document.getElementById('securityInfoLink').onclick = (e) => { e.preventDefault(); showSecurityModal(); };
 document.getElementById('termsInfoLink').onclick = (e) => { e.preventDefault(); showTermsModal(false); };
+document.getElementById('howToUseLink').onclick = (e) => { e.preventDefault(); showHowToUseModal(); };
 document.getElementById('aboutLink').onclick = (e) => { e.preventDefault(); showAboutModal(); };
 
 
 // Eski infoBtn.onclick kaldırıldı, yeni dropdown linkleri kullanılıyor.
-// infoBtn.onclick = showSecurityModal; 
-
-disclaimerClose.onclick = hideDisclaimerModal; // Bu da artık kullanılmıyor.
-securityOK.onclick = () => { securityBackdrop.style.display = 'none'; };
+document.getElementById('securityOK').onclick = () => { securityBackdrop.style.display = 'none'; };
 
 const aboutBackdrop = document.getElementById('aboutBackdrop');
 const aboutClose = document.getElementById('aboutClose');
@@ -550,6 +582,14 @@ function openVaultAccessMode(){
         modalOK.textContent = 'Giriş Yap';
         modalOK.onclick = handleVaultUnlock; 
         
+        // Otomatik kilitleme dinleyicilerini başlat
+        window.addEventListener('mousemove', resetInactivityTimer);
+        window.addEventListener('keydown', resetInactivityTimer);
+        window.addEventListener('mousedown', resetInactivityTimer);
+        window.addEventListener('touchstart', resetInactivityTimer);
+        // Zamanlayıcıyı başlat
+        resetInactivityTimer();
+
     } else {
         modalTitle.textContent = "Kasa Kurulumu";
         showModal(`
@@ -568,6 +608,14 @@ function openVaultAccessMode(){
         modalOK.textContent = 'Şifreyi Kaydet';
         modalOK.onclick = handleVaultSetup; 
     }
+
+    // Otomatik kilitleme dinleyicilerini başlat (kurulum ekranı için de geçerli)
+    window.addEventListener('mousemove', resetInactivityTimer);
+    window.addEventListener('keydown', resetInactivityTimer);
+    window.addEventListener('mousedown', resetInactivityTimer);
+    window.addEventListener('touchstart', resetInactivityTimer);
+    resetInactivityTimer();
+
     vaultBackBtn.style.display = 'none';
     
     // Sadece yeni kasa kurulumunda geri yükleme seçeneği göster
@@ -655,6 +703,9 @@ function handleImport() {
 function showVaultManagementScreen(password, messages) {
     modalTitle.textContent = "Kasa Yönetimi";
     showModal('', '', false, false, true, false, false, true);
+
+    // Kasa yönetim ekranı açıldığında zamanlayıcıyı sıfırla/başlat
+    resetInactivityTimer();
 
     // Arama kutusu ve not listesini içeren ana HTML yapısı
     modalContent.innerHTML = `
@@ -879,11 +930,11 @@ function showMessageEditor(password, messages, index){
             const hideBtn = document.getElementById('hideContentBtn');
             const contentArea = document.getElementById('msgContent');
 
-            if (showBtn && hideBtn) {
+            if (showBtn && hideBtn && contentArea) {
                 hideBtn.onclick = () => {
                     contentArea.value = '********************';
                     hideBtn.style.display = 'none';
-                    showBtn.style.display = 'flex';
+                    showBtn.style.display = 'flex'; // Göster butonunu görünür yap
                 };
                 showBtn.onclick = () => {
                     contentArea.value = msg.content;
@@ -891,7 +942,7 @@ function showMessageEditor(password, messages, index){
                     hideBtn.style.display = 'flex';
                 };
                 // Başlangıçta içeriği göster
-                showBtn.click();
+                hideBtn.click(); // İçeriği gizleyerek başla
             }
         }
     }
@@ -1030,5 +1081,74 @@ welcomeClose.onclick = () => {
     if(window._calculatorKeyHandlerAdded) {
          window.addEventListener('keydown', window._calculatorKeyHandler); 
     }
+
+    // "Nasıl Kullanılır?" modalını da gizle
+    const howToUseBackdrop = document.getElementById('howToUseBackdrop');
+    if (howToUseBackdrop) howToUseBackdrop.style.display = 'none';
 }
+
+// Otomatik Kilitleme Ayar Modalı
+const autoLockModalBackdrop = document.getElementById('autoLockModalBackdrop');
+const autoLockOptionsContainer = document.getElementById('autoLockOptions');
+const autoLockSaveBtn = document.getElementById('autoLockSaveBtn');
+const autoLockCancelBtn = document.getElementById('autoLockCancelBtn');
+
+const autoLockDurations = [
+    { label: '1 Dakika', value: 1 * 60 * 1000 },
+    { label: '3 Dakika', value: 3 * 60 * 1000 },
+    { label: '5 Dakika', value: 5 * 60 * 1000 },
+    { label: '10 Dakika', value: 10 * 60 * 1000 },
+    { label: 'Asla', value: 0 }
+];
+
+function showAutoLockModal() {
+    const currentTimeout = getInactivityTimeout();
+    
+    autoLockOptionsContainer.innerHTML = autoLockDurations.map(duration => `
+        <label class="radio-label">
+            <input type="radio" name="autolock" value="${duration.value}" ${ (duration.value === 0 && currentTimeout === Infinity) || duration.value === currentTimeout ? 'checked' : ''}>
+            <span>${duration.label}</span>
+        </label>
+    `).join('');
+
+    autoLockModalBackdrop.style.display = 'flex';
+}
+
+function hideAutoLockModal() {
+    autoLockModalBackdrop.style.display = 'none';
+}
+
+autoLockSaveBtn.onclick = () => {
+    const selectedValue = document.querySelector('input[name="autolock"]:checked').value;
+    localStorage.setItem(AUTOLOCK_KEY, selectedValue);
+    hideAutoLockModal();
+    window.showCustomToast('Otomatik kilitleme süresi güncellendi.');
+    // Zamanlayıcıyı yeni değerle hemen sıfırla
+    if (modalBackdrop.style.display === 'flex' || securityBackdrop.style.display === 'flex') {
+        resetInactivityTimer();
+        hideModal(); // Ayarlar kaydedildikten sonra kasayı kapat
+    }
+};
+
+autoLockCancelBtn.onclick = hideAutoLockModal;
+
+
+// Nasıl Kullanılır Modalı
+const howToUseBackdrop = document.getElementById('howToUseBackdrop');
+const howToUseClose = document.getElementById('howToUseClose');
+const howToUseOK = document.getElementById('howToUseOK');
+const welcomeHowToUseLink = document.getElementById('welcomeHowToUseLink');
+
+function showHowToUseModal() {
+    if (howToUseBackdrop) howToUseBackdrop.style.display = 'flex';
+}
+
+function hideHowToUseModal() {
+    if (howToUseBackdrop) howToUseBackdrop.style.display = 'none';
+}
+
+if (howToUseClose) howToUseClose.onclick = hideHowToUseModal;
+if (howToUseOK) howToUseOK.onclick = hideHowToUseModal;
+if (welcomeHowToUseLink) welcomeHowToUseLink.onclick = (e) => { e.preventDefault(); showHowToUseModal(); };
+
 })();

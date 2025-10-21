@@ -250,12 +250,6 @@ button.key.func {
 button.key:active{
     background: var(--key-active-bg);
 }
-button.func{ 
-    background: var(--func-key-bg);
-    color: var(--key-text);
-    font-weight:600; 
-} 
-
 button.key.clear-btn {
     font-family: "Arial", sans-serif;
     font-weight: normal; /* Kalınlığı kaldırıp sayı tuşlarıyla aynı yap */
@@ -448,15 +442,9 @@ textarea.show-icons {
 }
 .icon-btn.disabled{color:#cfd4dc;cursor:not-allowed;}
 
-.copy-btn{
-    /* Konumlandırma .icon-actions'a taşındı */
-}
 .copy-btn svg {
     width: 22px;
     height: 22px;
-}
-.visibility-btn {
-    /* Konumlandırma .icon-actions'a taşındı */
 }
 .visibility-btn svg {
     width: 22px;
@@ -480,6 +468,12 @@ textarea.show-icons {
     margin: 20px 0 5px 0; 
     font-weight: 600;
     padding: 0 5px; /* Metinle hizalamak için */
+}
+.security-modal h4 {
+    color: var(--accent);
+    font-size: 16px;
+    margin: 20px 0 5px 0;
+    font-weight: 700;
 }
 .security-modal p { 
     font-size: 15px; 
@@ -551,13 +545,15 @@ textarea.show-icons {
 
 @media (max-height: 700px) {
     #securityBackdrop .modal.security-modal,
-    #termsBackdrop .modal.security-modal {
+    #termsBackdrop .modal.security-modal,
+    #howToUseBackdrop .modal.security-modal {
         height: calc(100vh - 40px);
         display: flex;
         flex-direction: column;
     }
     #securityBackdrop .modal-scroll-content,
-    #termsBackdrop .modal-scroll-content {
+    #termsBackdrop .modal-scroll-content,
+    #howToUseBackdrop .modal-scroll-content {
         overflow-y: auto;
         flex-grow: 1;
         padding-right: 15px;

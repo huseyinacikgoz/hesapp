@@ -90,6 +90,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
                 </button>
                 <div id="settingsDropdown" class="dropdown-content">
+                    <a href="#" id="autoLockSettingsBtn">Oto. Kilitleme Süresi</a>
                     <a href="#" id="exportBtn">Yedekle</a>
                     <a href="#" id="importBtn">Geri Yükle</a>
                     <a href="#" id="deleteVaultBtnDropdown" class="destructive">Kasayı Sil</a>
@@ -101,6 +102,7 @@
                 </button>
                 <div id="infoDropdown" class="dropdown-content">
                     <a href="#" id="securityInfoLink">Gizlilik & Güvenlik</a>
+                    <a href="#" id="howToUseLink">Nasıl Kullanılır?</a>
                     <a href="#" id="termsInfoLink">Kullanım Koşulları</a>
                     <a href="#" id="aboutLink">Hakkında</a>
                 </div>
@@ -187,7 +189,10 @@
         </div>
       </div>
       
-      <p class="welcome-instruction">Kasayı açmak için <strong class="fake-button-equals">=</strong> tuşuna 3 kez basın.</p>
+      <div class="welcome-instruction">
+        <p>Kasayı açmak için <strong class="fake-button-equals">=</strong> tuşuna 3 kez basın.</p>
+        <a href="#" id="welcomeHowToUseLink" class="link-like" style="font-size: 14px;">Nasıl kullanılır?</a>
+      </div>
 
       <div class="welcome-actions">
         <label class="checkbox-field">
@@ -196,31 +201,6 @@
         </label>
         <button class="vault-btn" id="welcomeClose">Başla</button>
       </div>
-    </div>
-  </div>
-
-  <div class="modal-backdrop" id="disclaimerBackdrop" aria-hidden="true">
-    <div class="modal security-modal">
-        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
-            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Kullanım Koşulları</h3>
-            <button class="security-close-btn" id="disclaimerClose" title="Çıkış Yap">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
-                    <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
-                </svg>
-            </button>
-        </div>
-        <div class="modal-scroll-content">
-            <p>
-                Kasa şifrenizin güvenliği ve saklanması <strong>tamamen sizin sorumluluğunuzdadır.</strong> Bu uygulama, şifrenizi asla kaydetmez veya bilmez ("sıfır bilgi" prensibi). Bu nedenle, şifrenizi unutmanız durumunda verileriniz <strong>kalıcı olarak kaybolur ve kurtarılamaz.</strong>
-            </p>
-            <p>
-                <strong>Hesapp</strong> uygulamasının kullanımından veya şifrenin kaybedilmesinden kaynaklanabilecek hiçbir veri kaybından Geliştirici (Hüseyin Açıkgöz) sorumlu tutulamaz. Bu uygulamayı kullanarak bu şartları anladığınızı ve kabul ettiğinizi beyan edersiniz.
-            </p>
-            <div style="text-align: right; margin-top: 20px;">
-                <button class="vault-btn" id="disclaimerOK">Anladım</button>
-            </div>
-        </div>
     </div>
   </div>
 
@@ -306,6 +286,57 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
                 </a>
             </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="autoLockModalBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Otomatik Kilitleme Süresi</h3>
+        </div>
+        <div class="modal-scroll-content">
+            <p>Kasa, belirtilen süre boyunca işlem yapılmadığında otomatik olarak kilitlenir.</p>
+            <div id="autoLockOptions" class="radio-options-group">
+                <!-- Options will be dynamically inserted by JS -->
+            </div>
+        </div>
+        <div class="security-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="action-toggle-btn" id="autoLockCancelBtn">İptal</button>
+            <button class="vault-btn" id="autoLockSaveBtn">Kaydet</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="howToUseBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Nasıl Kullanılır?</h3>
+            <button class="security-close-btn" id="howToUseClose">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
+                    <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
+                </svg>
+            </button>
+        </div>
+        <div class="modal-scroll-content">
+            <h3>1. Kasayı Açmak</h3>
+            <p>Hesap makinesi ekranındayken <strong>=</strong> tuşuna art arda 3 kez basarak gizli kasayı açabilirsiniz.</p>
+
+            <h3>2. Not Yönetimi</h3>
+            <p><strong>Yeni Not:</strong> "Yeni Not Ekle" butonu ile yeni bir not oluşturabilirsiniz. İçerik girmek zorunludur, başlık opsiyoneldir.</p>
+            <p><strong>Notu Görüntüleme/Düzenleme:</strong> Listeden bir nota tıklayarak içeriğini görebilir, ardından "Düzenle" butonu ile değiştirebilirsiniz.</p>
+            <p><strong>Notu Silme:</strong> Görüntülediğiniz bir notu "Notu Sil" butonu ile kalıcı olarak silebilirsiniz.</p>
+
+            <h3>3. Yedekleme ve Geri Yükleme</h3>
+            <p><strong>Yedekleme:</strong> Ayarlar (dişli ikonu) menüsünden "Yedekle" seçeneği ile tüm kasanızın şifreli bir yedeğini bilgisayarınıza indirebilirsiniz.</p>
+            <p><strong>Geri Yükleme:</strong> "Geri Yükle" seçeneği ile daha önce aldığınız bir yedek dosyasını seçerek kasanızı o duruma geri getirebilirsiniz. <strong>Dikkat:</strong> Bu işlem mevcut kasanızdaki tüm verileri siler.</p>
+
+             <h3>4. Güvenlik</h3>
+            <p>Şifreniz, verilerinizin tek anahtarıdır ve asla kurtarılamaz. Lütfen güvende olduğundan emin olun. Kasa, belirli bir süre işlem yapılmadığında otomatik olarak kilitlenir. Bu süreyi Ayarlar menüsünden değiştirebilirsiniz.</p>
+        </div>
+        <div class="security-footer">
+            <button class="vault-btn" id="howToUseOK">Anladım</button>
         </div>
     </div>
   </div>
