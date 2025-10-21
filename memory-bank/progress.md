@@ -14,12 +14,12 @@
     *   Açık ve koyu tema arasında geçiş yapılabiliyor ve tercih `localStorage`'da saklanıyor.
     *   Hoş geldiniz, gizlilik, kullanım koşulları ve hakkında gibi tüm bilgilendirme modalları çalışıyor.
     *   **"Nasıl Kullanılır?" Modalı:** Kasanın özelliklerini açıklayan, tema uyumlu ve kaydırılabilir bir yardım modalı eklendi. Bu modala hem hoş geldiniz ekranından hem de kasa içindeki bilgi menüsünden erişilebiliyor.
+    *   **Önbellek Temizliği:** Yeni sürümlerde, CSS ve JS dosyalarının URL'lerine sürüm numarası eklenerek tarayıcı önbelleğinin otomatik olarak güncellenmesi sağlanıyor.
     *   Arayüz, mobil ve masaüstü cihazlar için duyarlı (responsive) bir tasarıma sahiptir.
 
 ## 2. Neler Eksik veya Geliştirilebilir?
-Aşağıdaki özelliklerin sırayla eklenmesi planlanmaktadır:
 
-1.  **Sürüm Güncellemede Önbellek Temizliği:** Yeni sürümlerde, kullanıcının kasa verilerine zarar vermeden sadece CSS/JS gibi statik dosyaların tarayıcı önbelleğinden temizlenmesini sağlayan bir mekanizma.
+*   Planlanan tüm görevler tamamlanmıştır. Uygulama yeni görevler için hazırdır.
 
 ## 3. Bilinen Sorunlar
 

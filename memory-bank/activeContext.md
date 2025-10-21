@@ -1,17 +1,18 @@
 # Active Context: Hesapp
 
 ## 1. Mevcut Odak
-`progress.md` dosyasında belirtilen görev listesindeki son özelliği uygulamak: **Sürüm Güncellemede Önbellek Temizliği**.
+Tüm planlanmış görevler tamamlandı. Proje stabil durumda ve yeni görev veya özellik taleplerini bekliyor.
 
 ## 2. Son Değişiklikler
 *   **Otomatik Kilitleme** özelliği eklendi. Kasa, belirli bir süre işlem yapılmadığında otomatik olarak kilitleniyor.
 *   Otomatik kilitleme süresinin (1, 3, 5, 10 dk, Asla) kullanıcı tarafından ayarlanabilmesi için **Ayarlar menüsüne yeni bir seçenek** ve modal eklendi.
 *   Kullanıcıya rehberlik etmek amacıyla **"Nasıl Kullanılır?" modalı** oluşturuldu ve ilgili ekranlara bağlantıları eklendi.
 *   **Brute-Force Koruması** eklendi. Art arda yapılan hatalı şifre denemeleri, artan bekleme süreleriyle yavaşlatılıyor.
+*   **Önbellek Temizleme** mekanizması, statik dosyalara sürüm parametresi eklenerek uygulandı.
 *   Hafıza Bankası, tamamlanan bu görevleri yansıtacak şekilde güncellendi.
 
 ## 3. Sonraki Adımlar
-`progress.md` dosyasında listelenen son göreve başlanacak: **"1. Sürüm Güncellemede Önbellek Temizliği"** özelliğinin geliştirilmesi.
+Kullanıcıdan yeni bir özellik talebi veya görevlendirme bekleniyor.
 
 ## 4. Önemli Çıkarımlar ve Tercihler
 

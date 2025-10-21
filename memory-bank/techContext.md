@@ -19,6 +19,7 @@
 
 *   **Bağımlılık Yönetimi:** Proje, harici bir paket yöneticisi (npm, yarn vb.) kullanmamaktadır. Tüm kodlar (`script.js`, `style.css`) yereldir.
 *   **Build Süreci:** Herhangi bir derleme veya paketleme (bundling) adımı yoktur. Proje, statik dosyaların doğrudan sunulmasıyla çalışır.
+*   **Sürümleme ve Önbellek Yönetimi:** Statik dosyalara (`.css`, `.js`) sürüm numarası içeren sorgu parametreleri (`?v=1.2.0`) eklenerek yeni sürümlerde tarayıcı önbelleğinin otomatik olarak temizlenmesi sağlanır (cache-busting).
 
 ## 3. Teknik Kısıtlamalar
 
