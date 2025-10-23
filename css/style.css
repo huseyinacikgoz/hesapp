@@ -82,7 +82,7 @@ body {
 }
 .result{
     font-size:40px; color:var(--accent); text-align:right; padding: 0; line-height: 1.2; 
-    max-height: 96px; overflow: hidden; white-space: normal; word-wrap: break-word; direction: ltr; 
+    max-height: 96px; overflow-x: auto; white-space: nowrap; direction: ltr; 
 }
 .copy-toast {
     position: absolute;
@@ -772,5 +772,11 @@ html[data-theme="dark"] .about-logo svg {
         flex-grow: 1; /* Tuş takımının esneyerek boşluğu doldurmasını sağla */
         padding-bottom: 20px; /* Alt boşluğu sabitle */
         gap: 15px; /* Tuşlar arası boşluğu ayarla */
+    }
+    /* Masaüstü görünümünde, transform uygulanan .device elementi fixed pozisyonlamayı bozduğu için,
+       banner'ları .device'ın dışına taşıyormuş gibi davranmasını sağlıyoruz. */
+    .update-banner {
+        transform: none; /* .device'ın scale transform'unu sıfırla */
+        width: 100%; /* Tam genişlik kapla */
     }
 }

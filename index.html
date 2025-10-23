@@ -1,12 +1,37 @@
 <!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Hesapp</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 264.58 264.58' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect style='fill:%23ffffff;fill-opacity:1' width='263.47' height='263.47' x='.67' y='.6' ry='60.85' rx='60.85'/%3E%3Crect style='fill:%23cccccc;fill-opacity:1' width='220.09' height='70.96' x='22.36' y='25.77' ry='29.56' rx='30.4'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='22.36' y='110.43' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='22.36' y='178.39' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='98.11' y='110.43' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='98.11' y='178.39' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='173.86' y='111.56' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23ff9500;fill-opacity:1' width='68.59' height='59.51' x='173.86' y='180.65' ry='26.46' rx='26.46'/%3E%3C/g%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 264.58 264.58' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect style='fill:%23ffffff;fill-opacity:1' width='263.47' height='263.47' x='.67' y='.6' ry='60.85' rx='60.85'/%3E%3Crect style='fill:%23cccccc;fill-opacity:1' width='220.09' height='70.96' x='22.36' y='25.77' ry='29.56' rx='30.4'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='22.36' y='110.43' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='22.36' y='178.39' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='98.11' y='110.43' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='98.11' y='178.39' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23b3b3b3;fill-opacity:1' width='68.59' height='59.51' x='173.86' y='111.56' ry='26.46' rx='26.46'/%3E%3Crect style='fill:%23ff9500;fill-opacity:1' width='68.59' height='59.51' x='173.86' y='180.65' ry='26.46' rx='26.46'/%3E%3C/g%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css?v=1.2.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Hesapp - Hesap Makinesi & Gizli Kasa</title>
+
+  <!-- SEO Meta Etiketleri -->
+  <meta name="description" content="Hesapp, basit bir hesap makinesi arayüzünün ardında, notlarınızı güvende tutan şifreli bir kasa gizler. Verileriniz, yalnızca sizin bildiğiniz bir şifre ile cihazınızda şifrelenir ve asla internete gönderilmez.">
+  <meta name="keywords" content="hesap makinesi, gizli kasa, not defteri, şifreli not, güvenli not, not saklama, hesap, calculator, vault, secure notes, encrypted notes, huseyin acikgoz">
+  <meta name="author" content="Hüseyin Açıkgöz">
+
+  <!-- Favicon Dosyaları -->
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+  <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#ff9500">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-config" content="favicon/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8VM53KEC29"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-8VM53KEC29');
+  </script>
+
+<link rel="stylesheet" href="css/style.css?v=1.3.0">
 <script>
   // FOUC (Flash of Unstyled Content) önlemek için tema kodunu buraya taşıdık.
   // Bu script, sayfa render edilmeden önce çalışır.
@@ -90,7 +115,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
                 </button>
                 <div id="settingsDropdown" class="dropdown-content">
-                    <a href="#" id="autoLockSettingsBtn">Oto. Kilitleme Süresi</a>
+                    <a href="#" id="changePasswordBtn">Şifre Değiştir</a>
+                    <a href="#" id="autoLockSettingsBtn">Otomatik Kilitleme</a>
                     <a href="#" id="exportBtn">Yedekle</a>
                     <a href="#" id="importBtn">Geri Yükle</a>
                     <a href="#" id="deleteVaultBtnDropdown" class="destructive">Kasayı Sil</a>
@@ -101,9 +127,10 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
                 </button>
                 <div id="infoDropdown" class="dropdown-content">
-                    <a href="#" id="securityInfoLink">Gizlilik & Güvenlik</a>
+                    <a href="#" id="securityInfoLink">Gizlilik Politikası</a>
+                    <a href="#" id="termsInfoLink">Hizmet Sözleşmesi</a>
                     <a href="#" id="howToUseLink">Nasıl Kullanılır?</a>
-                    <a href="#" id="termsInfoLink">Kullanım Koşulları</a>
+                    <a href="#" id="installAppBtn" style="display: none;">Uygulamayı Yükle</a>
                     <a href="#" id="aboutLink">Hakkında</a>
                 </div>
             </div>
@@ -131,7 +158,7 @@
   <div class="modal-backdrop" id="securityBackdrop" aria-hidden="true">
     <div class="modal security-modal">
         <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
-            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Gizlilik & Güvenlik</h3>
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Gizlilik Politikası ve Güvenlik</h3>
             <button class="security-close-btn" id="securityClose">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
@@ -140,17 +167,34 @@
             </button>
         </div>
         <div class="modal-scroll-content">
-            <!-- <h2>Güvenlik ve Gizlilik</h2> -->
-            
-            <h3>1. Verileriniz Sadece Sizinle Kalır</h3>
-            <p>Hesapp, "sıfır bilgi" (zero-knowledge) mimarisiyle tasarlanmıştır. Girdiğiniz notlar, <strong class="security-highlight">yalnızca sizin cihazınızdaki tarayıcı belleğinde</strong> saklanır ve <strong class="security-highlight">internete veya herhangi bir sunucuya asla gönderilmez.</strong> Verilerinizin kontrolü tamamen sizdedir.</p>
-            
-            <h3>2. Kırılması İmkansız Şifreleme</h3>
+            <h3>Özet: Gizliliğiniz Bizim İçin Esastır</h3>
+            <p>Verileriniz size aittir. Hesapp, "sıfır bilgi" (zero-knowledge) prensibiyle çalışır. Girdiğiniz notlar ve tercihleriniz, <strong class="security-highlight">yalnızca sizin cihazınızda şifrelenir</strong> ve bize veya herhangi bir üçüncü tarafa <strong class="security-highlight">asla gönderilmez.</strong></p>
+
+            <hr>
+
+            <h3>Teknik Güvenlik Detayları (Nasıl Koruyoruz?)</h3>
             <p>Notlarınız, endüstri standardı olan <strong>AES-GCM</strong> şifreleme algoritmasıyla korunur. Bu şifrelemeyi gerçekleştirecek anahtar ise, parolanızdan <strong>PBKDF2 (600.000 iterasyon)</strong> algoritması kullanılarak türetilir. Bu yöntemler, şifrenizi sadece siz bildiğiniz sürece, şifrelenmiş verilere erişimi <strong>teknik olarak imkansız</strong> kılar.</p>
             
-            <h3>3. Sıfır Bilgi ve Şifre Kurtarma</h3>
+            <hr>
+
+            <h3>Resmi Gizlilik Politikası</h3>
+            <p><strong>Son Güncelleme:</strong> [Güncel Tarih Eklenecek]</p>
+
+            <h4>1. Veri Sorumlusu</h4>
+            <p>Hesapp uygulamasının veri sorumlusu Hüseyin Açıkgöz'dür. Bu sorumluluk, uygulamanın kullanıcının cihazı üzerinde gerçekleştirdiği veri işleme faaliyetleriyle sınırlıdır. İletişim için: mail@huseyinacikgoz.com.tr</p>
+
+            <h4>2. İşlenen Veriler ve Amaçları</h4>
+            <p>Hesapp, işlevselliğini sağlamak için tarayıcınızın yerel depolama (`localStorage`) alanını kullanır. Bu alanda aşağıdaki veriler saklanır:</p>
+            <ul>
+                <li><strong>Şifrelenmiş Kasa Verileri (`kasa_encrypted_v1`):</strong> Notlarınızın başlık ve içeriklerini barındıran, yukarıda açıklanan yöntemlerle şifrelenmiş veri paketi. Bu veriler, notlarınızı güvenli bir şekilde saklamak için işlenir.</li>
+                <li><strong>Tema Tercihi (`hesapp_theme_v1`):</strong> Seçtiğiniz açık/koyu tema tercihiniz. Bu, arayüzü kişiselleştirmek için kullanılır.</li>
+                <li><strong>Diğer Ayarlar:</strong> Kullanım koşulları onayı, hoş geldin ekranı durumu, otomatik kilitleme süresi gibi uygulama ayarlarınız.</li>
+            </ul>
+            <p>Bu verilerin hiçbiri kişisel kimliğinizi ortaya çıkarmaz ve cihazınızın dışına aktarılmaz.</p>
+            
+            <h4>3. Kullanıcı Hakları ve Şifre Kurtarma</h4>
             <p class="no-recovery-warning">
-                "Sıfır bilgi" prensibi gereği, şifreniz asla saklanmaz veya bilinmez. Bu, yüksek bir güvenlik seviyesi sağlarken, aynı zamanda <strong>unutulan bir şifrenin kurtarılamayacağı</strong> anlamına gelir. Şifrenizi unutmanız durumunda verilerinize erişim kalıcı olarak kaybolur.
+                "Sıfır bilgi" prensibi gereği, şifreniz asla saklanmaz veya bilinmez. Bu, yüksek bir güvenlik seviyesi sağlarken, aynı zamanda <strong>unutulan bir şifrenin kurtarılamayacağı</strong> anlamına gelir. Şifrenizi unutmanız durumunda verilerinize erişim kalıcı olarak kaybolur. Verilerinizi silme hakkınız, Ayarlar menüsündeki "Kasayı Sil" özelliği ile her zaman mevcuttur.
             </p>
 
         </div>
@@ -191,7 +235,7 @@
       
       <div class="welcome-instruction">
         <p>Kasayı açmak için <strong class="fake-button-equals">=</strong> tuşuna 3 kez basın.</p>
-        <a href="#" id="welcomeHowToUseLink" class="link-like" style="font-size: 14px;">Nasıl kullanılır?</a>
+        <a href="#" id="welcomeHowToUseLink" class="link-like" style="font-size: 14px;">Nasıl Kullanılır?</a>
       </div>
 
       <div class="welcome-actions">
@@ -207,17 +251,25 @@
   <div class="modal-backdrop" id="termsBackdrop" aria-hidden="true">
     <div class="modal security-modal">
         <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
-            <h3 style="margin: 0; text-align: left; flex-grow: 1; padding: 0 5px;">Kullanım Koşulları ve Sorumluluk Reddi</h3>
+            <h3 style="margin: 0; text-align: left; flex-grow: 1; padding: 0 5px;">Hizmet Sözleşmesi</h3>
         </div>
         <div class="modal-scroll-content">
-            <h3>1. Kullanıcı Sorumlulukları</h3>
-            <p>Kasa şifrenizin güvenliği, saklanması ve yedeklenmesi <strong>tamamen sizin sorumluluğunuzdadır.</strong> <strong>Hesapp</strong> uygulaması, "sıfır bilgi" (zero-knowledge) prensibiyle çalıştığı için şifrenizi asla bilmez veya saklamaz. Şifrenizi unutmanız durumunda verileriniz <strong>kalıcı olarak kaybolur ve kurtarılamaz.</strong></p>
+            <p>Bu sözleşme, Hesapp uygulamasını ("Hizmet") kullanımınıza ilişkin şartları ve koşulları düzenler. Hizmeti kullanarak bu koşulları kabul etmiş sayılırsınız.</p>
+
+            <h4>1. Hizmetin Kapsamı</h4>
+            <p>Hesapp, bir hesap makinesi arayüzü altında, verilerinizi cihazınızda yerel olarak şifreleyen bir not saklama hizmeti sunar. Hizmet, "sıfır bilgi" (zero-knowledge) prensibiyle çalışır; bu, şifreniz ve şifrelenmiş verileriniz dahil olmak üzere hiçbir kişisel verinizin Geliştirici (Hüseyin Açıkgöz) tarafından bilinmediği, saklanmadığı veya işlenmediği anlamına gelir.</p>
+
+            <h4>2. Kullanıcı Yükümlülükleri</h4>
+            <p>Kasa şifrenizin güvenliği, saklanması ve yedeklenmesi <strong>tamamen sizin sorumluluğunuzdadır.</strong> Şifrenizi unutmanız durumunda verileriniz <strong>kalıcı olarak kaybolur ve kurtarılamaz.</strong> Geliştiricinin şifre kurtarma veya verilere erişim sağlama gibi bir imkanı yoktur.</p>
             
-            <h3>2. Sorumluluğun Sınırlandırılması</h3>
-            <p><strong>Hesapp</strong> uygulaması, "olduğu gibi" ve "mevcut olduğu şekilde" esasına göre sunulmaktadır. Geliştirici (Hüseyin Açıkgöz), uygulamanın kullanımından, şifrenin unutulmasından, veri kaybından, güvenlik ihlallerinden, yedekleme hatalarından veya diğer herhangi bir sebepten kaynaklanabilecek doğrudan veya dolaylı hiçbir zarardan sorumlu tutulamaz.</p>
+            <h4>3. Garanti Reddi ve Sorumluluğun Sınırlandırılması</h4>
+            <p>Hizmet, "olduğu gibi" ve "mevcut olduğu şekilde" esasına göre sunulmaktadır. Geliştirici, Hizmetin kesintisiz, hatasız veya tamamen güvenli olacağını garanti etmez. Uygulamanın kullanımından, şifrenin unutulmasından, veri kaybından, güvenlik ihlallerinden, yedekleme/geri yükleme hatalarından veya diğer herhangi bir sebepten kaynaklanabilecek doğrudan veya dolaylı hiçbir zarardan Geliştirici sorumlu tutulamaz.</p>
+
+            <h4>4. Fikri Mülkiyet</h4>
+            <p>Hesapp uygulamasının arayüz tasarımı, kodları ve markası Geliştirici'ye aittir. Hizmeti kullanmanız, bu fikri mülkiyet hakları üzerinde size herhangi bir hak vermez.</p>
             
-            <h3>3. Kabul</h3>
-            <p><strong>Hesapp</strong> uygulamasını kullanarak, yukarıdaki tüm şartları okuduğunuzu, anladığınızı ve geri alınamaz bir şekilde kabul ettiğinizi beyan edersiniz.</p>
+            <h4>5. Sözleşmenin Kabulü</h4>
+            <p>Hesapp uygulamasını kullanarak veya kasa için bir şifre oluşturarak, bu Hizmet Sözleşmesi'nin tüm şartlarını okuduğunuzu, anladığınızı ve geri alınamaz bir şekilde kabul ettiğinizi beyan edersiniz.</p>
         </div>
         <div id="termsActions" style="text-align: right; margin-top: 20px; padding: 0 5px;"></div>
     </div>
@@ -293,7 +345,7 @@
   <div class="modal-backdrop" id="autoLockModalBackdrop" aria-hidden="true">
     <div class="modal security-modal">
         <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
-            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Otomatik Kilitleme Süresi</h3>
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Otomatik Kilitleme</h3>
         </div>
         <div class="modal-scroll-content">
             <p>Kasa, belirtilen süre boyunca işlem yapılmadığında otomatik olarak kilitlenir.</p>
@@ -304,6 +356,24 @@
         <div class="security-footer" style="display:flex; justify-content:flex-end; gap:10px;">
             <button class="action-toggle-btn" id="autoLockCancelBtn">İptal</button>
             <button class="vault-btn" id="autoLockSaveBtn">Kaydet</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="changePasswordBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Şifre Değiştir</h3>
+        </div>
+        <div class="modal-scroll-content">
+            <div class="field"><label>Mevcut Şifre:</label><input id="currentPass" type="password" autocomplete="off"></div> 
+            <div class="field"><label>Yeni Şifre (En az 8 karakter):</label><input id="newPass1" type="password" autocomplete="off"></div> 
+            <div class="field"><label>Yeni Şifreyi Doğrulayın:</label><input id="newPass2" type="password" autocomplete="off"></div> 
+            <div class="note" id="changePassNote"></div>
+        </div>
+        <div class="security-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="action-toggle-btn" id="changePassCancelBtn">İptal</button>
+            <button class="vault-btn" id="changePassSaveBtn">Şifreyi Değiştir</button>
         </div>
     </div>
   </div>
@@ -320,20 +390,22 @@
             </button>
         </div>
         <div class="modal-scroll-content">
-            <h3>1. Kasayı Açmak</h3>
-            <p>Hesap makinesi ekranındayken <strong>=</strong> tuşuna art arda 3 kez basarak gizli kasayı açabilirsiniz.</p>
+            <h3>Hesapp'ı Keşfedin</h3>
+            <p>Hesapp, bir hesap makinesinden daha fazlasıdır. İşte gizli kasanızdan en iyi şekilde nasıl yararlanacağınız.</p>
 
-            <h3>2. Not Yönetimi</h3>
-            <p><strong>Yeni Not:</strong> "Yeni Not Ekle" butonu ile yeni bir not oluşturabilirsiniz. İçerik girmek zorunludur, başlık opsiyoneldir.</p>
-            <p><strong>Notu Görüntüleme/Düzenleme:</strong> Listeden bir nota tıklayarak içeriğini görebilir, ardından "Düzenle" butonu ile değiştirebilirsiniz.</p>
-            <p><strong>Notu Silme:</strong> Görüntülediğiniz bir notu "Notu Sil" butonu ile kalıcı olarak silebilirsiniz.</p>
+            <h3>Gizli Kasanız</h3>
+            <p>Hesap makinesi ekranındayken <strong class="fake-button-equals">=</strong> tuşuna art arda 3 kez basarak gizli kasanızı açabilirsiniz. İlk kullanımda, verilerinizi koruyacak ve kurtarılamayacak olan ana şifrenizi oluşturacaksınız.</p>
 
-            <h3>3. Yedekleme ve Geri Yükleme</h3>
-            <p><strong>Yedekleme:</strong> Ayarlar (dişli ikonu) menüsünden "Yedekle" seçeneği ile tüm kasanızın şifreli bir yedeğini bilgisayarınıza indirebilirsiniz.</p>
-            <p><strong>Geri Yükleme:</strong> "Geri Yükle" seçeneği ile daha önce aldığınız bir yedek dosyasını seçerek kasanızı o duruma geri getirebilirsiniz. <strong>Dikkat:</strong> Bu işlem mevcut kasanızdaki tüm verileri siler.</p>
+            <h3>Verilerinizin Kontrolü Sizde</h3>
+            <p>Kasanız açıldığında, notlarınızı yönetebilir ve Ayarlar (dişli ikonu) menüsünden önemli işlemleri gerçekleştirebilirsiniz:</p>
+            <ul>
+                <li><strong>Yedekleme:</strong> Tüm kasanızın şifreli bir yedeğini bilgisayarınıza indirerek verilerinizi güvence altına alın.</li>
+                <li><strong>Geri Yükleme:</strong> Daha önce aldığınız bir yedek dosyasını seçerek kasanızı o duruma geri getirin. <strong>Dikkat:</strong> Bu işlem mevcut kasanızdaki tüm verileri siler.</li>
+                <li><strong>Şifre Değiştirme:</strong> Mevcut şifrenizi doğrulayarak kasanızın anahtarını yenileyin.</li>
+            </ul>
 
-             <h3>4. Güvenlik</h3>
-            <p>Şifreniz, verilerinizin tek anahtarıdır ve asla kurtarılamaz. Lütfen güvende olduğundan emin olun. Kasa, belirli bir süre işlem yapılmadığında otomatik olarak kilitlenir. Bu süreyi Ayarlar menüsünden değiştirebilirsiniz.</p>
+            <h3>Güvenlik ve Otomasyon</h3>
+            <p>Şifreniz, verilerinizin tek anahtarıdır ve asla kurtarılamaz. Ayarlar menüsünden, kasanızın ne kadar süre işlem yapılmadığında otomatik olarak kilitleneceğini belirleyebilirsiniz. Bu, siz unutsanız bile güvenliğinizi sağlar.</p>
         </div>
         <div class="security-footer">
             <button class="vault-btn" id="howToUseOK">Anladım</button>
@@ -341,7 +413,25 @@
     </div>
   </div>
 
+  <div id="update-notification" class="update-banner" style="display: none;">
+    <span>Yeni bir sürüm mevcut!</span>
+    <button id="update-now-btn" class="vault-btn">Güncelle</button>
+  </div>
 
-<script src="js/script.js?v=1.2.0"></script>
+
+<script src="js/script.js?v=1.3.0"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/hesapp/service-worker.js')
+        .then(registration => {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        })
+        .catch(error => {
+          console.log('ServiceWorker registration failed: ', error);
+        });
+    });
+  }
+</script>
 </body>
 </html>

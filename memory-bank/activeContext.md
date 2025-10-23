@@ -1,18 +1,22 @@
 # Active Context: Hesapp
 
 ## 1. Mevcut Odak
-Tüm planlanmış görevler tamamlandı. Proje stabil durumda ve yeni görev veya özellik taleplerini bekliyor.
+Sıradaki görev, mevcut "Kullanım Koşulları" metnini, uygulamanın doğasını ve kullanıcı sorumluluklarını daha net bir şekilde ortaya koyan, daha profesyonel ve kapsamlı bir "Hizmet Sözleşmesi" ile güncellemektir.
 
 ## 2. Son Değişiklikler
-*   **Otomatik Kilitleme** özelliği eklendi. Kasa, belirli bir süre işlem yapılmadığında otomatik olarak kilitleniyor.
-*   Otomatik kilitleme süresinin (1, 3, 5, 10 dk, Asla) kullanıcı tarafından ayarlanabilmesi için **Ayarlar menüsüne yeni bir seçenek** ve modal eklendi.
-*   Kullanıcıya rehberlik etmek amacıyla **"Nasıl Kullanılır?" modalı** oluşturuldu ve ilgili ekranlara bağlantıları eklendi.
-*   **Brute-Force Koruması** eklendi. Art arda yapılan hatalı şifre denemeleri, artan bekleme süreleriyle yavaşlatılıyor.
-*   **Önbellek Temizleme** mekanizması, statik dosyalara sürüm parametresi eklenerek uygulandı.
-*   Hafıza Bankası, tamamlanan bu görevleri yansıtacak şekilde güncellendi.
+*   **Sürüm Güncellemesi:** Proje sürümü `1.2.2` olarak güncellendi.
+*   **Yeni Görevler Eklendi:** `progress.md` dosyası, PWA dönüşümü, yasal metinlerin eklenmesi ve "Nasıl Kullanılır?" sayfasının iyileştirilmesi gibi yeni görevlerle güncellendi.
+*   **PWA Manifest Hazırlığı:** `site.webmanifest` dosyasına uygulamanın adı eklendi.
+*   **Gizlilik Politikası Birleştirildi:** "Gizlilik & Güvenlik" modalı, resmi gizlilik politikasını da içerecek şekilde güncellendi ve tek, kapsamlı bir bilgilendirme ekranı haline getirildi.
+*   **"Nasıl Kullanılır?" İyileştirmesi:** "Nasıl Kullanılır?" modalının içeriği, uygulamanın özelliklerini daha akıcı ve kullanıcı odaklı bir dille anlatacak şekilde yeniden yazıldı.
+*   **PWA Temeli Atıldı:** Uygulamanın temel dosyalarını önbelleğe alan ve çevrimdışı çalışmasını sağlayan bir `service-worker.js` dosyası oluşturuldu ve `index.html`'e kaydedildi.
+*   **PWA Güncelleme Mekanizması:** Yeni bir sürüm algılandığında kullanıcıya bir bildirim banner'ı gösteren ve uygulamayı güncellemesini sağlayan mekanizma eklendi.
+*   **PWA Kurulum Butonu:** Kullanıcının uygulamayı daha kolay kurabilmesi için "Bilgi" menüsüne "Uygulamayı Yükle" butonu eklendi.
+*   **Veri Onay Banner'ı Kaldırıldı:** Kullanıcı isteği üzerine, `localStorage` kullanımıyla ilgili onay banner'ı ve ilgili kodlar projeden temizlendi.
 
 ## 3. Sonraki Adımlar
-Kullanıcıdan yeni bir özellik talebi veya görevlendirme bekleniyor.
+1.  `index.html` dosyasındaki `termsBackdrop` modalının başlığını ve içeriğini yeni "Hizmet Sözleşmesi" metniyle değiştir.
+2.  Yeni metnin yasal olarak gerekli tüm temel maddeleri (sorumluluk reddi, kullanıcı yükümlülükleri vb.) kapsadığından emin ol.
 
 ## 4. Önemli Çıkarımlar ve Tercihler
 

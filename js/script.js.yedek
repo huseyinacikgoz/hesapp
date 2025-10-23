@@ -1,0 +1,1451 @@
+(function() {
+    const themeToggle = document.getElementById('themeToggle');
+    const docElement = document.documentElement;
+    const themeKey = 'hesapp_theme_v1';
+
+    // Başlangıç teması artık index.html içindeki inline script tarafından ayarlanıyor.
+    // Bu fonksiyon sadece butona tıklandığında temayı değiştirecek.
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = docElement.getAttribute('data-theme');
+        let newTheme;
+        if (currentTheme === 'dark') {
+            docElement.removeAttribute('data-theme');
+            localStorage.setItem(themeKey, 'light');
+            newTheme = 'light';
+        } else {
+            docElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem(themeKey, 'dark');
+            newTheme = 'dark';
+        }
+
+        // Google Analytics: Tema değiştirme olayını gönder
+        if (typeof gtag === 'function') {
+            gtag('event', 'theme_changed', {
+                'theme': newTheme
+            });
+        }
+    });
+
+    // Sistem temasındaki değişiklikleri dinle
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function handleSystemThemeChange(e) {
+        // Sadece kullanıcı manuel bir tema seçimi yapmadıysa sistem temasını uygula.
+        if (localStorage.getItem(themeKey) === null) {
+            if (e.matches) {
+                docElement.setAttribute('data-theme', 'dark');
+            } else {
+                docElement.removeAttribute('data-theme');
+            }
+        }
+    }
+
+    // Değişiklik olduğunda fonksiyonu çağır
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+})();
+
+(function(){
+  const display = document.getElementById('display');
+  const exprEl = document.getElementById('expression');
+  const copyResultBtn = document.getElementById('copyResultBtn');
+
+  // GENELLEŞTİRİLMİŞ TOAST (UYARI) FONKSİYONU
+  function showCustomToast(message) {
+    if (document.querySelector('.copy-toast')) return;
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.className = 'copy-toast';
+    document.querySelector('.screen').appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10); 
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, 2000); // 2 saniye ekranda kalacak
+  }
+  // Kopyalama butonu, artık yeni fonksiyonu kullanıyor
+  copyResultBtn.addEventListener('click', () => {
+    const resultText = display.textContent;
+    if (resultText === 'HATA' || resultText === '0') return;
+
+    navigator.clipboard.writeText(resultText).then(() => {
+        showCustomToast('Kopyalandı!');
+    }).catch(err => {
+        console.error('Kopyalama başarısız oldu: ', err);
+    });
+  });
+
+  // Kasa silme fonksiyonu, artık yeni fonksiyonu kullanacak (aşağıda tanımlanıyor)
+  window.showCustomToast = showCustomToast;
+
+
+  let expr = '';
+  let justEvaluated = false;
+  
+  function formatNumber(numStr) {
+    if (!numStr || typeof numStr !== 'string') return numStr;
+    // JS'den gelen sayı string'i her zaman ondalık ayraç olarak '.' kullanır.
+    const parts = numStr.split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts.length > 1 ? parts[1] : null;
+    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.'); // Binlik ayraç olarak '.' kullan
+    return decimalPart !== null ? `${formattedIntegerPart},${decimalPart}` : formattedIntegerPart; // Ondalık ayraç olarak ',' kullan
+  }
+
+  function updateDisplay(){ 
+    exprEl.textContent = expr.includes('=') ? expr.split('=')[0] + '=' : '';
+    let currentDisplay = expr.includes('=') ? expr.split('=').pop() : expr;
+    display.textContent = formatNumber(currentDisplay || '0');
+    window._fullExpression = expr;
+
+    if (display.textContent === '0' || display.textContent === 'HATA') {
+        copyResultBtn.classList.add('hidden-icon');
+    } else {
+        copyResultBtn.classList.remove('hidden-icon');
+    }
+
+    requestAnimationFrame(() => {
+        display.scrollLeft = display.scrollWidth;
+    });
+  }
+
+  function pushKey(k){ 
+    if (justEvaluated) {
+        if (/[0-9.]/.test(k)) {
+            expr = ''; // Sayı veya nokta ise ifadeyi sıfırla
+        } else if (expr.includes('=')) {
+            expr = expr.split('=').pop(); // Operatör ise sonucun kendisiyle başla
+        }
+        justEvaluated = false;
+    }
+      
+      if (expr === '0' && /[0-9]/.test(k) && k !== '0') {
+          expr = k; // Sıfırın üzerine yaz
+      } else if (expr === '0' && k === '0') { // Eğer ifade sadece '0' ise ve tekrar '0'a basılırsa hiçbir şey yapma
+          return; 
+      } else { 
+          expr += k; 
+      } 
+      justEvaluated = false;
+      updateDisplay(); 
+  }
+  
+  function clearAll(){ expr=''; updateDisplay(); }
+  function backspace(){ 
+      if (justEvaluated) {
+        expr = expr.split('=')[0] || '';
+        justEvaluated = false;
+      } else {
+        expr=expr.slice(0,-1); 
+      }
+      updateDisplay(); 
+  }
+  
+  function handlePercentage() {
+    if (justEvaluated) return;
+    // Find the last number in the expression
+    const match = expr.match(/([+\-×÷])?([0-9.]+)$/);
+    if (match) {
+        const operator = match[1];
+        const lastNumber = parseFloat(match[2]);
+        const baseExpr = expr.substring(0, match.index);
+
+        if (operator === '+' || operator === '−') {
+            // Calculate percentage of the preceding value
+            try {
+                const baseValue = safeEval(baseExpr);
+                const percentageValue = baseValue * (lastNumber / 100);
+                expr = baseExpr + operator + percentageValue;
+            } catch (e) { /* Ignore if baseExpr is not evaluatable */ }
+        } else {
+            // Just divide the last number by 100
+            const percentageValue = lastNumber / 100;
+            expr = baseExpr + (operator || '') + percentageValue;
+        }
+    }
+    updateDisplay();
+  }
+
+  function safeEval(s){ 
+      s = s.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+      // Sanitize multiple operators, e.g., 5 * + 3 -> 5 + 3
+      s = s.replace(/([*\/+\-])\s*([*\/+\-])/g, '$2');
+      if(!/^[0-9+\-*/().\s]*$/.test(s)) throw new Error('Invalid characters in expression'); 
+      const result = Function('"use strict";return('+s+')')();
+      // Fix floating point precision issues
+      return parseFloat(result.toPrecision(15));
+  }
+  
+  function equals(){ 
+      if (justEvaluated) return; 
+
+      let finalExpr = expr;
+      let result;
+      
+      try{ 
+          result = safeEval(finalExpr||'0'); 
+          if(!isFinite(result)) throw new Error(''); 
+          
+          let resultStr = String(result);
+          if(resultStr.includes('e')) {
+            resultStr = result.toFixed(10).replace(/\.?0+$/, "");
+          }
+          
+          expr = finalExpr.replace(/÷/g, '/').replace(/×/g, '*') + '=' + resultStr;
+          
+          justEvaluated=true; 
+          updateDisplay(); 
+          exprEl.textContent = finalExpr.replace(/÷/g, '÷').replace(/\*/g, '×') + '='; 
+          display.textContent = formatNumber(resultStr);
+      }catch(error){ 
+          display.textContent='HATA'; 
+          exprEl.textContent = finalExpr.replace(/÷/g, '÷').replace(/\*/g, '×') + '=';
+          justEvaluated = true; 
+          setTimeout(updateDisplay, 900); 
+      } 
+  }
+
+  const pad=document.getElementById('pad');
+  pad.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b)return;
+    if(b.dataset.action==='clear'){clearAll();return;}
+    if(b.dataset.action==='percentage'){handlePercentage();return;}
+    if(b.dataset.action==='backspace'){backspace();return;}
+    if(b.dataset.action==='equals'){equals(); handleEqualsPress(); return;}
+    if(b.dataset.key) pushKey(b.dataset.key);
+  });
+  window._calculatorKeyHandler=function(e){
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
+        return; 
+    }
+    
+    if(e.key==='Enter' || e.key==='='){equals(); handleEqualsPress(); e.preventDefault(); }
+    else if(e.key==='Backspace'){ backspace(); e.preventDefault(); }
+    else if(/^[0-9+\-*/().%]$/.test(e.key)){ pushKey(e.key); e.preventDefault(); }
+  };
+  
+  if (!window._calculatorKeyHandlerAdded) {
+      window.addEventListener('keydown', window._calculatorKeyHandler);
+      window._calculatorKeyHandlerAdded = true; 
+  }
+  
+})();
+
+// === ONAY SİSTEMİ VE GÜNCELLENMİŞ KODLAR ===
+
+// Bu fonksiyon, hem hesap makinesi hem de kasa mantığı tarafından kullanıldığı için global olmalı.
+function handleEqualsPress(){
+  // Bu fonksiyonun içindeki değişkenler (equalsPressCount, openVault) aşağıdaki IIFE içinde tanımlanacak
+  // ve bu fonksiyon oradan çağrılacak.
+  // Bu sadece bir placeholder, asıl işlevsellik aşağıda.
+}
+
+(function() { // Kasa mantığını kendi kapsamı içine alalım
+    const modalBackdrop=document.getElementById('modalBackdrop');
+const modalContent=document.getElementById('modalContent');
+const modalOK=document.getElementById('modalOK');
+const modalCancel=document.getElementById('modalCancel'); 
+const leftActions = document.getElementById('leftActions');
+const modalNote=document.getElementById('modalNote');
+const modalTitle=document.getElementById('modalTitle');
+const infoBtn = document.getElementById('infoBtn'); 
+const vaultCloseBtn = document.getElementById('vaultCloseBtn'); 
+const securityBackdrop = document.getElementById('securityBackdrop'); 
+const securityClose = document.getElementById('securityClose');
+const infoDropdownContainer = document.getElementById('infoDropdownContainer');
+const settingsDropdownContainer = document.getElementById('settingsDropdownContainer');
+const settingsBtn = document.getElementById('settingsBtn');
+const infoDropdown = document.getElementById('infoDropdown');
+const disclaimerClose = document.getElementById('disclaimerClose');
+const termsBackdrop = document.getElementById('termsBackdrop');
+const termsActions = document.getElementById('termsActions');
+
+const STORAGE_KEY='kasa_encrypted_v1';
+const TERMS_KEY = 'hesapp_terms_accepted_v1';
+let equalsPressCount=0;
+
+// Onay Modalı Elementleri
+const confirmBackdrop = document.getElementById('confirmBackdrop');
+const confirmMessage = document.getElementById('confirmMessage');
+const confirmOK = document.getElementById('confirmOK');
+const confirmCancel = document.getElementById('confirmCancel');
+let confirmationResolver;
+
+// Brute-Force Koruma Mantığı
+const LOGIN_ATTEMPTS_KEY = 'hesapp_login_attempts_v1';
+let lockoutInterval;
+
+
+// Otomatik Kilitleme Mantığı
+let inactivityTimer;
+const AUTOLOCK_KEY = 'hesapp_autolock_timeout_v1';
+const DEFAULT_AUTOLOCK_TIMEOUT = 3 * 60 * 1000; // 3 dakika (varsayılan)
+
+function getInactivityTimeout() {
+    const savedTimeout = localStorage.getItem(AUTOLOCK_KEY);
+    if (savedTimeout === null || isNaN(parseInt(savedTimeout))) {
+        return DEFAULT_AUTOLOCK_TIMEOUT;
+    }
+    const timeoutMs = parseInt(savedTimeout, 10);
+    return timeoutMs === 0 ? Infinity : timeoutMs; // 0 "Asla" anlamına gelir
+}
+
+function lockVaultDueToInactivity() {
+    if (modalBackdrop.style.display === 'flex' || securityBackdrop.style.display === 'flex') {
+        hideModal();
+        window.showCustomToast('Kasa, işlem yapılmadığı için kilitlendi.');
+    }
+}
+
+function resetInactivityTimer() {
+    const timeoutDuration = getInactivityTimeout();
+    clearTimeout(inactivityTimer);
+    if (timeoutDuration !== Infinity) {
+        inactivityTimer = setTimeout(lockVaultDueToInactivity, timeoutDuration);
+    }
+}
+
+
+// Onay Modalı Fonksiyonları
+function showConfirmation(message, okText = 'Evet, Sil', cancelText = 'İptal') {
+    confirmMessage.innerHTML = message;
+    confirmOK.textContent = okText;
+    confirmCancel.textContent = cancelText;
+
+    // Buton stillerini ayarla
+    confirmOK.className = okText.includes('Sil') || okText.includes('Yükle') ? 'delete-btn' : 'vault-btn';
+    if (okText.includes('Yükle')) {
+        confirmOK.style.backgroundColor = 'var(--accent)';
+    } else {
+        confirmOK.style.backgroundColor = 'var(--delete-btn)';
+    }
+
+    confirmBackdrop.style.display = 'flex';
+    return new Promise(resolve => {
+        confirmationResolver = resolve;
+    });
+}
+
+confirmOK.onclick = () => { confirmBackdrop.style.display = 'none'; if (confirmationResolver) confirmationResolver(true); };
+confirmCancel.onclick = () => { confirmBackdrop.style.display = 'none'; if (confirmationResolver) confirmationResolver(false); };
+
+
+function bufToBase64(buf){ return btoa(String.fromCharCode(...new Uint8Array(buf))); }
+function base64ToBuf(b64){ return Uint8Array.from(atob(b64),c=>c.charCodeAt(0)); }
+async function getKeyFromPassword(password,salt){ const pwUtf8=new TextEncoder().encode(password); const baseKey=await crypto.subtle.importKey('raw',pwUtf8,'PBKDF2',false,['deriveKey']); return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:600000,hash:'SHA-256'},baseKey,{name:'AES-GCM',length:256},false,['encrypt','decrypt']); } 
+async function encryptMessage(password,plainText){ const salt=crypto.getRandomValues(new Uint8Array(16)); const iv=crypto.getRandomValues(new Uint8Array(12)); const key=await getKeyFromPassword(password,salt); const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(plainText)); return {salt:bufToBase64(salt),iv:bufToBase64(iv),ct:bufToBase64(ct)}; }
+async function decryptMessage(password,data){ const salt=base64ToBuf(data.salt); const iv=base64ToBuf(data.iv); const ct=base64ToBuf(data.ct); const key=await getKeyFromPassword(password,salt); 
+    try {
+        const plainBuf=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct); 
+        return new TextDecoder().decode(plainBuf); 
+    } catch (e) {
+        throw new Error("Decryption failed");
+    }
+}
+function hasVault(){ return Boolean(localStorage.getItem(STORAGE_KEY)); }
+
+function showModal(html,note='',isError=false, showDelete=false, showInfo=false, showBack=false, isWarning=false, showSettings = false){ 
+    modalContent.innerHTML=html; 
+    modalNote.textContent=note; 
+    modalNote.classList.toggle('error', isError); 
+    modalNote.classList.toggle('warning', isWarning);
+    modalBackdrop.style.display='flex'; 
+    
+    // Başlık hizalaması ve geri butonu yönetimi
+    const titleEl = document.getElementById('modalTitle');
+    const headerEl = titleEl.parentElement;
+    const vaultBackBtn = document.getElementById('vaultBackBtn'); // Bu satır zaten vardı, tekrar tanımlamaya gerek yok ama zararı da yok.
+    headerEl.style.justifyContent = showBack ? 'space-between' : 'space-between'; // Keep space-between
+    titleEl.style.textAlign = showBack ? 'center' : 'left';
+
+    leftActions.innerHTML = '';
+
+    if (showDelete) {
+        const deleteVaultBtn = document.createElement('button');
+        deleteVaultBtn.id = 'deleteVaultBtn';
+        deleteVaultBtn.className = 'delete-btn';
+        deleteVaultBtn.textContent = 'Kasayı Sil'; // Bu metin kalabilir, buton ayarlar menüsüne taşındı.
+        deleteVaultBtn.onclick = async () => {
+            const confirmed = await showConfirmation(`
+                <span class="confirm-icon destructive">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 0 1 1.032 0 11.209 11.209 0 0 0 7.877 3.08.75.75 0 0 1 .722.515 12.74 12.74 0 0 1 .635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 0 1-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 0 1 .722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75ZM12 15a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H12Z" clip-rule="evenodd" /></svg>
+                </span>
+                <div>
+                    <strong>DİKKAT:</strong> Gizli kasayı ve <strong>TÜM MESAJLARI</strong> kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!
+                </div>
+            `);
+            if (confirmed) {
+                try {
+                    localStorage.removeItem(STORAGE_KEY);
+                    localStorage.removeItem(TERMS_KEY);
+                    hideModal();
+                    // ESKİ ALERT DEĞİŞTİRİLDİ: Yeni toast fonksiyonu çağrılıyor.
+                    window.showCustomToast('Kasa başarıyla silindi!');
+                } catch (e) {
+                    alert('Hata: Yerel depolama alanına erişilemiyor veya silme başarısız oldu.');
+                }
+            }
+        };
+        leftActions.appendChild(deleteVaultBtn);
+    }
+    
+    infoDropdownContainer.style.display = showInfo ? 'inline-block' : 'none';
+    settingsDropdownContainer.style.display = showSettings ? 'inline-block' : 'none';
+    
+    vaultBackBtn.style.display = showBack ? 'flex' : 'none'; 
+    
+    modalOK.style.display = 'inline-block';
+    modalOK.classList.add('vault-btn');
+    modalOK.classList.remove('action-toggle-btn');
+
+    modalCancel.style.display = 'none';
+
+    if(window._calculatorKeyHandlerAdded) {
+        window.removeEventListener('keydown', window._calculatorKeyHandler); 
+    }
+    
+    setTimeout(()=>{ 
+        const firstInput = modalBackdrop.querySelector('input, textarea'); 
+        if(firstInput) firstInput.focus();
+        
+        // Enter tuşu dinleyicisini modal içindeki tüm inputlara ekle
+        const inputs = modalBackdrop.querySelectorAll('input[type="password"], input[type="text"]');
+        inputs.forEach(input => {
+            input.addEventListener('keydown', modalInputKeyHandler);
+        });
+
+    },40);
+}
+
+function hideModal(){ 
+    modalBackdrop.style.display='none'; 
+    securityBackdrop.style.display='none'; 
+    infoDropdown.classList.remove('show-dropdown');
+    document.getElementById('settingsDropdown').classList.remove('show-dropdown');
+    
+    // Modal keydown handler'ı kaldır
+    const inputs = modalBackdrop.querySelectorAll('input[type="password"], input[type="text"]');
+    inputs.forEach(input => {
+        input.removeEventListener('keydown', modalInputKeyHandler);
+    });
+
+    termsBackdrop.style.display = 'none';
+    
+    if(window._calculatorKeyHandlerAdded) {
+         window.addEventListener('keydown', window._calculatorKeyHandler);
+    }
+
+    // Otomatik kilitleme zamanlayıcısını ve dinleyicileri durdur
+    clearTimeout(inactivityTimer);
+    window.removeEventListener('mousemove', resetInactivityTimer);
+    window.removeEventListener('keydown', resetInactivityTimer);
+    window.removeEventListener('mousedown', resetInactivityTimer);
+    window.removeEventListener('touchstart', resetInactivityTimer);
+}
+
+function showTermsModal(isPreLogin = false) {
+    termsBackdrop.style.display = 'flex';
+    if (isPreLogin) {
+        termsActions.innerHTML = `
+            <button class="link-like" id="cancelTermsBtn">Vazgeç</button>
+            <button class="vault-btn" id="acceptTermsBtn">Kabul Ediyorum</button>
+        `;
+        termsActions.style.display = 'flex';
+        termsActions.style.justifyContent = 'space-between';
+        document.getElementById('cancelTermsBtn').onclick = () => termsBackdrop.style.display = 'none';
+        document.getElementById('acceptTermsBtn').onclick = () => {
+            localStorage.setItem(TERMS_KEY, 'true');
+            termsBackdrop.style.display = 'none';
+            openVaultAccessMode();
+        };
+    } else {
+        termsActions.innerHTML = `<button class="vault-btn" id="termsOK">Anladım</button>`;
+        termsActions.style.display = 'block'; // veya 'initial'
+        termsActions.style.justifyContent = 'flex-end';
+        document.getElementById('termsOK').onclick = () => termsBackdrop.style.display = 'none';
+    }
+}
+
+function showSecurityModal(){ 
+    securityBackdrop.style.display = 'flex'; 
+    if(window._calculatorKeyHandlerAdded) {
+        window.removeEventListener('keydown', window._calculatorKeyHandler); 
+    }
+}
+
+securityClose.onclick = () => {
+    securityBackdrop.style.display = 'none'; 
+    modalBackdrop.style.display='flex'; 
+    
+    setTimeout(()=>{ 
+        const firstInput = modalBackdrop.querySelector('input, textarea'); 
+        if(firstInput) firstInput.focus(); 
+    },40);
+};
+
+vaultCloseBtn.onclick = hideModal;
+
+// Inputlar için Enter tuşu yöneticisi
+function modalInputKeyHandler(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        if (modalOK.onclick && typeof modalOK.onclick === 'function') {
+            modalOK.onclick();
+        }
+    }
+}
+
+// Dropdown Menü Mantığı
+function setupDropdown(trigger, dropdown) {
+  trigger.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const otherDropdowns = document.querySelectorAll('.dropdown-content.show-dropdown');
+    otherDropdowns.forEach(dd => {
+      if (dd !== dropdown) {
+        dd.classList.remove('show-dropdown');
+      }
+    });
+    dropdown.classList.toggle('show-dropdown');
+  });
+}
+
+setupDropdown(infoBtn, infoDropdown);
+setupDropdown(settingsBtn, document.getElementById('settingsDropdown'));
+document.getElementById('autoLockSettingsBtn').onclick = (e) => { e.preventDefault(); showAutoLockModal(); };
+document.getElementById('changePasswordBtn').onclick = (e) => { e.preventDefault(); showChangePasswordModal(); };
+
+window.addEventListener('click', (event) => {
+    if (!event.target.matches('.info-btn')) {
+        const dropdowns = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show-dropdown')) {
+                openDropdown.classList.remove('show-dropdown');
+            }
+        }
+    }
+});
+
+document.getElementById('securityInfoLink').onclick = (e) => { e.preventDefault(); showSecurityModal(); };
+document.getElementById('termsInfoLink').onclick = (e) => { e.preventDefault(); showTermsModal(false); };
+document.getElementById('howToUseLink').onclick = (e) => { e.preventDefault(); showHowToUseModal(); };
+document.getElementById('aboutLink').onclick = (e) => { e.preventDefault(); showAboutModal(); };
+
+
+// Eski infoBtn.onclick kaldırıldı, yeni dropdown linkleri kullanılıyor.
+document.getElementById('securityOK').onclick = () => { securityBackdrop.style.display = 'none'; };
+
+const aboutBackdrop = document.getElementById('aboutBackdrop');
+const aboutClose = document.getElementById('aboutClose');
+function showAboutModal() { 
+    document.querySelector('.about-version').textContent = 'v1.3.0'; // Versiyonu dinamik olarak ayarla
+    aboutBackdrop.style.display = 'flex'; 
+}
+aboutClose.onclick = () => { aboutBackdrop.style.display = 'none'; };
+
+
+function openVault(){ 
+    const termsAccepted = localStorage.getItem(TERMS_KEY) === 'true';
+    if (!termsAccepted) {
+        showTermsModal(true);
+    } else {
+        openVaultAccessMode();
+    }
+}
+
+async function handleVaultSetup(){
+    const p1=document.getElementById('pw1').value||'';
+    const p2=document.getElementById('pw2').value||'';
+    
+    if(p1.length < 8) { 
+         showModal(modalContent.innerHTML,'Lütfen en az 8 karakterden oluşan güçlü bir şifre belirleyin.', true, false, true, false); 
+         return;
+    }
+
+    if(p1!==p2){ showModal(modalContent.innerHTML,'Şifreler eşleşmiyor', true, false, true, false); return; }
+
+    try {
+        const initialData = JSON.stringify([]);
+        const enc=await encryptMessage(p1, initialData);
+        try {
+            localStorage.setItem(STORAGE_KEY,JSON.stringify(enc));
+            localStorage.setItem(TERMS_KEY, 'true');
+
+            // Google Analytics: Yeni kasa oluşturma olayını gönder
+            if (typeof gtag === 'function') {
+                gtag('event', 'vault_created', {
+                    'event_category': 'Kasa'
+                });
+            }
+
+            showVaultManagementScreen(p1, []); 
+        } catch (e) {
+             showModal(modalContent.innerHTML,'⚠️ Hata: Depolama alanına yazılamadı (Kotanız dolu olabilir ya da Gizli Mod açık olabilir).', true, false, true, false);
+        }
+        
+    } catch(e) {
+        alert('Kasa kurulumunda beklenmeyen bir şifreleme hatası oluştu.');
+    }
+}
+
+function getLoginAttempts() {
+    try {
+        const data = JSON.parse(localStorage.getItem(LOGIN_ATTEMPTS_KEY));
+        if (data && typeof data.count === 'number' && typeof data.lockoutUntil === 'number') {
+            return data;
+        }
+    } catch (e) { /* Geçersiz JSON'u yoksay */ }
+    return { count: 0, lockoutUntil: 0 };
+}
+
+function setLoginAttempts(attempts) {
+    localStorage.setItem(LOGIN_ATTEMPTS_KEY, JSON.stringify(attempts));
+}
+
+function updateLockoutUI() {
+    const attempts = getLoginAttempts();
+    const now = Date.now();
+
+    if (attempts.lockoutUntil > now) {
+        const remainingSeconds = Math.ceil((attempts.lockoutUntil - now) / 1000);
+        const remainingMinutes = Math.ceil(remainingSeconds / 60);
+        
+        modalNote.innerHTML = `Çok fazla hatalı deneme. Lütfen <strong>${remainingMinutes} dakika</strong> sonra tekrar deneyin.`;
+        modalNote.classList.add('error');
+        modalOK.style.display = 'none';
+        document.getElementById('pw').disabled = true;
+
+        clearInterval(lockoutInterval);
+        lockoutInterval = setInterval(updateLockoutUI, 5000); // Her 5 saniyede bir kontrol et
+        return true; // Kilitli
+    } else {
+        clearInterval(lockoutInterval);
+        modalNote.textContent = 'Kasanızı açmak için şifrenizi girin.';
+        modalNote.classList.remove('error');
+        modalOK.style.display = 'inline-block';
+        const pwInput = document.getElementById('pw');
+        if (pwInput) pwInput.disabled = false;
+        return false; // Kilitli değil
+    }
+}
+
+function handleFailedLoginAttempt() {
+    let attempts = getLoginAttempts();
+    attempts.count++;
+
+    const now = Date.now();
+    
+    if (attempts.count >= 9) {
+        attempts.lockoutUntil = now + 5 * 60 * 1000; // 5 dakika
+    } else if (attempts.count >= 6) {
+        attempts.lockoutUntil = now + 3 * 60 * 1000; // 3 dakika
+    } else if (attempts.count >= 3) {
+        attempts.lockoutUntil = now + 1 * 60 * 1000; // 1 dakika
+    }
+
+    setLoginAttempts(attempts);
+
+    if (attempts.lockoutUntil <= now) {
+        // Henüz kilitlenme yoksa, sadece hata mesajını göster ve butonu tekrar aktif et.
+        modalNote.textContent = 'Hatalı şifre. Lütfen tekrar deneyin.';
+        modalNote.classList.add('error');
+        modalOK.style.display = 'inline-block';
+    } else {
+        // Kilitlenme başladıysa, UI'ı güncelle.
+        updateLockoutUI();
+    }
+}
+
+function handleSuccessfulLogin() {
+    localStorage.removeItem(LOGIN_ATTEMPTS_KEY);
+    clearInterval(lockoutInterval);
+}
+
+async function handleVaultUnlock(){
+    const pwVal = document.getElementById('pw').value||'';
+    
+    if(pwVal.length === 0) {
+        modalNote.textContent = 'Lütfen şifrenizi girin.';
+        modalNote.classList.add('error');
+        modalOK.style.display = 'inline-block'; 
+        return; 
+    }
+    
+    modalOK.style.display = 'none';
+
+    try{
+        const enc=JSON.parse(localStorage.getItem(STORAGE_KEY));
+        const plainJson = await decryptMessage(pwVal, enc);
+        const messages = JSON.parse(plainJson);
+        
+        handleSuccessfulLogin();
+        showVaultManagementScreen(pwVal, messages); 
+        
+    }catch(e){
+        handleFailedLoginAttempt();
+    }
+}
+
+function openVaultAccessMode(){
+    if (hasVault()) {
+        modalTitle.textContent = "Kasa Girişi";
+        showModal(`
+            <div class="field"><label>Şifre:</label><input id="pw" type="password" autocomplete="off"></div> 
+        `,'Kasanızı açmak için şifrenizi girin.', false, false, true, false);
+
+        if (updateLockoutUI()) {
+            // Eğer kilitliyse, fonksiyonun geri kalanını çalıştırma
+            return;
+        }
+        
+        modalOK.textContent = 'Giriş Yap';
+        modalOK.onclick = handleVaultUnlock; 
+        
+        // Otomatik kilitleme dinleyicilerini başlat
+        window.addEventListener('mousemove', resetInactivityTimer);
+        window.addEventListener('keydown', resetInactivityTimer);
+        window.addEventListener('mousedown', resetInactivityTimer);
+        window.addEventListener('touchstart', resetInactivityTimer);
+        // Zamanlayıcıyı başlat
+        resetInactivityTimer();
+
+    } else {
+        modalTitle.textContent = "Kasa Kurulumu";
+        showModal(`
+            <div class="field"><label>Kasa Şifreniz (En az 8 karakter):</label><input id="pw1" type="password" autocomplete="off"></div> 
+            <div class="field"><label>Şifrenizi Doğrulayın:</label><input id="pw2" type="password" autocomplete="off"></div> 
+            <div class="no-recovery-warning" style="display: flex; align-items: flex-start; gap: 8px;">
+                <span class="confirm-icon warning" style="flex-shrink: 0;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg>
+                </span>
+                <div>
+                    <strong>Bu şifre, kasanızın tek anahtarıdır.</strong> Unutmanız durumunda verilerinize erişmenin başka bir yolu yoktur. Lütfen güvende olduğundan emin olun.
+                </div>
+            </div>
+        `,'', false, false, true, false);
+        
+        modalOK.textContent = 'Şifreyi Kaydet';
+        modalOK.onclick = handleVaultSetup; 
+    }
+
+    // Otomatik kilitleme dinleyicilerini başlat (kurulum ekranı için de geçerli)
+    window.addEventListener('mousemove', resetInactivityTimer);
+    window.addEventListener('keydown', resetInactivityTimer);
+    window.addEventListener('mousedown', resetInactivityTimer);
+    window.addEventListener('touchstart', resetInactivityTimer);
+    resetInactivityTimer();
+
+    vaultBackBtn.style.display = 'none';
+    
+    // Sadece yeni kasa kurulumunda geri yükleme seçeneği göster
+    if (!hasVault()) {
+        const restoreBtn = document.createElement('button');
+        restoreBtn.className = 'action-toggle-btn';
+        restoreBtn.textContent = 'Geri Yükle';
+        restoreBtn.onclick = handleImport;
+        leftActions.innerHTML = ''; // Önce temizle
+        leftActions.appendChild(restoreBtn);
+    }
+}
+
+function handleExport() {
+    // Google Analytics: Yedekleme olayını gönder
+    if (typeof gtag === 'function') {
+        gtag('event', 'feature_used', {
+            'feature_name': 'export_data'
+        });
+    }
+
+    const encryptedData = localStorage.getItem(STORAGE_KEY);
+    if (!encryptedData) {
+        window.showCustomToast('Yedeklenecek veri bulunamadı.');
+        return;
+    }
+
+    const blob = new Blob([encryptedData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const dateString = `${year}-${month}-${day}_${hours}-${minutes}-${seconds}`;
+    a.download = `hesapp-kasa-yedek-${dateString}.json`;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    window.showCustomToast('Yedekleme dosyası indiriliyor...');
+}
+
+function handleImport() {
+    const fileInput = document.getElementById('importFileInput');
+    fileInput.onchange = async e => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const text = await file.text();
+        try {
+            const data = JSON.parse(text);
+            if (!data.salt || !data.iv || !data.ct) {
+                throw new Error('Invalid file format');
+            }
+
+            const confirmed = await showConfirmation(
+                `<span class="confirm-icon destructive">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 0 1 1.032 0 11.209 11.209 0 0 0 7.877 3.08.75.75 0 0 1 .722.515 12.74 12.74 0 0 1 .635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 0 1-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 0 1 .722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75ZM12 15a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H12Z" clip-rule="evenodd" /></svg>
+                </span>
+                <div>
+                    <strong>DİKKAT:</strong> Bu işlem, (varsa) mevcut kasanızdaki <strong>tüm notları kalıcı olarak silecek</strong> ve yedek dosyasındaki verilerle değiştirecektir.
+                    <br><br>
+                    <strong>Veri kaybı yaşamamak için:</strong> Eğer mevcut kasanızda önemli notlarınız varsa, bu işleme devam etmeden önce <strong>mevcut kasanızı yedeklediğinizden</strong> emin olun.
+                    <br><br>Devam etmek istiyor musunuz?
+                </div>`,
+                'Evet, Geri Yükle', 'Vazgeç'
+            );
+            if (confirmed) {
+                // Google Analytics: Geri yükleme olayını gönder
+                if (typeof gtag === 'function') {
+                    gtag('event', 'feature_used', {
+                        'feature_name': 'import_data'
+                    });
+                }
+
+                localStorage.setItem(STORAGE_KEY, text);
+                localStorage.setItem(TERMS_KEY, 'true'); // Yedek yüklenince koşulları kabul etmiş sayalım
+                hideModal();
+                window.showCustomToast('Kasa başarıyla geri yüklendi!');
+            }
+
+        } catch (err) {
+            alert('Hata: Geçersiz veya bozuk yedekleme dosyası. Lütfen doğru dosyayı seçtiğinizden emin olun.');
+        } finally {
+            // Input'u sıfırla ki aynı dosya tekrar seçilebilsin
+            fileInput.value = '';
+        }
+    };
+    fileInput.click();
+}
+
+function showVaultManagementScreen(password, messages) {
+    modalTitle.textContent = "Kasa Yönetimi";
+    showModal('', '', false, false, true, false, false, true);
+
+    // Kasa yönetim ekranı açıldığında zamanlayıcıyı sıfırla/başlat
+    resetInactivityTimer();
+
+    // Arama kutusu ve not listesini içeren ana HTML yapısı
+    modalContent.innerHTML = `
+        ${messages.length > 0 ? `
+        <div class="search-field">
+            <span class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" /></svg>
+            </span>
+            <input type="text" id="noteSearchInput" placeholder="Notlarda ara..." autocomplete="off">
+        </div>` : ''}
+        <div id="messageList" style="max-height: 250px; overflow-y: auto; margin-bottom: 15px;">
+        </div>
+    `;
+
+    const messageListContainer = document.getElementById('messageList');
+    const searchInput = document.getElementById('noteSearchInput');
+
+    // Not listesini render eden fonksiyon
+    function renderMessageList(messagesToRender) {
+        // Notları en yeniden en eskiye doğru sırala
+        const sortedMessages = [...messagesToRender].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const noResultMessage = searchInput && searchInput.value ? 'Aramanızla eşleşen not bulunamadı.' : 'Henüz bir not eklenmedi.';
+        
+        let listHtml = sortedMessages.length > 0 ? sortedMessages.map(msg => {
+            // Orijinal indeksi bulmak için sıralanmamış `messages` dizisini kullan
+            const originalIndex = messages.indexOf(msg);
+            const date = new Date(msg.date);
+            const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+
+            return `
+            <div class="message-item view-btn" data-index="${originalIndex}" style="display:flex; justify-content:space-between; align-items:center; padding:12px 5px; border-bottom:1px solid var(--modal-border); cursor: pointer;">
+                <span class="view-title" data-index="${originalIndex}" style="font-weight:600; color:var(--accent); max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${msg.title || 'Başlıksız Not'}</span>
+                <div style="font-size: 13px; color: var(--muted);">
+                    ${formattedDate}
+                </div>
+            </div>
+        `}).join('') : `<p style="color:var(--muted); text-align:center; margin-top:20px;">${noResultMessage}</p>`;
+
+        messageListContainer.innerHTML = listHtml;
+
+        // Olay dinleyicilerini yeniden bağla
+        const viewHandler = (e) => {
+            const originalIndex = parseInt(e.currentTarget.dataset.index);
+            showMessageEditor(password, messages, originalIndex);
+        };
+        messageListContainer.querySelectorAll('.message-item').forEach(item => item.onclick = viewHandler);
+    }
+
+    // Arama olay dinleyicisi
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = messages.filter(msg => 
+                (msg.title && msg.title.toLowerCase().includes(searchTerm)) || 
+                (msg.content && msg.content.toLowerCase().includes(searchTerm))
+            );
+            renderMessageList(filtered);
+        });
+    }
+
+    renderMessageList(messages);
+
+    // Ayarlar menüsü butonlarına olayları bağla
+    document.getElementById('exportBtn').onclick = (e) => { e.preventDefault(); handleExport(); };
+    document.getElementById('importBtn').onclick = (e) => { e.preventDefault(); handleImport(); };
+    document.getElementById('deleteVaultBtnDropdown').onclick = async (e) => {
+        e.preventDefault();
+        const confirmed = await showConfirmation(`
+            <span class="confirm-icon destructive">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M11.484 2.17a.75.75 0 0 1 1.032 0 11.209 11.209 0 0 0 7.877 3.08.75.75 0 0 1 .722.515 12.74 12.74 0 0 1 .635 3.985c0 5.942-4.064 10.933-9.563 12.348a.749.749 0 0 1-.374 0C6.314 20.683 2.25 15.692 2.25 9.75c0-1.39.223-2.73.635-3.985a.75.75 0 0 1 .722-.516l.143.001c2.996 0 5.718-1.17 7.734-3.08ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75ZM12 15a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75v-.008a.75.75 0 0 0-.75-.75H12Z" clip-rule="evenodd" /></svg>
+            </span>
+            <div>
+                <strong>DİKKAT:</strong> Gizli kasayı ve <strong>TÜM MESAJLARI</strong> kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!
+            </div>
+        `);
+        if (confirmed) {
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(TERMS_KEY);
+                hideModal();
+                window.showCustomToast('Kasa başarıyla silindi!');
+            } catch (err) {
+                alert('Hata: Yerel depolama alanına erişilemiyor veya silme başarısız oldu.');
+            }
+        }
+    };
+
+    modalOK.textContent = 'Yeni Not Ekle';
+    modalOK.onclick = () => showMessageEditor(password, messages, -1);
+}
+
+function showMessageEditor(password, messages, index){
+    const isNew = index === -1;
+    const msg = isNew ? { title: '', content: '', date: new Date().toISOString(), creationDate: new Date().toISOString() } : messages[index];
+    const isEditing = index !== -1; 
+    
+    let isCurrentlyEditing = isNew; 
+    
+    modalNote.textContent = '';
+    infoDropdownContainer.style.display = 'none';
+    settingsDropdownContainer.style.display = 'none';
+
+    vaultBackBtn.onclick = () => showVaultManagementScreen(password, messages);
+
+    modalContent.innerHTML = `
+        <div class="field"><label>Başlık:</label><input id="msgTitle" type="text" value="${msg.title}" placeholder="Not Başlığı (Opsiyonel)"></div>
+        <div class="field">
+            <label>İçerik:</label>
+            <div class="copy-container"> 
+                <textarea id="msgContent" rows="5" placeholder="Gizli mesajınızın içeriği">${msg.content}</textarea>
+                ${isEditing ? `
+                <div class="icon-actions">
+                    <button class="icon-btn visibility-btn" id="showContentBtn" title="İçeriği Göster" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                    </button>
+                    <button class="icon-btn visibility-btn" id="hideContentBtn" title="İçeriği Gizle">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" /></svg>
+                    </button>
+                    <button class="icon-btn copy-btn" id="copyMsgBtn" title="Panoya Kopyala">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" /></svg>
+                    </button>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+        <div class="note" id="lastModifiedDate" style="text-align: right; margin-top: 0;"></div>
+        <div class="note" id="creationDate" style="text-align: right; margin-top: 0;"></div>
+    `;
+    
+    leftActions.innerHTML = '';
+    
+    function updateEditorMode(isEditMode) {
+        const lastModDate = new Date(msg.date);
+        const formattedLastModDate = `Son değişiklik: ${lastModDate.getDate().toString().padStart(2, '0')}.${(lastModDate.getMonth() + 1).toString().padStart(2, '0')}.${lastModDate.getFullYear()} ${lastModDate.getHours().toString().padStart(2, '0')}:${lastModDate.getMinutes().toString().padStart(2, '0')}`;
+        document.getElementById('lastModifiedDate').textContent = isNew ? '' : formattedLastModDate;
+
+        // Oluşturulma tarihini göster
+        const creationDateEl = document.getElementById('creationDate');
+        if (!isNew && msg.creationDate) {
+            const creationDate = new Date(msg.creationDate);
+            const formattedCreationDate = `Oluşturulma: ${creationDate.getDate().toString().padStart(2, '0')}.${(creationDate.getMonth() + 1).toString().padStart(2, '0')}.${creationDate.getFullYear()} ${creationDate.getHours().toString().padStart(2, '0')}:${creationDate.getMinutes().toString().padStart(2, '0')}`;
+            creationDateEl.textContent = formattedCreationDate;
+        } else {
+            creationDateEl.textContent = '';
+        }
+
+        if (!isEditMode && !isNew) {
+            // "Vazgeç" durumunda orijinal verileri geri yükle
+            document.getElementById('msgTitle').value = msg.title;
+            document.getElementById('msgContent').value = msg.content;
+        }
+
+    // Düzenleme moduna girildiğinde içeriğin her zaman görünür olmasını sağla
+    if (isEditMode) {
+        document.getElementById('msgContent').value = msg.content;
+    }
+
+
+        document.getElementById('msgTitle').readOnly = !isEditMode;
+        document.getElementById('msgContent').readOnly = !isEditMode;
+
+        // İkon aksiyonlarını sadece görüntüleme modunda göster
+        const iconActions = document.querySelector('.icon-actions');
+        if (iconActions) {
+            iconActions.style.display = isEditMode ? 'none' : 'flex';
+        }
+
+        // Göz ikonlarını sadece görüntüleme modunda göster
+        const visibilityBtns = document.querySelectorAll('.visibility-btn');
+        if (visibilityBtns) {
+            const displayValue = isEditMode ? 'none' : 'flex';
+            visibilityBtns.forEach(btn => btn.style.display = displayValue);
+        }
+
+        vaultBackBtn.style.display = !isEditMode && !isNew ? 'flex' : 'none'; 
+
+        leftActions.innerHTML = '';
+
+        if (isNew) {
+            modalOK.textContent = 'Kaydet';
+            modalOK.onclick = () => handleSaveMessage(password, messages, index);
+            
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'action-toggle-btn';
+            cancelBtn.textContent = 'Vazgeç';
+            cancelBtn.onclick = () => showVaultManagementScreen(password, messages);
+            leftActions.appendChild(cancelBtn);
+            modalTitle.textContent = "Yeni Not Ekle";
+            
+        } else if (isEditMode) {
+            modalTitle.textContent = "Notu Düzenle";
+            modalOK.textContent = 'Güncelle';
+            modalOK.onclick = () => handleSaveMessage(password, messages, index);
+            
+            const cancelEditBtn = document.createElement('button');
+            cancelEditBtn.className = 'action-toggle-btn';
+            cancelEditBtn.textContent = 'Vazgeç';
+            cancelEditBtn.onclick = () => updateEditorMode(false);
+            leftActions.appendChild(cancelEditBtn);
+            
+        } else {
+            modalTitle.textContent = "Not";
+            modalOK.textContent = 'Düzenle'; 
+            modalOK.onclick = () => updateEditorMode(true); 
+            
+            const deleteNoteBtn = document.createElement('button');
+            deleteNoteBtn.className = 'delete-btn';
+            deleteNoteBtn.textContent = 'Notu Sil';
+            deleteNoteBtn.onclick = () => handleDeleteMessage(password, messages, index);
+            leftActions.appendChild(deleteNoteBtn);
+
+            const copyBtn = document.getElementById('copyMsgBtn');
+            if (copyBtn) {
+                // SVG'nin kendisine tıklanırsa, parent butonu hedef al
+                copyBtn.onclick = (e) => {
+                    copyMessageToClipboard(msg.content, e.currentTarget);
+                }
+            }
+
+            // Göz ikonları olay dinleyicileri
+            const showBtn = document.getElementById('showContentBtn');
+            const hideBtn = document.getElementById('hideContentBtn');
+            const contentArea = document.getElementById('msgContent');
+
+            if (showBtn && hideBtn && contentArea) {
+                hideBtn.onclick = () => {
+                    contentArea.value = '********************';
+                    hideBtn.style.display = 'none';
+                    showBtn.style.display = 'flex'; // Göster butonunu görünür yap
+                };
+                showBtn.onclick = () => {
+                    contentArea.value = msg.content;
+                    showBtn.style.display = 'none';
+                    hideBtn.style.display = 'flex';
+                };
+                // Başlangıçta içeriği göster
+                hideBtn.click(); // İçeriği gizleyerek başla
+            }
+        }
+    }
+
+    updateEditorMode(isCurrentlyEditing);
+
+    // Başlık alanına odaklan
+    setTimeout(() => {
+        document.getElementById('msgTitle').focus();
+    }, 50);
+}
+
+async function handleSaveMessage(password, messages, index){
+    const title = document.getElementById('msgTitle').value.trim();
+    const content = document.getElementById('msgContent').value.trim();
+    
+    if(content === ''){ 
+        modalNote.textContent = 'Mesaj içeriği boş olamaz!'; modalNote.classList.add('error'); 
+        return; 
+    }
+
+    const originalMessage = index !== -1 ? messages[index] : null;
+    let finalTitle = title;
+    if (!finalTitle) {
+        const baseTitle = 'Başlıksız Not';
+        const untitledNotes = messages.filter(m => m.title.startsWith(baseTitle));
+        if (untitledNotes.length === 0) {
+            finalTitle = baseTitle;
+        } else {
+            let counter = 2;
+            while (untitledNotes.some(m => m.title === `${baseTitle} ${counter}`)) {
+                counter++;
+            }
+            finalTitle = `${baseTitle} ${counter}`;
+        }
+    }
+    const newMessage = { 
+        title: finalTitle, 
+        content: content, 
+        date: new Date().toISOString(),
+        creationDate: originalMessage ? (originalMessage.creationDate || originalMessage.date) : new Date().toISOString() // Eski notlar için `date` alanını kullan, yeniler için oluştur
+    };
+
+    if (index === -1) {
+        messages.push(newMessage); 
+
+        // Google Analytics: Yeni not oluşturma olayını gönder
+        if (typeof gtag === 'function') {
+            gtag('event', 'note_created', {
+                'event_category': 'Kasa'
+            });
+        }
+    } else {
+        messages[index] = newMessage; 
+    }
+
+    const encData = JSON.stringify(messages);
+    
+    try {
+        const enc = await encryptMessage(password, encData);
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(enc));
+            showVaultManagementScreen(password, messages);
+        } catch (e) {
+             const noteHTML = `<div style="display:flex; align-items:flex-start; gap: 8px;">
+                <span class="confirm-icon warning" style="flex-shrink: 0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg></span>
+                <div>Hata: Depolama alanına yazılamadı (Kotanız dolu olabilir veya Gizli Mod açık olabilir).</div>
+             </div>`;
+             showModal(modalContent.innerHTML, '', true, false, false, true);
+             modalNote.innerHTML = noteHTML;
+        }
+    } catch(e) {
+        modalNote.innerHTML = `<div style="display:flex; align-items:flex-start; gap: 8px;">
+            <span class="confirm-icon warning" style="flex-shrink: 0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg></span>
+            <div>Hata: Şifreleme/kayıt işlemi başarısız oldu.</div>
+        </div>`;
+        modalNote.classList.add('error');
+    }
+}
+
+async function handleDeleteMessage(password, messages, index){
+    const confirmed = await showConfirmation("Bu gizli notu kalıcı olarak silmek istediğinizden emin misiniz?");
+    if (confirmed) {
+        messages.splice(index, 1);
+        
+        const encData = JSON.stringify(messages);
+        
+        try {
+            const enc = await encryptMessage(password, encData);
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(enc));
+                showVaultManagementScreen(password, messages);
+            } catch (e) {
+                 alert('Hata: Silme sonrası depolama alanına yazılamadı. Lütfen tekrar deneyin.');
+            }
+        } catch (e) {
+            alert('Hata: Silme sonrası şifreleme başarısız oldu.');
+        }
+    }
+}
+
+function copyMessageToClipboard(text, buttonElement) {
+    navigator.clipboard.writeText(text)
+        .then(() => { 
+            const originalIcon = buttonElement.innerHTML;
+            // Onay ikonu (yeşil tik)
+            buttonElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="color: #28a745;"><path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clip-rule="evenodd" /></svg>`;
+            
+            // SVG'nin stroke'unu da ayarlamak için
+            buttonElement.querySelector('svg').style.stroke = '#28a745';
+
+            setTimeout(() => { buttonElement.innerHTML = originalIcon; }, 1500); 
+        });
+}
+
+
+// Global handleEqualsPress fonksiyonunu, bu kapsamdaki değişkenlerle çalışacak şekilde yeniden tanımlıyoruz.
+window.handleEqualsPress = function() {
+    equalsPressCount++;
+    setTimeout(() => { equalsPressCount = 0; }, 1500);
+    if (equalsPressCount >= 3) { equalsPressCount = 0; openVault(); }
+};
+
+const welcomeBackdrop = document.getElementById('welcomeBackdrop');
+const welcomeClose = document.getElementById('welcomeClose');
+const dontShowAgain = document.getElementById('dontShowAgain');
+const WELCOME_KEY = 'kasa_welcome_v1'; 
+
+if (localStorage.getItem(WELCOME_KEY) !== 'true') {
+    if(window._calculatorKeyHandlerAdded) {
+        window.removeEventListener('keydown', window._calculatorKeyHandler); 
+    }
+    welcomeBackdrop.style.display='flex'; 
+} else {
+    welcomeBackdrop.style.display='none'; 
+}
+
+welcomeClose.onclick = () => { 
+    if (dontShowAgain.checked) {
+        localStorage.setItem(WELCOME_KEY, 'true');
+    }
+    welcomeBackdrop.style.display='none'; 
+    if(window._calculatorKeyHandlerAdded) {
+         window.addEventListener('keydown', window._calculatorKeyHandler); 
+    }
+
+    // "Nasıl Kullanılır?" modalını da gizle
+    const howToUseBackdrop = document.getElementById('howToUseBackdrop');
+    if (howToUseBackdrop) howToUseBackdrop.style.display = 'none';
+}
+
+// Otomatik Kilitleme Ayar Modalı
+const autoLockModalBackdrop = document.getElementById('autoLockModalBackdrop');
+const autoLockOptionsContainer = document.getElementById('autoLockOptions');
+const autoLockSaveBtn = document.getElementById('autoLockSaveBtn');
+const autoLockCancelBtn = document.getElementById('autoLockCancelBtn');
+
+const autoLockDurations = [
+    { label: '1 Dakika', value: 1 * 60 * 1000 },
+    { label: '3 Dakika', value: 3 * 60 * 1000 },
+    { label: '5 Dakika', value: 5 * 60 * 1000 },
+    { label: '10 Dakika', value: 10 * 60 * 1000 },
+    { label: 'Asla', value: 0 }
+];
+
+function showAutoLockModal() {
+    const currentTimeout = getInactivityTimeout();
+    
+    autoLockOptionsContainer.innerHTML = autoLockDurations.map(duration => `
+        <label class="radio-label">
+            <input type="radio" name="autolock" value="${duration.value}" ${ (duration.value === 0 && currentTimeout === Infinity) || duration.value === currentTimeout ? 'checked' : ''}>
+            <span>${duration.label}</span>
+        </label>
+    `).join('');
+
+    autoLockModalBackdrop.style.display = 'flex';
+}
+
+function hideAutoLockModal() {
+    autoLockModalBackdrop.style.display = 'none';
+}
+
+autoLockSaveBtn.onclick = () => {
+    const selectedValue = document.querySelector('input[name="autolock"]:checked').value;
+    localStorage.setItem(AUTOLOCK_KEY, selectedValue);
+    hideAutoLockModal();
+    window.showCustomToast('Otomatik kilitleme süresi güncellendi.');
+    // Zamanlayıcıyı yeni değerle hemen sıfırla
+    if (modalBackdrop.style.display === 'flex' || securityBackdrop.style.display === 'flex') {
+        resetInactivityTimer();
+        hideModal(); // Ayarlar kaydedildikten sonra kasayı kapat
+    }
+};
+
+autoLockCancelBtn.onclick = hideAutoLockModal;
+
+
+// Nasıl Kullanılır Modalı
+const howToUseBackdrop = document.getElementById('howToUseBackdrop');
+const howToUseClose = document.getElementById('howToUseClose');
+const howToUseOK = document.getElementById('howToUseOK');
+const welcomeHowToUseLink = document.getElementById('welcomeHowToUseLink');
+
+function showHowToUseModal() {
+    if (howToUseBackdrop) howToUseBackdrop.style.display = 'flex';
+}
+
+function hideHowToUseModal() {
+    if (howToUseBackdrop) howToUseBackdrop.style.display = 'none';
+}
+
+if (howToUseClose) howToUseClose.onclick = hideHowToUseModal;
+if (howToUseOK) howToUseOK.onclick = hideHowToUseModal;
+if (welcomeHowToUseLink) welcomeHowToUseLink.onclick = (e) => { e.preventDefault(); showHowToUseModal(); };
+
+// Şifre Değiştirme Modalı
+const changePasswordBackdrop = document.getElementById('changePasswordBackdrop');
+const changePassNote = document.getElementById('changePassNote');
+
+function showChangePasswordModal() {
+    // Diğer tüm dropdownları kapat
+    document.getElementById('settingsDropdown').classList.remove('show-dropdown');
+    
+    // Inputları ve notu temizle
+    document.getElementById('currentPass').value = '';
+    document.getElementById('newPass1').value = '';
+    document.getElementById('newPass2').value = '';
+    changePassNote.textContent = '';
+    changePassNote.classList.remove('error');
+
+    changePasswordBackdrop.style.display = 'flex';
+    setTimeout(() => {
+        document.getElementById('currentPass').focus();
+    }, 50);
+}
+
+function hideChangePasswordModal() {
+    changePasswordBackdrop.style.display = 'none';
+}
+
+async function handleChangePassword() {
+    const currentPass = document.getElementById('currentPass').value;
+    const newPass1 = document.getElementById('newPass1').value;
+    const newPass2 = document.getElementById('newPass2').value;
+
+    changePassNote.textContent = '';
+    changePassNote.classList.remove('error');
+
+    if (!currentPass || !newPass1 || !newPass2) {
+        changePassNote.textContent = 'Tüm alanlar doldurulmalıdır.';
+        changePassNote.classList.add('error');
+        return;
+    }
+
+    if (newPass1.length < 8) {
+        changePassNote.textContent = 'Yeni şifre en az 8 karakter olmalıdır.';
+        changePassNote.classList.add('error');
+        return;
+    }
+
+    if (newPass1 !== newPass2) {
+        changePassNote.textContent = 'Yeni şifreler eşleşmiyor.';
+        changePassNote.classList.add('error');
+        return;
+    }
+
+    try {
+        const encryptedData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        // 1. Mevcut şifre ile veriyi çözmeyi dene
+        const plainJson = await decryptMessage(currentPass, encryptedData);
+
+        // 2. Başarılı olursa, aynı veriyi yeni şifre ile tekrar şifrele
+        const newEncryptedPayload = await encryptMessage(newPass1, plainJson);
+
+        // 3. Yeni şifrelenmiş veriyi kaydet
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newEncryptedPayload));
+
+        // Google Analytics: Şifre değiştirme olayını gönder
+        if (typeof gtag === 'function') {
+            gtag('event', 'feature_used', {
+                'feature_name': 'change_password'
+            });
+        }
+
+        hideChangePasswordModal();
+        window.showCustomToast('Şifre başarıyla değiştirildi!');
+        hideModal(); // Güvenlik için kasayı tamamen kapat
+    } catch (e) {
+        changePassNote.textContent = 'Mevcut şifre hatalı.';
+        changePassNote.classList.add('error');
+    }
+}
+
+document.getElementById('changePassSaveBtn').onclick = handleChangePassword;
+document.getElementById('changePassCancelBtn').onclick = hideChangePasswordModal;
+
+
+// PWA Güncelleme Mantığı
+let newWorker;
+
+function showUpdateBanner() {
+    const updateBanner = document.getElementById('update-notification');
+    const updateButton = document.getElementById('update-now-btn');
+    
+    updateBanner.style.display = 'flex';
+    
+    updateButton.addEventListener('click', () => {
+        // Yeni service worker'a 'SKIP_WAITING' mesajı göndererek kontrolü devralmasını söyle
+        newWorker.postMessage({ action: 'skipWaiting' });
+    });
+}
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/hesapp/service-worker.js').then(reg => {
+        reg.addEventListener('updatefound', () => {
+            // Yeni bir service worker bulundu, kurulumunu izle
+            newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+                // Yeni worker kuruldu ve bekleme durumuna geçtiyse
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    showUpdateBanner();
+                }
+            });
+        });
+    });
+
+    // Controller değiştiğinde (yeni SW aktif olduğunda) sayfayı yeniden yükle
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+    });
+}
+
+// PWA Yükleme Mantığı
+let deferredPrompt;
+const installButton = document.getElementById('installAppBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Tarayıcının kendi yükleme istemini göstermesini engelle
+    e.preventDefault();
+    // Etkinliği daha sonra kullanmak üzere sakla
+    deferredPrompt = e;
+    // Yükleme butonunu göster
+    if (installButton) {
+        installButton.style.display = 'block';
+    }
+});
+
+if (installButton) {
+    installButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (deferredPrompt) {
+            // Google Analytics: PWA kurulumu olayını gönder
+            if (typeof gtag === 'function') {
+                gtag('event', 'pwa_install_prompted', {
+                    'event_category': 'PWA'
+                });
+            }
+
+            // Saklanan istemi göster
+            deferredPrompt.prompt();
+            // Butonu gizle, çünkü istem sadece bir kez kullanılabilir
+            installButton.style.display = 'none';
+            deferredPrompt = null;
+        }
+    });
+}
+
+})();
