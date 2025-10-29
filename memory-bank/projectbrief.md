@@ -5,7 +5,7 @@ Hesapp
 
 ## 2. Kısa Tanım
 Hesapp, standart bir hesap makinesi işlevselliğini, güçlü şifreleme ile korunan kişisel bir not kasasıyla birleştiren minimalist bir web uygulamasıdır. Kullanıcı verileri yalnızca cihazda saklanır ve "sıfır bilgi" prensibiyle maksimum güvenlik sağlanır.
-
+ 
 ## 3. Temel Amaç ve Hedefler
 *   Kullanıcılara basit ve etkili bir hesap makinesi deneyimi sunmak.
 *   Hesap makinesi arayüzünün ardında, kişisel notları güvenli bir şekilde saklayabilecekleri şifreli bir kasa sağlamak.

@@ -20,7 +20,7 @@
   --security-highlight-text: #111827;
   --prose-text: #333;
 }
-
+ 
 html[data-theme="dark"] {
     --bg:#1a1b26; 
     --panel:#24283b; 

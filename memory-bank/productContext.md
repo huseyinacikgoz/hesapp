@@ -3,7 +3,7 @@
 ## 1. Çözülen Problem
 
 Günümüz dijital dünyasında, kullanıcıların hem basit araçlara hızlıca erişme ihtiyacı hem de hassas bilgilerini (geçici şifreler, kişisel notlar, fikirler vb.) güvenli bir şekilde saklama gereksinimi vardır. Mevcut çözümler genellikle bu iki ihtiyacı ayrı ayrı karşılar: ya sadece bir hesap makinesi uygulamasıdır ya da karmaşık, bulut tabanlı bir not alma servisidir.
-
+ 
 Hesapp, bu iki ihtiyacı tek bir minimalist arayüzde birleştirerek şu sorunları çözer:
 
 *   **Güvenlik ve Gizlilik Endişesi:** Kullanıcılar, notlarını bulut servislerine emanet etmek istemeyebilirler. Hesapp, "sıfır bilgi" (zero-knowledge) mimarisiyle verileri yalnızca kullanıcının cihazında şifrelenmiş olarak tutarak bu endişeyi ortadan kaldırır.

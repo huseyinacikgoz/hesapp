@@ -2,7 +2,7 @@
 
 ## 1. Mevcut Odak
 Sıradaki görev, mevcut "Kullanım Koşulları" metnini, uygulamanın doğasını ve kullanıcı sorumluluklarını daha net bir şekilde ortaya koyan, daha profesyonel ve kapsamlı bir "Hizmet Sözleşmesi" ile güncellemektir.
-
+ 
 ## 2. Son Değişiklikler
 *   **Sürüm Güncellemesi:** Proje sürümü `1.2.2` olarak güncellendi.
 *   **Yeni Görevler Eklendi:** `progress.md` dosyası, PWA dönüşümü, yasal metinlerin eklenmesi ve "Nasıl Kullanılır?" sayfasının iyileştirilmesi gibi yeni görevlerle güncellendi.

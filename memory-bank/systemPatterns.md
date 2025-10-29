@@ -4,7 +4,7 @@
 
 *   **İstemci Taraflı (Client-Side) Mimari:** Hesapp, tamamen istemci tarafında çalışan bir Tek Sayfa Uygulamasıdır (Single Page Application - SPA). Sunucu tarafı bir bileşeni veya veritabanı yoktur. Tüm mantık, veri işleme ve depolama kullanıcının tarayıcısında gerçekleşir.
 *   **Sıfır Bilgi (Zero-Knowledge) Mimarisi:** Uygulama, kullanıcı verilerini (notlar ve şifre) asla sunucuya göndermez. Şifreleme ve şifre çözme işlemleri yalnızca cihazda yapıldığı için, geliştirici dahil hiç kimse kullanıcının verilerine erişemez.
-
+ 
 ## 2. Temel Tasarım Desenleri
 
 *   **Modül Deseni (JavaScript):** Kod, `script.js` içinde IIFE (Immediately Invoked Function Expression) yapısı kullanılarak farklı sorumluluklara (UI, Kripto, Hesap Makinesi, Modal Yönetimi vb.) sahip modüllere ayrılmıştır. Bu, global namespace kirliliğini önler ve kodun daha organize olmasını sağlar.

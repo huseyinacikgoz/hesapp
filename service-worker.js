@@ -12,7 +12,7 @@ const URLS_TO_CACHE = [
   'favicon/android-chrome-192x192.png',
   'favicon/android-chrome-512x512.png'
 ];
-
+ 
 // Kurulum (Install) adımı: Önbelleği oluştur ve dosyaları ekle
 self.addEventListener('install', event => {
   event.waitUntil(

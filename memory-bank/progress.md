@@ -5,7 +5,7 @@
     *   Uygulama, Service Worker entegrasyonu sayesinde mobil cihazlara ve masaüstüne "uygulama gibi" kurulabilir ve temel çevrimdışı desteği sunar.
     *   Yeni bir sürüm yayınlandığında, kullanıcıya bir bildirim banner'ı ile uygulamayı güncelleme seçeneği sunulur.
     *   Kullanıcı deneyimini iyileştirmek için "Bilgi" menüsüne manuel bir "Uygulamayı Yükle" butonu eklenmiştir.
-*   **Yasal ve Uyumluluk Metinleri:**
+*    **Yasal ve Uyumluluk Metinleri:**
     *   "Gizlilik Politikası" ve "Teknik Güvenlik" detayları, tek ve kapsamlı bir modal içinde birleştirilmiştir.
     *   "Kullanım Koşulları" metni, daha kapsamlı bir "Hizmet Sözleşmesi" haline getirilmiştir.
 *   **SEO ve Favicon Entegrasyonu:** Arama motoru optimizasyonu (SEO) için `description` ve `keywords` gibi meta etiketleri eklendi. Uygulamanın tarayıcı sekmelerinde ve mobil cihazların ana ekranlarında doğru görünmesi için `favicon.ico`, `apple-touch-icon.png` ve diğer ilgili ikon dosyaları entegre edildi.

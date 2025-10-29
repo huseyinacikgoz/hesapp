@@ -2,7 +2,7 @@
     const themeToggle = document.getElementById('themeToggle');
     const docElement = document.documentElement;
     const themeKey = 'hesapp_theme_v1';
-
+ 
     // Başlangıç teması artık index.html içindeki inline script tarafından ayarlanıyor.
     // Bu fonksiyon sadece butona tıklandığında temayı değiştirecek.
     themeToggle.addEventListener('click', () => {

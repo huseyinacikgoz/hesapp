@@ -6,7 +6,7 @@
     *   **HTML5:** Uygulamanın yapısal iskeleti için standart ve semantik HTML5 etiketleri kullanılmaktadır.
     *   **CSS3:** Modern CSS3 özellikleri, özellikle CSS Değişkenleri (Variables) ile dinamik tema (açık/koyu mod) yönetimi sağlanmaktadır. Arayüz `Flexbox` ve `Grid` ile oluşturulmuştur.
     *   **Vanilla JavaScript (ES6+):** Proje, herhangi bir harici kütüphane veya framework'e dayanmamaktadır. Tüm işlevsellik, modern tarayıcıların desteklediği standart JavaScript (ECMAScript 6 ve sonrası) ile yazılmıştır.
-
+ 
 *   **Güvenlik ve Şifreleme:**
     *   **Web Crypto API (`SubtleCrypto`):** Tarayıcıda yerleşik olarak bulunan bu güçlü API, tüm kriptografik işlemler için kullanılır.
         *   **AES-GCM:** Not verilerinin şifrelenmesi ve bütünlüğünün korunması için kullanılır.
