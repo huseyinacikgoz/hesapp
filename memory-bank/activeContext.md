@@ -1,22 +1,21 @@
 # Active Context: Hesapp
 
 ## 1. Mevcut Odak
-Sıradaki görev, mevcut "Kullanım Koşulları" metnini, uygulamanın doğasını ve kullanıcı sorumluluklarını daha net bir şekilde ortaya koyan, daha profesyonel ve kapsamlı bir "Hizmet Sözleşmesi" ile güncellemektir.
+`v1.3.0` sürümü tamamlandı. Uygulama, yeni özellikler veya iyileştirmeler için bir sonraki geliştirme döngüsüne hazır.
  
 ## 2. Son Değişiklikler
-*   **Sürüm Güncellemesi:** Proje sürümü `1.2.2` olarak güncellendi.
-*   **Yeni Görevler Eklendi:** `progress.md` dosyası, PWA dönüşümü, yasal metinlerin eklenmesi ve "Nasıl Kullanılır?" sayfasının iyileştirilmesi gibi yeni görevlerle güncellendi.
-*   **PWA Manifest Hazırlığı:** `site.webmanifest` dosyasına uygulamanın adı eklendi.
-*   **Gizlilik Politikası Birleştirildi:** "Gizlilik & Güvenlik" modalı, resmi gizlilik politikasını da içerecek şekilde güncellendi ve tek, kapsamlı bir bilgilendirme ekranı haline getirildi.
-*   **"Nasıl Kullanılır?" İyileştirmesi:** "Nasıl Kullanılır?" modalının içeriği, uygulamanın özelliklerini daha akıcı ve kullanıcı odaklı bir dille anlatacak şekilde yeniden yazıldı.
-*   **PWA Temeli Atıldı:** Uygulamanın temel dosyalarını önbelleğe alan ve çevrimdışı çalışmasını sağlayan bir `service-worker.js` dosyası oluşturuldu ve `index.html`'e kaydedildi.
-*   **PWA Güncelleme Mekanizması:** Yeni bir sürüm algılandığında kullanıcıya bir bildirim banner'ı gösteren ve uygulamayı güncellemesini sağlayan mekanizma eklendi.
-*   **PWA Kurulum Butonu:** Kullanıcının uygulamayı daha kolay kurabilmesi için "Bilgi" menüsüne "Uygulamayı Yükle" butonu eklendi.
-*   **Veri Onay Banner'ı Kaldırıldı:** Kullanıcı isteği üzerine, `localStorage` kullanımıyla ilgili onay banner'ı ve ilgili kodlar projeden temizlendi.
+*   **Sürüm Güncellemesi:** Proje sürümü `1.3.0` olarak güncellendi.
+*   **Hizmet Sözleşmesi:** "Kullanım Koşulları" metni, uygulamanın "olduğu gibi" sunulduğunu, veri kaybı sorumluluğunun kullanıcıya ait olduğunu ve şifre kurtarma imkanı olmadığını netleştiren kapsamlı bir "Hizmet Sözleşmesi" ile değiştirildi.
+*   **PWA Entegrasyonu:**
+    *   Uygulamanın çevrimdışı çalışabilmesi ve kurulabilmesi için `service-worker.js` eklendi.
+    *   Yeni sürüm çıktığında kullanıcıyı bilgilendiren ve güncelleme imkanı sunan bir mekanizma entegre edildi.
+    *   "Bilgi" menüsüne, uygulamanın PWA olarak kurulmasını tetikleyen bir "Uygulamayı Yükle" butonu eklendi.
+*   **UI/UX İyileştirmeleri:**
+    *   "Nasıl Kullanılır?" ve "Gizlilik Politikası" gibi yasal metinlerin içeriği daha anlaşılır ve kullanıcı dostu bir dille yeniden düzenlendi.
+    *   Gereksiz görülen `localStorage` onay banner'ı kaldırıldı.
 
 ## 3. Sonraki Adımlar
-1.  `index.html` dosyasındaki `termsBackdrop` modalının başlığını ve içeriğini yeni "Hizmet Sözleşmesi" metniyle değiştir.
-2.  Yeni metnin yasal olarak gerekli tüm temel maddeleri (sorumluluk reddi, kullanıcı yükümlülükleri vb.) kapsadığından emin ol.
+*   Yeni özellikler veya iyileştirmeler için görev listesi oluştur.
 
 ## 4. Önemli Çıkarımlar ve Tercihler
 

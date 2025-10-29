@@ -1,9 +1,9 @@
-const CACHE_NAME = 'hesapp-cache-v1.2.2';
+const CACHE_NAME = 'hesapp-cache-v1.3.0';
 const URLS_TO_CACHE = [
   '/',
   'index.html',
-  'css/style.css?v=1.2.2',
-  'js/script.js?v=1.2.2',
+  'css/style.css?v=1.3.0',
+  'js/script.js?v=1.3.0',
   'favicon/favicon.ico',
   'favicon/apple-touch-icon.png',
   'favicon/favicon-32x32.png',
