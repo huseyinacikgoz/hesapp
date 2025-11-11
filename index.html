@@ -2,13 +2,33 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Hesapp - Hesap Makinesi & Gizli Kasa</title>
 
   <!-- SEO Meta Etiketleri -->
-  <meta name="description" content="Hesapp, basit bir hesap makinesi arayüzünün ardında, notlarınızı güvende tutan şifreli bir kasa gizler. Verileriniz, yalnızca sizin bildiğiniz bir şifre ile cihazınızda şifrelenir ve asla internete gönderilmez.">
+  <meta name="description" content="Hesapp, basit bir hesap makinesi arayüzünün ardında, notlarınızı güvende tutan şifreli bir kasa gizler. Verileriniz, yalnızca sizin bildiğiniz bir parola ile cihazınızda şifrelenir ve asla internete gönderilmez.">
   <meta name="keywords" content="hesap makinesi, gizli kasa, not defteri, şifreli not, güvenli not, not saklama, hesap, calculator, vault, secure notes, encrypted notes, huseyin acikgoz">
   <meta name="author" content="Hüseyin Açıkgöz">
+  <link rel="canonical" href="https://huseyinacikgoz.com.tr/hesapp/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://huseyinacikgoz.com.tr/hesapp/">
+  <meta property="og:title" content="Hesapp - Hesap Makinesi & Gizli Kasa">
+  <meta property="og:description" content="Basit bir hesap makinesi ardında, notlarınızı güvende tutan şifreli bir kasa gizler. Verileriniz yalnızca cihazınızda şifrelenir ve asla internete gönderilmez.">
+  <meta property="og:image" content="https://huseyinacikgoz.com.tr/hesapp/favicon/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:site_name" content="Hesapp">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://huseyinacikgoz.com.tr/hesapp/">
+  <meta name="twitter:title" content="Hesapp - Hesap Makinesi & Gizli Kasa">
+  <meta name="twitter:description" content="Basit bir hesap makinesi ardında, notlarınızı güvende tutan şifreli bir kasa gizler. Verileriniz yalnızca cihazınızda şifrelenir ve asla internete gönderilmez.">
+  <meta name="twitter:image" content="https://huseyinacikgoz.com.tr/hesapp/favicon/og-image.png">
+  <meta name="twitter:image:alt" content="Hesapp - Hesap Makinesi & Gizli Kasa">
  
   <!-- Favicon Dosyaları -->
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
@@ -21,51 +41,102 @@
   <meta name="msapplication-config" content="favicon/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
 
+  <!-- Yeni Tasarım için Eklenenler -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+  <script>
+      tailwind.config = {
+          darkMode: "class",
+          theme: {
+              extend: {
+                  colors: {
+                      "primary": "#135bec",
+                      "background-light": "var(--bg)",
+                      "background-dark": "var(--bg)",
+                  },
+                  fontFamily: { "display": ["Inter", "sans-serif"] },
+                  borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+              },
+          },
+      }
+  </script>
+
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8VM53KEC29"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-603VSP2JJ4"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'G-8VM53KEC29');
+    gtag('config', 'G-603VSP2JJ4');
   </script>
 
-<link rel="stylesheet" href="css/style.css?v=1.3.0">
+<link rel="stylesheet" href="css/style.css?v=1.3.7">
 <script>
   // FOUC (Flash of Unstyled Content) önlemek için tema kodunu buraya taşıdık.
   // Bu script, sayfa render edilmeden önce çalışır.
   (function() {
-    const themeKey = 'hesapp_theme_v1';
-    const savedTheme = localStorage.getItem(themeKey);
-    if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-    } else {
+      const themeKey = 'hesapp_theme_v1';
+      const savedTheme = localStorage.getItem(themeKey);
+      const htmlEl = document.documentElement;
+      if (savedTheme && savedTheme !== 'system') {
+          htmlEl.setAttribute('data-theme', savedTheme);
+          if (savedTheme === 'dark') {
+              htmlEl.classList.add('dark');
+          }
+      } else {
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark) document.documentElement.setAttribute('data-theme', 'dark');
+        if (prefersDark) {
+            htmlEl.setAttribute('data-theme', 'dark');
+            htmlEl.classList.add('dark');
+        }
     }
   })();
+
+  // SEO için Yapılandırılmış Veri (JSON-LD)
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Hesapp",
+    "operatingSystem": "Web",
+    "applicationCategory": "UtilitiesApplication",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "150" 
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0"
+    }
+  };
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.text = JSON.stringify(structuredData);
+  document.head.appendChild(script);
 </script>
 </head>
-<body>
-  
+<body class="font-display" data-version="v1.3.7">
   <div class="device" role="application" aria-label="Hesapp">
     <div class="screen">
       <div class="display-top">
-        <button id="themeToggle" class="screen-icon-btn" title="Temayı Değiştir">
-            <span class="moon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 0 1 .162.819A8.97 8.97 0 0 0 9 6a9 9 0 0 0 9 9 8.97 8.97 0 0 0 3.463-.69.75.75 0 0 1 .981.98 10.503 10.503 0 0 1-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 0 1 .818.162Z" clip-rule="evenodd" /></svg>
-            </span>
-            <span class="sun">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.166a.75.75 0 0 0-1.06-1.06l-1.591 1.59a.75.75 0 1 0 1.06 1.061l1.591-1.59ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5H21a.75.75 0 0 1 .75.75ZM17.834 18.894a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 1 0-1.061 1.06l1.59 1.591ZM12 18a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.758 17.303a.75.75 0 0 0-1.061-1.06l-1.591 1.59a.75.75 0 0 0 1.06 1.061l1.591-1.59ZM6 12a.75.75 0 0 1-.75.75H3a.75.75 0 0 1 0-1.5h2.25A.75.75 0 0 1 6 12ZM6.697 7.757a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 0 0-1.061 1.06l1.59 1.591Z" /></svg>
-            </span>
-        </button>
         <button id="copyResultBtn" class="screen-icon-btn hidden-icon" title="Sonucu Kopyala">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" /></svg>
         </button>
+        <button id="themeToggle" class="screen-icon-btn" title="Temayı Değiştir">
+            <span class="moon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" /></svg>
+            </span>
+            <span class="sun">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /></svg>
+            </span>
+        </button>
       </div>
       <div class="expr" id="expression"></div> 
-      <div class="result" id="display">0</div> 
+      <div class="result" id="display">0</div>
     </div>
 
     <div class="pad" id="pad">
@@ -94,7 +165,7 @@
       <button class="key op" data-key="+">+</button>
 
       <button class="key wide" data-key="0">0</button>
-      <button class="key" data-key=".">.</button>
+      <button class="key comma-key" data-key=",">,</button>
       <button class="key op" data-action="equals">=</button>
     </div>
 
@@ -110,30 +181,12 @@
         <h3 id="modalTitle">Kasa</h3>
 
         <div id="headerActions" style="display:flex; align-items:center; gap: 10px; margin-left: auto;">
-            <div class="dropdown" id="settingsDropdownContainer" style="display: none;">
-                <button class="info-btn" id="settingsBtn" title="Ayarlar">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
-                </button>
-                <div id="settingsDropdown" class="dropdown-content">
-                    <a href="#" id="changePasswordBtn">Şifre Değiştir</a>
-                    <a href="#" id="autoLockSettingsBtn">Otomatik Kilitleme</a>
-                    <a href="#" id="exportBtn">Yedekle</a>
-                    <a href="#" id="importBtn">Geri Yükle</a>
-                    <a href="#" id="deleteVaultBtnDropdown" class="destructive">Kasayı Sil</a>
-                </div>
-            </div>
-            <div class="dropdown" id="infoDropdownContainer" style="display: none;">
-                <button class="info-btn" id="infoBtn" title="Daha Fazla Bilgi">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-                </button>
-                <div id="infoDropdown" class="dropdown-content">
-                    <a href="#" id="securityInfoLink">Gizlilik Politikası</a>
-                    <a href="#" id="termsInfoLink">Hizmet Sözleşmesi</a>
-                    <a href="#" id="howToUseLink">Nasıl Kullanılır?</a>
-                    <a href="#" id="installAppBtn" style="display: none;">Uygulamayı Yükle</a>
-                    <a href="#" id="aboutLink">Hakkında</a>
-                </div>
-            </div>
+            <button class="info-btn" id="settingsBtn" title="Ayarlar" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+            </button>
+            <button class="info-btn" id="infoBtn" title="Daha Fazla Bilgi" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+            </button>
             <button class="security-close-btn" id="vaultCloseBtn" title="Çıkış Yap">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
@@ -145,7 +198,7 @@
       <div id="modalContent"></div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
         <div id="leftActions">
-        </div>
+        </div> 
         <div id="rightActions" style="display:flex;gap:8px;margin-left:auto;">
             <button class="link-like" id="modalCancel" style="display:none;">Geri Dön</button> 
             <button id="modalOK" class="vault-btn">Devam Et</button>
@@ -174,11 +227,10 @@
 
             <h3>Teknik Güvenlik Detayları (Nasıl Koruyoruz?)</h3>
             <p>Notlarınız, endüstri standardı olan <strong>AES-GCM</strong> şifreleme algoritmasıyla korunur. Bu şifrelemeyi gerçekleştirecek anahtar ise, parolanızdan <strong>PBKDF2 (600.000 iterasyon)</strong> algoritması kullanılarak türetilir. Bu yöntemler, şifrenizi sadece siz bildiğiniz sürece, şifrelenmiş verilere erişimi <strong>teknik olarak imkansız</strong> kılar.</p>
-            
             <hr>
 
             <h3>Resmi Gizlilik Politikası</h3>
-            <p><strong>Son Güncelleme:</strong> [Güncel Tarih Eklenecek]</p>
+            <p><strong>Son Güncelleme:</strong> 11.10.2025</p>
 
             <h4>1. Veri Sorumlusu</h4>
             <p>Hesapp uygulamasının veri sorumlusu Hüseyin Açıkgöz'dür. Bu sorumluluk, uygulamanın kullanıcının cihazı üzerinde gerçekleştirdiği veri işleme faaliyetleriyle sınırlıdır. İletişim için: mail@huseyinacikgoz.com.tr</p>
@@ -187,6 +239,7 @@
             <p>Hesapp, işlevselliğini sağlamak için tarayıcınızın yerel depolama (`localStorage`) alanını kullanır. Bu alanda aşağıdaki veriler saklanır:</p>
             <ul>
                 <li><strong>Şifrelenmiş Kasa Verileri (`kasa_encrypted_v1`):</strong> Notlarınızın başlık ve içeriklerini barındıran, yukarıda açıklanan yöntemlerle şifrelenmiş veri paketi. Bu veriler, notlarınızı güvenli bir şekilde saklamak için işlenir.</li>
+                <li><strong>Sahte Parola ve Sahte Kasa (`hesapp_honey_password_v1`, `hesapp_honey_vault_v1`):</strong> Opsiyonel olarak belirleyebileceğiniz sahte parola ve sahte kasa verileri. Bu özellik, gerçek kasanızı gizlemek için kullanılır. Sahte parola ile giriş yapıldığında, boş veya sahte notlar içeren bir kasa gösterilir ve gerçek içeriğiniz gizlenir. Bu veriler, yalnızca sahte parola özelliğini kullanmak istediğinizde saklanır.</li>
                 <li><strong>Tema Tercihi (`hesapp_theme_v1`):</strong> Seçtiğiniz açık/koyu tema tercihiniz. Bu, arayüzü kişiselleştirmek için kullanılır.</li>
                 <li><strong>Diğer Ayarlar:</strong> Kullanım koşulları onayı, hoş geldin ekranı durumu, otomatik kilitleme süresi gibi uygulama ayarlarınız.</li>
             </ul>
@@ -194,64 +247,26 @@
             
             <h4>3. Kullanıcı Hakları ve Şifre Kurtarma</h4>
             <p class="no-recovery-warning">
-                "Sıfır bilgi" prensibi gereği, şifreniz asla saklanmaz veya bilinmez. Bu, yüksek bir güvenlik seviyesi sağlarken, aynı zamanda <strong>unutulan bir şifrenin kurtarılamayacağı</strong> anlamına gelir. Şifrenizi unutmanız durumunda verilerinize erişim kalıcı olarak kaybolur. Verilerinizi silme hakkınız, Ayarlar menüsündeki "Kasayı Sil" özelliği ile her zaman mevcuttur.
+                "Sıfır bilgi" prensibi gereği, parolanız asla saklanmaz veya bilinmez. Bu, yüksek bir güvenlik seviyesi sağlarken, aynı zamanda <strong>unutulan bir parolanın kurtarılamayacağı</strong> anlamına gelir. Parolanızı unutmanız durumunda verilerinize erişim kalıcı olarak kaybolur. Verilerinizi silme hakkınız, Ayarlar menüsündeki "Kasayı Sil" özelliği ile her zaman mevcuttur.
             </p>
 
         </div>
-        <div class="security-footer">
+        <div class="security-footer" style="text-align: center;">
             <button class="vault-btn" id="securityOK" style="width: 100%;">Anladım</button>
         </div>
-    </div>
-  </div>
-
-  <div class="modal-backdrop" id="welcomeBackdrop" aria-hidden="true">
-    <div class="modal welcome-modal">
-      <div class="welcome-logo">
-        <svg viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg">
-          <g>
-            <rect style="fill:#ffffff;fill-opacity:1" width="263.47" height="263.47" x="0.67" y="0.6" ry="60.85" rx="60.85" />
-            <rect style="fill:#cccccc;fill-opacity:1" width="220.09" height="70.96" x="22.36" y="25.77" ry="29.56" rx="30.4" />
-            <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="22.36" y="110.43" ry="26.46" rx="26.46" />
-            <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="22.36" y="178.39" ry="26.46" rx="26.46" />
-            <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="98.11" y="110.43" ry="26.46" rx="26.46" />
-            <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="98.11" y="178.39" ry="26.46" rx="26.46" />
-            <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="173.86" y="111.56" ry="26.46" rx="26.46" />
-            <rect style="fill:#ff9500;fill-opacity:1" width="68.59" height="59.51" x="173.86" y="180.65" ry="26.46" rx="26.46" />
-          </g>
-        </svg>
-      </div>
-      <h3 id="welcomeTitle">Hesapp'a Hoş Geldiniz</h3>
-      
-      <div class="welcome-features">
-        <div class="feature-item">
-          <h4>Hesap Makinesi & Gizli Kasa</h4>
-          <p>Hesapp, basit bir hesap makinesi arayüzünün ardında, notlarınızı güvende tutan şifreli bir kasa gizler.</p>
-        </div>
-        <div class="feature-item">
-          <h4>Maksimum Güvenlik</h4>
-          <p>Verileriniz, yalnızca sizin bildiğiniz bir şifre ile cihazınızda şifrelenir ve asla internete gönderilmez.</p>
-        </div>
-      </div>
-      
-      <div class="welcome-instruction">
-        <p>Kasayı açmak için <strong class="fake-button-equals">=</strong> tuşuna 3 kez basın.</p>
-        <a href="#" id="welcomeHowToUseLink" class="link-like" style="font-size: 14px;">Nasıl Kullanılır?</a>
-      </div>
-
-      <div class="welcome-actions">
-        <label class="checkbox-field">
-            <input type="checkbox" id="dontShowAgain"> 
-            Bir daha gösterme
-        </label>
-        <button class="vault-btn" id="welcomeClose">Başla</button>
-      </div>
     </div>
   </div>
 
   <div class="modal-backdrop" id="termsBackdrop" aria-hidden="true">
     <div class="modal security-modal">
         <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
-            <h3 style="margin: 0; text-align: left; flex-grow: 1; padding: 0 5px;">Hizmet Sözleşmesi</h3>
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Hizmet Sözleşmesi</h3>
+            <button class="security-close-btn" id="termsCloseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
+                    <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
+                </svg>
+            </button>
         </div>
         <div class="modal-scroll-content">
             <p>Bu sözleşme, Hesapp uygulamasını ("Hizmet") kullanımınıza ilişkin şartları ve koşulları düzenler. Hizmeti kullanarak bu koşulları kabul etmiş sayılırsınız.</p>
@@ -260,10 +275,10 @@
             <p>Hesapp, bir hesap makinesi arayüzü altında, verilerinizi cihazınızda yerel olarak şifreleyen bir not saklama hizmeti sunar. Hizmet, "sıfır bilgi" (zero-knowledge) prensibiyle çalışır; bu, şifreniz ve şifrelenmiş verileriniz dahil olmak üzere hiçbir kişisel verinizin Geliştirici (Hüseyin Açıkgöz) tarafından bilinmediği, saklanmadığı veya işlenmediği anlamına gelir.</p>
 
             <h4>2. Kullanıcı Yükümlülükleri</h4>
-            <p>Kasa şifrenizin güvenliği, saklanması ve yedeklenmesi <strong>tamamen sizin sorumluluğunuzdadır.</strong> Şifrenizi unutmanız durumunda verileriniz <strong>kalıcı olarak kaybolur ve kurtarılamaz.</strong> Geliştiricinin şifre kurtarma veya verilere erişim sağlama gibi bir imkanı yoktur.</p>
+            <p>Kasa parolanızın güvenliği, saklanması ve yedeklenmesi <strong>tamamen sizin sorumluluğunuzdadır.</strong> Parolanızı unutmanız durumunda verileriniz <strong>kalıcı olarak kaybolur ve kurtarılamaz.</strong> Geliştiricinin parola kurtarma veya verilere erişim sağlama gibi bir imkanı yoktur.</p>
             
             <h4>3. Garanti Reddi ve Sorumluluğun Sınırlandırılması</h4>
-            <p>Hizmet, "olduğu gibi" ve "mevcut olduğu şekilde" esasına göre sunulmaktadır. Geliştirici, Hizmetin kesintisiz, hatasız veya tamamen güvenli olacağını garanti etmez. Uygulamanın kullanımından, şifrenin unutulmasından, veri kaybından, güvenlik ihlallerinden, yedekleme/geri yükleme hatalarından veya diğer herhangi bir sebepten kaynaklanabilecek doğrudan veya dolaylı hiçbir zarardan Geliştirici sorumlu tutulamaz.</p>
+            <p>Hizmet, "olduğu gibi" ve "mevcut olduğu şekilde" esasına göre sunulmaktadır. Geliştirici, Hizmetin kesintisiz, hatasız veya tamamen güvenli olacağını garanti etmez. Uygulamanın kullanımından, parolanın unutulmasından, veri kaybından, güvenlik ihlallerinden, yedekleme/geri yükleme hatalarından veya diğer herhangi bir sebepten kaynaklanabilecek doğrudan veya dolaylı hiçbir zarardan Geliştirici sorumlu tutulamaz.</p>
 
             <h4>4. Fikri Mülkiyet</h4>
             <p>Hesapp uygulamasının arayüz tasarımı, kodları ve markası Geliştirici'ye aittir. Hizmeti kullanmanız, bu fikri mülkiyet hakları üzerinde size herhangi bir hak vermez.</p>
@@ -271,32 +286,36 @@
             <h4>5. Sözleşmenin Kabulü</h4>
             <p>Hesapp uygulamasını kullanarak veya kasa için bir şifre oluşturarak, bu Hizmet Sözleşmesi'nin tüm şartlarını okuduğunuzu, anladığınızı ve geri alınamaz bir şekilde kabul ettiğinizi beyan edersiniz.</p>
         </div>
-        <div id="termsActions" style="text-align: right; margin-top: 20px; padding: 0 5px;"></div>
+        <div id="termsActions" class="security-footer" style="text-align: center;">
+            <!-- Butonlar JS ile eklenecek -->
+        </div>
     </div>
   </div>
 
   <div class="modal-backdrop" id="confirmBackdrop" aria-hidden="true">
     <div class="modal" id="confirmModal">
-      <p id="confirmMessage"></p>
-      <div style="display:flex; justify-content:flex-end; gap:10px;">
-        <button class="action-toggle-btn" id="confirmCancel">İptal</button>
-        <button class="delete-btn" id="confirmOK">Evet, Sil</button>
-      </div>
+        <div class="modal-scroll-content">
+            <p id="confirmMessage" style="margin: 0 0 20px 0;"></p>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top: 10px;">
+            <button class="action-toggle-btn" id="confirmCancel">İptal</button>
+            <button class="delete-btn" id="confirmOK">Evet, Sil</button>
+        </div>
     </div>
   </div>
 
   <div class="modal-backdrop" id="aboutBackdrop" aria-hidden="true">
-    <div class="modal security-modal">
-        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+    <div class="modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 15px;">
             <h3 style="margin: 0; text-align: left; flex-grow: 1;">Hakkında</h3>
-            <button class="security-close-btn" id="aboutClose" title="Çıkış Yap">
+            <button class="security-close-btn" id="aboutClose" title="Kapat">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
                     <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
                 </svg>
             </button>
         </div>
-        <div class="modal-scroll-content">
+        <div id="modalContent" style="text-align: center;">
             <div class="about-logo">
               <svg viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg">
                 <g>
@@ -313,30 +332,32 @@
             </div>
             <h2 class="about-title">Hesapp</h2>
             <div class="about-version"></div>
-            <p>
+            <p style="margin-bottom: 20px;">
                 <strong>Hesapp</strong>, standart bir hesap makinesi işlevselliğini, güçlü şifreleme ile korunan kişisel bir not kasasıyla birleştiren minimalist bir web uygulamasıdır.
             </p>
-        </div>
-        <div class="about-footer">
-            <div class="developer-info">
-                <span class="footer-label">Geliştirici</span>
-                <span class="developer-name">Hüseyin Açıkgöz</span>
-            </div>
-            <div class="all-links">
-                <a href="https://huseyinacikgoz.com.tr" target="_blank" title="Website">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>
-                </a>
-                <a href="mailto:mail@huseyinacikgoz.com.tr" title="E-posta">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                    </svg>
-                </a>
-                <a href="https://x.com/huseyinacikgoz_" target="_blank" title="X (Twitter)">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
-                </a>
-                <a href="https://github.com/huseyinacikgoz" target="_blank" title="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
-                </a>
+            <div class="about-footer">
+                <div class="developer-info">
+                    <a href="https://huseyinacikgoz.com.tr" target="_blank" class="developer-name-link">
+                        <span class="footer-label">Geliştirici</span>
+                        <span class="developer-name">Hüseyin Açıkgöz</span>
+                    </a>
+                </div>
+                <div class="all-links">
+                    <a href="https://huseyinacikgoz.com.tr" target="_blank" title="Website">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+                    </a>
+                    <a href="mailto:mail@huseyinacikgoz.com.tr" title="E-posta">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                        </svg>
+                    </a>
+                    <a href="https://x.com/huseyinacikgoz_" target="_blank" title="X (Twitter)">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+                    </a>
+                    <a href="https://github.com/huseyinacikgoz" target="_blank" title="GitHub">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -346,9 +367,15 @@
     <div class="modal security-modal">
         <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
             <h3 style="margin: 0; text-align: left; flex-grow: 1;">Otomatik Kilitleme</h3>
+            <button class="security-close-btn" id="autoLockCloseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
+                    <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
+                </svg>
+            </button>
         </div>
         <div class="modal-scroll-content">
-            <p>Kasa, belirtilen süre boyunca işlem yapılmadığında otomatik olarak kilitlenir.</p>
+            <p style="margin-bottom: 20px; color: var(--muted);">Kasa, belirtilen süre boyunca işlem yapılmadığında otomatik olarak kilitlenir.</p>
             <div id="autoLockOptions" class="radio-options-group">
                 <!-- Options will be dynamically inserted by JS -->
             </div>
@@ -360,20 +387,104 @@
     </div>
   </div>
 
+  <!-- Tema Ayarları Modal -->
+  <div class="modal-backdrop" id="themeModalBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Tema</h3>
+            <button class="security-close-btn" id="themeModalClose">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
+                    <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
+                </svg>
+            </button>
+        </div>
+        <div class="modal-scroll-content">
+            <p style="margin-bottom: 20px; color: var(--muted);">Uygulamanın görünüm temasını seçin.</p>
+            <div id="themeOptions" class="radio-options-group">
+                <!-- Options will be dynamically inserted by JS -->
+            </div>
+        </div>
+        <div class="security-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="action-toggle-btn" id="themeModalCancelBtn">İptal</button>
+            <button class="vault-btn" id="themeModalSaveBtn">Kaydet</button>
+        </div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="changePasswordBackdrop" aria-hidden="true">
     <div class="modal security-modal">
         <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
-            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Şifre Değiştir</h3>
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Parola Değiştir</h3>
         </div>
         <div class="modal-scroll-content">
-            <div class="field"><label>Mevcut Şifre:</label><input id="currentPass" type="password" autocomplete="off"></div> 
-            <div class="field"><label>Yeni Şifre (En az 8 karakter):</label><input id="newPass1" type="password" autocomplete="off"></div> 
-            <div class="field"><label>Yeni Şifreyi Doğrulayın:</label><input id="newPass2" type="password" autocomplete="off"></div> 
+            <div class="field"><label>Mevcut Parola:</label><input id="currentPass" type="password" autocomplete="off"></div> 
+            <div class="field"><label>Yeni Parola (En az 8 karakter):</label><input id="newPass1" type="password" autocomplete="off"></div> 
+            <div class="field"><label>Yeni Parolayı Doğrulayın:</label><input id="newPass2" type="password" autocomplete="off"></div> 
             <div class="note" id="changePassNote"></div>
         </div>
         <div class="security-footer" style="display:flex; justify-content:flex-end; gap:10px;">
             <button class="action-toggle-btn" id="changePassCancelBtn">İptal</button>
-            <button class="vault-btn" id="changePassSaveBtn">Şifreyi Değiştir</button>
+            <button class="vault-btn" id="changePassSaveBtn">Parolayı Değiştir</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="honeyPasswordBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Sahte Parola Yönetimi</h3>
+            <button class="security-close-btn" id="honeyPassCloseBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
+                    <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
+                </svg>
+            </button>
+        </div>
+        <div class="modal-scroll-content">
+            <div class="no-recovery-warning" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 20px;">
+                <span class="confirm-icon warning" style="flex-shrink: 0;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" /></svg></span>
+                <div><strong>Sahte Parola Nedir?</strong><br>Sahte parola, gerçek kasanızı gizlemek için kullanabileceğiniz güvenlik özelliğidir. Sahte parola ile giriş yapıldığında, boş bir kasa gösterilir ve gerçek içeriğiniz gizlenir.</div>
+            </div>
+            <div class="field">
+                <label>Sahte Parola (En az 8 karakter):</label>
+                <input type="password" id="honeyPass1" autocomplete="off" placeholder="Sahte parolanızı girin">
+            </div>
+            <div class="field">
+                <label>Sahte Parolayı Doğrulayın:</label>
+                <input type="password" id="honeyPass2" autocomplete="off" placeholder="Sahte parolayı tekrar girin">
+            </div>
+            <div id="honeyPassStatus" style="margin-top: 15px; padding: 10px; border-radius: 8px; background: var(--key-bg); font-size: 14px; color: var(--input-text);"></div>
+            <div class="note" id="honeyPassNote"></div>
+        </div>
+        <div class="security-footer" style="display: flex; gap: 10px;">
+            <button class="vault-btn" id="honeyPassDeleteBtn" style="flex: 1; background: var(--delete-btn);">Sil</button>
+            <button class="vault-btn" id="honeyPassCancelBtn" style="flex: 1;">İptal</button>
+            <button class="vault-btn" id="honeyPassSaveBtn" style="flex: 1;">Kaydet</button>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="appearanceModalBackdrop" aria-hidden="true">
+    <div class="modal security-modal">
+        <div class="modal-header" style="justify-content: space-between; margin-bottom: 5px;">
+            <h3 style="margin: 0; text-align: left; flex-grow: 1;">Açılış Ekranı Ayarları</h3>
+        </div>
+        <div class="modal-scroll-content">
+            <div class="toggle-setting">
+                <label for="showWelcomeToggle" class="toggle-label">Başlangıçta karşılama ekranını gizle</label>
+                <label class="switch">
+                    <input type="checkbox" id="showWelcomeToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <p class="note" style="padding: 0 5px; margin-top: 5px; text-align: left; line-height: 1.4;">
+                Bu ayar kapatıldığında, uygulama her zaman doğrudan hesap makinesi ile başlar.
+            </p>
+        </div>
+        <div class="security-footer" style="display:flex; justify-content:flex-end; gap:10px;">
+            <button class="action-toggle-btn" id="appearanceCancelBtn">İptal</button>
+            <button class="vault-btn" id="appearanceSaveBtn">Kaydet</button>
         </div>
     </div>
   </div>
@@ -394,21 +505,30 @@
             <p>Hesapp, bir hesap makinesinden daha fazlasıdır. İşte gizli kasanızdan en iyi şekilde nasıl yararlanacağınız.</p>
 
             <h3>Gizli Kasanız</h3>
-            <p>Hesap makinesi ekranındayken <strong class="fake-button-equals">=</strong> tuşuna art arda 3 kez basarak gizli kasanızı açabilirsiniz. İlk kullanımda, verilerinizi koruyacak ve kurtarılamayacak olan ana şifrenizi oluşturacaksınız.</p>
+            <p>Hesap makinesi ekranındayken <strong class="fake-button-equals">=</strong> tuşuna art arda 3 kez basarak gizli kasanızı açabilirsiniz. İlk kullanımda, verilerinizi koruyacak ve kurtarılamayacak olan ana parolanızı oluşturacaksınız.</p>
 
             <h3>Verilerinizin Kontrolü Sizde</h3>
             <p>Kasanız açıldığında, notlarınızı yönetebilir ve Ayarlar (dişli ikonu) menüsünden önemli işlemleri gerçekleştirebilirsiniz:</p>
             <ul>
                 <li><strong>Yedekleme:</strong> Tüm kasanızın şifreli bir yedeğini bilgisayarınıza indirerek verilerinizi güvence altına alın.</li>
                 <li><strong>Geri Yükleme:</strong> Daha önce aldığınız bir yedek dosyasını seçerek kasanızı o duruma geri getirin. <strong>Dikkat:</strong> Bu işlem mevcut kasanızdaki tüm verileri siler.</li>
-                <li><strong>Şifre Değiştirme:</strong> Mevcut şifrenizi doğrulayarak kasanızın anahtarını yenileyin.</li>
+                <li><strong>Parola Değiştirme:</strong> Mevcut parolanızı doğrulayarak kasanızın şifreleme anahtarını yenileyin.</li>
+                <li><strong>Sahte Parola:</strong> Gerçek kasanızı gizlemek için sahte parola belirleyin. Sahte parola ile giriş yapıldığında, boş bir kasa gösterilir ve gerçek içeriğiniz gizlenir.</li>
             </ul>
 
             <h3>Güvenlik ve Otomasyon</h3>
-            <p>Şifreniz, verilerinizin tek anahtarıdır ve asla kurtarılamaz. Ayarlar menüsünden, kasanızın ne kadar süre işlem yapılmadığında otomatik olarak kilitleneceğini belirleyebilirsiniz. Bu, siz unutsanız bile güvenliğinizi sağlar.</p>
+            <p>Parolanız, verilerinizin tek anahtarıdır ve asla kurtarılamaz. Ayarlar menüsünden, kasanızın ne kadar süre işlem yapılmadığında otomatik olarak kilitleneceğini belirleyebilirsiniz. Bu, siz unutsanız bile güvenliğinizi sağlar.</p>
+
+            <h3>Sahte Parola (Honey Password)</h3>
+            <p>Hesapp, gerçek kasanızı gizlemek için <strong>sahte parola</strong> özelliği sunar. Sahte parola ile giriş yapıldığında, boş bir kasa gösterilir ve gerçek içeriğiniz gizlenir. Bu özellik, özellikle zorla parola söyleme durumlarında gerçek verilerinizi korumanıza yardımcı olur.</p>
+            <ul>
+                <li><strong>Ayarlama:</strong> Ayarlar menüsünden "Sahte Parola" seçeneğine tıklayarak sahte parolanızı belirleyebilirsiniz.</li>
+                <li><strong>Kullanım:</strong> Sahte parola ile giriş yapıldığında, boş veya sahte notlar içeren bir kasa açılır. Gerçek kasa içeriğiniz gizlenir.</li>
+                <li><strong>Güvenlik:</strong> Sahte parola, gerçek parolanızdan farklı olmalıdır ve ayrı bir şifrelenmiş kasa olarak saklanır.</li>
+            </ul>
         </div>
         <div class="security-footer">
-            <button class="vault-btn" id="howToUseOK">Anladım</button>
+            <button class="vault-btn" id="howToUseOK" style="width: 100%;">Anladım</button>
         </div>
     </div>
   </div>
@@ -418,20 +538,543 @@
     <button id="update-now-btn" class="vault-btn">Güncelle</button>
   </div>
 
+  <!-- Ayarlar Modal -->
+  <div class="modal-backdrop" id="settingsModalBackdrop" aria-hidden="true">
+    <div class="modal settings-modal">
+      <div class="modal-header">
+        <h3>Ayarlar</h3>
+        <div style="display:flex; align-items:center; gap: 10px; margin-left: auto;">
+          <button class="security-close-btn" id="settingsModalClose" title="Kapat">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
+              <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-scroll-content">
+        <div class="settings-option" id="settingsChangePassword">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Parola Değiştir</div>
+            <div class="settings-option-desc">Kasanızın şifreleme anahtarını güncelleyin</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
 
-<script src="js/script.js?v=1.3.0"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/hesapp/service-worker.js')
-        .then(registration => {
-          console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        })
-        .catch(error => {
-          console.log('ServiceWorker registration failed: ', error);
-        });
-    });
-  }
-</script>
+        <div class="settings-option" id="settingsHoneyPassword">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Sahte Parola</div>
+            <div class="settings-option-desc">Güvenlik için sahte parola belirleyin</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="settingsAutoLock">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Otomatik Kilitleme</div>
+            <div class="settings-option-desc">İşlem yapılmadığında otomatik kilitlenme süresi</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="settingsTheme">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Tema</div>
+            <div class="settings-option-desc">Açık, koyu veya sistem teması seçin</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="settingsAppearance">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 3.75H6A2.25 2.25 0 0 0 3.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0 1 20.25 6v1.5m0 9V18A2.25 2.25 0 0 1 18 20.25h-1.5m-9 0H6A2.25 2.25 0 0 1 3.75 18v-1.5M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Açılış Ekranı</div>
+            <div class="settings-option-desc">Karşılama ekranını göster/gizle</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="settingsExport">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Yedekle</div>
+            <div class="settings-option-desc">Kasanızın şifreli yedeğini indirin</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="settingsImport">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Geri Yükle</div>
+            <div class="settings-option-desc">Daha önce yedeklediğiniz kasayı geri yükleyin</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option settings-option-destructive" id="settingsDeleteVault">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Kasayı Sil</div>
+            <div class="settings-option-desc">Tüm kasa verilerini kalıcı olarak silin</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bilgi Modal -->
+  <div class="modal-backdrop" id="infoModalBackdrop" aria-hidden="true">
+    <div class="modal info-modal">
+      <div class="modal-header">
+        <h3>Bilgi</h3>
+        <div style="display:flex; align-items:center; gap: 10px; margin-left: auto;">
+          <button class="security-close-btn" id="infoModalClose" title="Kapat">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Z" />
+              <path fill="#fff" d="M10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-scroll-content">
+        <div class="settings-option" id="infoSecurity">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Gizlilik Politikası</div>
+            <div class="settings-option-desc">Verilerinizin nasıl korunduğunu öğrenin</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="infoTerms">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Hizmet Sözleşmesi</div>
+            <div class="settings-option-desc">Kullanım koşulları ve şartlar</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="infoHowToUse">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Nasıl Kullanılır?</div>
+            <div class="settings-option-desc">Uygulamanın özelliklerini keşfedin</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="infoInstallApp" style="display: none;">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M3 12.75h18M12 3.75a8.25 8.25 0 1 0 0 16.5 8.25 8.25 0 0 0 0-16.5Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Uygulamayı Yükle</div>
+            <div class="settings-option-desc">Ana ekranınıza ekleyin ve çevrimdışı kullanın</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+
+        <div class="settings-option" id="infoAbout">
+          <div class="settings-option-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+            </svg>
+          </div>
+          <div class="settings-option-content">
+            <div class="settings-option-title">Hakkında</div>
+            <div class="settings-option-desc">Uygulama bilgileri ve geliştirici</div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="settings-option-arrow">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="splash-screen">
+      <div class="splash-logo">
+          <svg viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg">
+              <g>
+                  <rect style="fill:#ffffff;fill-opacity:1" width="263.47" height="263.47" x="0.67" y="0.6" ry="60.85" rx="60.85" />
+                  <rect style="fill:#cccccc;fill-opacity:1" width="220.09" height="70.96" x="22.36" y="25.77" ry="29.56" rx="30.4" />
+                  <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="22.36" y="110.43" ry="26.46" rx="26.46" />
+                  <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="22.36" y="178.39" ry="26.46" rx="26.46" />
+                  <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="98.11" y="110.43" ry="26.46" rx="26.46" />
+                  <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="98.11" y="178.39" ry="26.46" rx="26.46" />
+                  <rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="173.86" y="111.56" ry="26.46" rx="26.46" />
+                  <rect style="fill:#ff9500;fill-opacity:1" width="68.59" height="59.51" x="173.86" y="180.65" ry="26.46" rx="26.46" />
+              </g>
+          </svg>
+      </div>
+  </div>
+
+  <!-- Welcome Page -->
+  <div id="welcome-page" class="welcome-page bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200" style="display: none;">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <!-- Page-like content containers (initially hidden) -->
+        <div id="welcome-page-content-privacy" class="welcome-page-content" style="display: none;">
+            <header class="absolute top-0 left-0 right-0 z-10 p-4 sm:px-8">
+                <div class="mx-auto flex max-w-5xl items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center">
+                            <svg width="40" height="40" viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg" class="w-full h-full" preserveAspectRatio="xMidYMid meet"><g><rect fill="#ffffff" width="263.47" height="263.47" x="0.67" y="0.6" ry="60.85" rx="60.85"></rect><rect fill="#cccccc" width="220.09" height="70.96" x="22.36" y="25.77" ry="29.56" rx="30.4"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="22.36" y="110.43" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="22.36" y="178.39" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="98.11" y="110.43" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="98.11" y="178.39" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="173.86" y="111.56" ry="26.46" rx="26.46"></rect><rect fill="#ff9500" width="68.59" height="59.51" x="173.86" y="180.65" ry="26.46" rx="26.46"></rect></g></svg>
+                        </div>
+                        <h2 class="text-xl font-bold leading-tight tracking-tighter text-gray-900 dark:text-white">Hesapp</h2>
+                    </div>
+                </div>
+            </header>
+            <div class="welcome-page-body">
+                <div class="welcome-page-header">
+                    <button class="welcome-page-back-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+                        <span>Geri</span>
+                    </button>
+                    <h3>Gizlilik Politikası</h3>
+                </div>
+                <h3>Özet: Gizliliğiniz Bizim İçin Esastır</h3>
+                <p>Verileriniz size aittir. Hesapp, "sıfır bilgi" (zero-knowledge) prensibiyle çalışır. Girdiğiniz notlar ve tercihleriniz, <strong class="security-highlight">yalnızca sizin cihazınızda şifrelenir</strong> ve bize veya herhangi bir üçüncü tarafa <strong class="security-highlight">asla gönderilmez.</strong></p>
+                <hr>
+                <h3>Teknik Güvenlik Detayları (Nasıl Koruyoruz?)</h3>
+                <p>Notlarınız, endüstri standardı olan <strong>AES-GCM</strong> şifreleme algoritmasıyla korunur. Bu şifrelemeyi gerçekleştirecek anahtar ise, parolanızdan <strong>PBKDF2 (600.000 iterasyon)</strong> algoritması kullanılarak türetilir. Bu yöntemler, şifrenizi sadece siz bildiğiniz sürece, şifrelenmiş verilere erişimi <strong>teknik olarak imkansız</strong> kılar.</p>
+                <hr>
+                <h3>Resmi Gizlilik Politikası</h3>
+                <p><strong>Son Güncelleme:</strong> 11.10.2025</p>
+                <h4>1. Veri Sorumlusu</h4>
+                <p>Hesapp uygulamasının veri sorumlusu Hüseyin Açıkgöz'dür. Bu sorumluluk, uygulamanın kullanıcının cihazı üzerinde gerçekleştirdiği veri işleme faaliyetleriyle sınırlıdır.</p>
+                <h4>2. İşlenen Veriler ve Amaçları</h4>
+                <p>Hesapp, işlevselliğini sağlamak için tarayıcınızın yerel depolama (`localStorage`) alanını kullanır. Bu alanda şifrelenmiş notlarınız, tema tercihiniz ve diğer uygulama ayarlarınız saklanır. Bu verilerin hiçbiri kişisel kimliğinizi ortaya çıkarmaz ve cihazınızın dışına aktarılmaz.</p>
+                <h4>3. Kullanıcı Hakları ve Şifre Kurtarma</h4>
+                <p class="no-recovery-warning" style="font-weight: normal; background: transparent; border: none; padding: 0; color: var(--prose-text);">"Sıfır bilgi" prensibi gereği, parolanız asla saklanmaz veya bilinmez. Bu, yüksek bir güvenlik seviyesi sağlarken, aynı zamanda <strong>unutulan bir parolanın kurtarılamayacağı</strong> anlamına gelir. Parolanızı unutmanız durumunda verilerinize erişim kalıcı olarak kaybolur.</p>
+            </div>
+        </div>
+
+        <div id="welcome-page-content-terms" class="welcome-page-content" style="display: none;">
+            <header class="absolute top-0 left-0 right-0 z-10 p-4 sm:px-8">
+                <div class="mx-auto flex max-w-5xl items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center">
+                            <svg width="40" height="40" viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg" class="w-full h-full" preserveAspectRatio="xMidYMid meet"><g><rect fill="#ffffff" width="263.47" height="263.47" x="0.67" y="0.6" ry="60.85" rx="60.85"></rect><rect fill="#cccccc" width="220.09" height="70.96" x="22.36" y="25.77" ry="29.56" rx="30.4"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="22.36" y="110.43" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="22.36" y="178.39" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="98.11" y="110.43" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="98.11" y="178.39" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="173.86" y="111.56" ry="26.46" rx="26.46"></rect><rect fill="#ff9500" width="68.59" height="59.51" x="173.86" y="180.65" ry="26.46" rx="26.46"></rect></g></svg>
+                        </div>
+                        <h2 class="text-xl font-bold leading-tight tracking-tighter text-gray-900 dark:text-white">Hesapp</h2>
+                    </div>
+                </div>
+            </header>
+            <div class="welcome-page-body">
+                <div class="welcome-page-header">
+                    <button class="welcome-page-back-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+                        <span>Geri</span>
+                    </button>
+                    <h3>Hizmet Sözleşmesi</h3>
+                </div>
+                <p>Bu sözleşme, Hesapp uygulamasını ("Hizmet") kullanımınıza ilişkin şartları ve koşulları düzenler. Hizmeti kullanarak bu koşulları kabul etmiş sayılırsınız.</p>
+                <h4>1. Hizmetin Kapsamı</h4>
+                <p>Hesapp, bir hesap makinesi arayüzü altında, verilerinizi cihazınızda yerel olarak şifreleyen bir not saklama hizmeti sunar. Hizmet, "sıfır bilgi" (zero-knowledge) prensibiyle çalışır.</p>
+                <h4>2. Kullanıcı Yükümlülükleri</h4>
+                <p>Kasa parolanızın güvenliği, saklanması ve yedeklenmesi <strong>tamamen sizin sorumluluğunuzdadır.</strong> Parolanızı unutmanız durumunda verileriniz <strong>kalıcı olarak kaybolur ve kurtarılamaz.</strong></p>
+                <h4>3. Garanti Reddi ve Sorumluluğun Sınırlandırılması</h4>
+                <p>Hizmet, "olduğu gibi" sunulmaktadır. Geliştirici, Hizmetin kesintisiz veya hatasız olacağını garanti etmez. Uygulamanın kullanımından, veri kaybından veya güvenlik ihlallerinden kaynaklanabilecek hiçbir zarardan Geliştirici sorumlu tutulamaz.</p>
+                <h4>4. Sözleşmenin Kabulü</h4>
+                <p>Hesapp uygulamasını kullanarak veya kasa için bir şifre oluşturarak, bu Hizmet Sözleşmesi'nin tüm şartlarını okuduğunuzu, anladığınızı ve kabul ettiğinizi beyan edersiniz.</p>
+            </div>
+        </div>
+
+        <div id="welcome-page-content-about" class="welcome-page-content" style="display: none;">
+            <header class="absolute top-0 left-0 right-0 z-10 p-4 sm:px-8">
+                <div class="mx-auto flex max-w-5xl items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center">
+                            <svg width="40" height="40" viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg" class="w-full h-full" preserveAspectRatio="xMidYMid meet"><g><rect fill="#ffffff" width="263.47" height="263.47" x="0.67" y="0.6" ry="60.85" rx="60.85"></rect><rect fill="#cccccc" width="220.09" height="70.96" x="22.36" y="25.77" ry="29.56" rx="30.4"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="22.36" y="110.43" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="22.36" y="178.39" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="98.11" y="110.43" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="98.11" y="178.39" ry="26.46" rx="26.46"></rect><rect fill="#b3b3b3" width="68.59" height="59.51" x="173.86" y="111.56" ry="26.46" rx="26.46"></rect><rect fill="#ff9500" width="68.59" height="59.51" x="173.86" y="180.65" ry="26.46" rx="26.46"></rect></g></svg>
+                        </div>
+                        <h2 class="text-xl font-bold leading-tight tracking-tighter text-gray-900 dark:text-white">Hesapp</h2>
+                    </div>
+                </div>
+            </header>
+            <div class="welcome-page-body">
+                <div class="welcome-page-header">
+                    <button class="welcome-page-back-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
+                        <span>Geri</span>
+                    </button>
+                    <h3>Hakkında</h3>
+                </div>
+                <div class="about-logo" style="margin: 20px auto;">
+                    <svg viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg"><g><rect style="fill:#ffffff;fill-opacity:1" width="263.47" height="263.47" x="0.67" y="0.6" ry="60.85" rx="60.85"></rect><rect style="fill:#cccccc;fill-opacity:1" width="220.09" height="70.96" x="22.36" y="25.77" ry="29.56" rx="30.4"></rect><rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="22.36" y="110.43" ry="26.46" rx="26.46"></rect><rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="22.36" y="178.39" ry="26.46" rx="26.46"></rect><rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="98.11" y="110.43" ry="26.46" rx="26.46"></rect><rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="98.11" y="178.39" ry="26.46" rx="26.46"></rect><rect style="fill:#b3b3b3;fill-opacity:1" width="68.59" height="59.51" x="173.86" y="111.56" ry="26.46" rx="26.46"></rect><rect style="fill:#ff9500;fill-opacity:1" width="68.59" height="59.51" x="173.86" y="180.65" ry="26.46" rx="26.46"></rect></g></svg>
+                </div>
+                <h2 class="about-title" style="text-align: center;">Hesapp</h2>
+                <div class="about-version" style="text-align: center;"></div>
+                <p style="text-align: center; max-width: 600px; margin: 0 auto 30px auto;">
+                    <strong>Hesapp</strong>, standart bir hesap makinesi işlevselliğini, güçlü şifreleme ile korunan kişisel bir not kasasıyla birleştiren minimalist bir web uygulamasıdır.
+                </p>
+                <div class="about-footer" style="max-width: 600px; margin: 0 auto;">
+                    <div class="developer-info">
+                        <a href="https://huseyinacikgoz.com.tr" target="_blank" class="developer-name-link"><span class="footer-label">Geliştirici</span><span class="developer-name">Hüseyin Açıkgöz</span></a>
+                    </div>
+                    <div class="all-links">
+                        <a href="https://huseyinacikgoz.com.tr" target="_blank" title="Website"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg></a>
+                        <a href="mailto:mail@huseyinacikgoz.com.tr" title="E-posta"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg></a>
+                        <a href="https://x.com/huseyinacikgoz_" target="_blank" title="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></a>
+                        <a href="https://github.com/huseyinacikgoz" target="_blank" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="welcome-main-content">
+        <!-- Header -->
+        <header class="absolute top-0 left-0 right-0 z-10 p-4 sm:px-8">
+            <div class="mx-auto flex max-w-5xl items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 items-center justify-center">
+                        <svg width="40" height="40" viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg" class="w-full h-full" preserveAspectRatio="xMidYMid meet">
+                            <g>
+                                <rect fill="#ffffff" width="263.47" height="263.47" x="0.67" y="0.6" ry="60.85" rx="60.85"></rect>
+                                <rect fill="#cccccc" width="220.09" height="70.96" x="22.36" y="25.77" ry="29.56" rx="30.4"></rect>
+                                <rect fill="#b3b3b3" width="68.59" height="59.51" x="22.36" y="110.43" ry="26.46" rx="26.46"></rect>
+                                <rect fill="#b3b3b3" width="68.59" height="59.51" x="22.36" y="178.39" ry="26.46" rx="26.46"></rect>
+                                <rect fill="#b3b3b3" width="68.59" height="59.51" x="98.11" y="110.43" ry="26.46" rx="26.46"></rect>
+                                <rect fill="#b3b3b3" width="68.59" height="59.51" x="98.11" y="178.39" ry="26.46" rx="26.46"></rect>
+                                <rect fill="#b3b3b3" width="68.59" height="59.51" x="173.86" y="111.56" ry="26.46" rx="26.46"></rect>
+                                <rect fill="#ff9500" width="68.59" height="59.51" x="173.86" y="180.65" ry="26.46" rx="26.46"></rect>
+                            </g>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold leading-tight tracking-tighter text-gray-900 dark:text-white">Hesapp</h2>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <main class="relative flex flex-1 items-center justify-center px-4 py-24 sm:py-32 overflow-hidden">
+            <!-- Gradient Background -->
+            <div class="absolute inset-0 -z-10">
+                <div class="absolute top-0 left-1/4 w-96 h-96 bg-[#ff9500]/10 dark:bg-[#ff9500]/20 rounded-full blur-3xl animate-pulse"></div>
+                <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            </div>
+            
+            <div class="relative flex flex-col items-center justify-center text-center z-10">
+                <!-- Floating Feature Widgets -->
+                <div class="absolute inset-0 -z-10 hidden h-full w-full sm:block">
+                    <div class="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 lg:-translate-x-2/3 lg:-translate-y-1/3 animate-float">
+                        <div class="flex items-center gap-3 rounded-2xl backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50 p-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-pulse" style="animation-duration: 5s;">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ff9500] dark:bg-orange-600 text-white shadow-lg">
+                                <span class="material-symbols-outlined text-lg">calculate</span>
+                            </div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">Hesap Makinesi</p>
+                        </div>
+                    </div>
+                    <div class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 lg:translate-x-2/3 lg:-translate-y-1/3 animate-float" style="animation-delay: -2s;">
+                        <div class="flex items-center gap-3 rounded-2xl backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50 p-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-pulse" style="animation-duration: 6s;">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500 dark:bg-blue-600 text-white shadow-lg">
+                                <span class="material-symbols-outlined text-lg">lock</span>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">Güvenli Notlar</p>
+                                <p class="text-[10px] text-gray-600 dark:text-gray-400">Verileriniz güvende</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2 lg:-translate-x-2/3 lg:translate-y-1/3 animate-float" style="animation-delay: -4s;">
+                        <div class="flex items-center gap-3 rounded-2xl backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50 p-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-pulse" style="animation-duration: 7s;">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-green-500 dark:bg-green-600 text-white shadow-lg">
+                                <span class="material-symbols-outlined text-lg">shield</span>
+                            </div>
+                            <p class="text-sm font-bold text-gray-900 dark:text-white">Cihazda Şifreleme</p>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 lg:translate-x-2/3 lg:translate-y-1/3 animate-float" style="animation-delay: -6s;">
+                        <div class="flex items-center gap-3 rounded-2xl backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50 p-4 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-pulse" style="animation-duration: 8s;">
+                            <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500 dark:bg-purple-600 text-white shadow-lg">
+                                <span class="material-symbols-outlined text-lg">no_accounts</span>
+                            </div>
+                            <div class="text-left">
+                                <p class="text-sm font-bold text-gray-900 dark:text-white">Kayıt Gerekmez</p>
+                                <p class="text-[10px] text-gray-600 dark:text-gray-400">Anında kullan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Central Icon with Enhanced Styling -->
+                <div class="mb-8 flex h-24 w-24 sm:h-28 sm:w-28 items-center justify-center hover:scale-105 transition-transform duration-300">
+                    <svg viewBox="0 0 264.58333 264.58333" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-lg">
+                        <g>
+                            <rect style="fill:#ffffff" width="263.47" height="263.47" x="0.67" y="0.6" ry="60.85" rx="60.85"></rect>
+                            <rect style="fill:#cccccc" width="220.09" height="70.96" x="22.36" y="25.77" ry="29.56" rx="30.4"></rect>
+                            <rect style="fill:#b3b3b3" width="68.59" height="59.51" x="22.36" y="110.43" ry="26.46" rx="26.46"></rect>
+                            <rect style="fill:#b3b3b3" width="68.59" height="59.51" x="22.36" y="178.39" ry="26.46" rx="26.46"></rect>
+                            <rect style="fill:#b3b3b3" width="68.59" height="59.51" x="98.11" y="110.43" ry="26.46" rx="26.46"></rect>
+                            <rect style="fill:#b3b3b3" width="68.59" height="59.51" x="98.11" y="178.39" ry="26.46" rx="26.46"></rect>
+                            <rect style="fill:#b3b3b3" width="68.59" height="59.51" x="173.86" y="111.56" ry="26.46" rx="26.46"></rect>
+                            <rect style="fill:#ff9500" width="68.59" height="59.51" x="173.86" y="180.65" ry="26.46" rx="26.46"></rect>
+                        </g>
+                    </svg>
+                </div>
+                <!-- Main Content -->
+                <h1 class="text-4xl font-black leading-tight tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl lg:text-6xl bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent mb-6">
+                    Hesap Makinesi &amp;<br class="hidden sm:block" /> Gizli Kasa
+                </h1>
+                <p class="mt-2 max-w-2xl text-lg text-gray-700 dark:text-gray-300 sm:text-xl font-medium leading-relaxed">
+                    <strong class="text-[#ff9500] dark:text-orange-400">Hesapp</strong>, basit bir hesap makinesi arayüzünün ardında, notlarınızı güvende tutan şifreli bir kasa gizler.
+                </p>
+                <button id="welcomeClose" class="group mt-12 flex cursor-pointer items-center justify-center rounded-full h-16 px-10 pr-12 bg-gradient-to-r from-[#ff9500] to-orange-600 text-white text-base font-bold tracking-wide shadow-2xl hover:shadow-orange-500/50 hover:scale-105 transition-all duration-300 relative">
+                    <span class="relative z-10 flex items-center gap-2 whitespace-nowrap">
+                        <span>Hadi Başlayalım</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 flex-shrink-0 group-hover:translate-x-1 transition-transform">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-[#ff9500] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
+                </button>
+            </div>
+        </main>
+
+        <!-- Feature Section -->
+        <section class="w-full pt-8 pb-16 sm:pt-12 sm:pb-24">
+            <div class="container mx-auto max-w-5xl px-4">
+                <div class="flex flex-col gap-10">
+                    <div class="flex flex-col gap-4 text-center">
+                        <h2 class="text-4xl font-black leading-normal tracking-tight text-gray-900 dark:text-white sm:text-5xl pb-2">
+                            Gizliliğiniz, Tamamen Sizin Kontrolünüzde
+                        </h2>
+                        <p class="mx-auto max-w-2xl text-lg text-gray-700 dark:text-gray-300 font-medium leading-relaxed">
+                            Hesapp, "sıfır bilgi" prensibiyle çalışır. Notlarınız, endüstri standardı <strong class="text-[#ff9500] dark:text-orange-400">AES-GCM</strong> ile şifrelenir. Bu şifreleme anahtarı, parolanızdan <strong class="text-[#ff9500] dark:text-orange-400">PBKDF2 (600.000 iterasyon)</strong> kullanılarak türetilir. Tüm verileriniz cihazınızda kalır ve bize veya herhangi bir üçüncü tarafa asla gönderilmez.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                        <div class="group flex flex-col gap-4 rounded-2xl backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 bg-white/80 dark:bg-gray-900/80 p-6 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-[#ff9500] dark:bg-orange-600 text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <span class="material-symbols-outlined text-3xl">calculate</span>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Minimalist Hesap Makinesi</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Tüm temel aritmetik ihtiyaçlarınız için temiz ve basit bir arayüz.</p>
+                            </div>
+                        </div>
+                        <div class="group flex flex-col gap-4 rounded-2xl backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 bg-white/80 dark:bg-gray-900/80 p-6 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-500 dark:bg-blue-600 text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <span class="material-symbols-outlined text-3xl">lock</span>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Güvenli Not Kasası</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Hassas düşüncelerinizi ve rakamlarınızı güçlü şifreleme ile güvende tutun.</p>
+                            </div>
+                        </div>
+                        <div class="group flex flex-col gap-4 rounded-2xl backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 bg-white/80 dark:bg-gray-900/80 p-6 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-green-500 dark:bg-green-600 text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <span class="material-symbols-outlined text-3xl">shield_lock</span>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Gizli Tetikleme</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Kasayı açmak için hesap makinesindeki <strong class="fake-button-equals">=</strong> tuşuna 3 kez basın.</p>
+                            </div>
+                        </div>
+                        <div class="group flex flex-col gap-4 rounded-2xl backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 bg-white/80 dark:bg-gray-900/80 p-6 shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-xl bg-purple-500 dark:bg-purple-600 text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
+                                <span class="material-symbols-outlined text-3xl">cloud_off</span>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Yükle & Çevrimdışı Kullan</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Uygulamayı ana ekranınıza ekleyerek internet bağlantısı olmadan da tam erişim sağlayın.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="w-full py-8">
+            <div class="container mx-auto flex flex-col items-center justify-center gap-4 px-4 text-center">
+                 <div class="flex flex-wrap items-start justify-start sm:justify-center gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span class="font-semibold">Gizlilik Politikası</span>
+                    <span class="font-semibold">Hizmet Sözleşmesi</span>
+                    <span class="font-semibold">Hakkında</span>
+                 </div>
+                 <p class="text-sm text-gray-500 dark:text-gray-400">© 2025 Hesapp. Tüm hakları saklıdır.</p>
+            </div>
+        </footer>
+        </div>
+    </div>
+  </div>
+
+<!-- Uygulama ana giriş noktası. type="module" modern tarayıcılarda ES6 modüllerini etkinleştirir. -->
+<script type="module" src="js/main.js?v=1.3.7"></script> 
 </body>
 </html>

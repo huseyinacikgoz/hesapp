@@ -7,7 +7,7 @@
  
 ## 2. Temel Tasarım Desenleri
 
-*   **Modül Deseni (JavaScript):** Kod, `script.js` içinde IIFE (Immediately Invoked Function Expression) yapısı kullanılarak farklı sorumluluklara (UI, Kripto, Hesap Makinesi, Modal Yönetimi vb.) sahip modüllere ayrılmıştır. Bu, global namespace kirliliğini önler ve kodun daha organize olmasını sağlar.
+*   **Modül Deseni (ES6 Modules):** Proje, modern JavaScript (ES6) modül sistemini kullanır. Her bir işlevsel birim (örn. `calculator.js`, `theme.js`, `vault.js`, `shortcuts.js`) kendi dosyasına sahiptir ve `export` ile dışa açtığı fonksiyonları/değişkenleri, ihtiyaç duyan diğer modüller `import` ile kullanır. Bu yapı, daha net bağımlılık yönetimi sağlar ve global isim alanını tamamen temiz tutar. Ana giriş noktası (`main.js`) tüm modülleri başlatır.
 *   **Olay Yönlendirme (Event Delegation):** Hesap makinesi tuş takımı (`#pad`) gibi çok sayıda tıklanabilir öğe içeren alanlarda, her bir öğeye ayrı ayrı olay dinleyici eklemek yerine, ortak bir üst öğeye tek bir olay dinleyici eklenmiştir. Bu, performansı artırır ve DOM manipülasyonunu azaltır.
 *   **Durum Yönetimi (State Management):**
     *   **Hesap Makinesi Durumu:** Hesap makinesinin mevcut değeri, önceki değeri, operatörü gibi durumlar JavaScript değişkenlerinde tutulur.
@@ -28,3 +28,4 @@
     1.  **Anahtar Türetme:** Kullanıcı şifresini girdiğinde, bu şifre ve `localStorage`'dan okunan `salt` (tuz) değeri, `PBKDF2` fonksiyonuna gönderilir. 600.000 iterasyon sonucunda 256-bit'lik bir şifreleme anahtarı (`CryptoKey`) türetilir.
     2.  **Şifreleme (Veri Kaydetme):** Not içeriği (string), `AES-GCM` algoritması, türetilen anahtar ve yeni oluşturulan bir `iv` (başlatma vektörü) kullanılarak şifrelenir. Sonuç, `iv`, `salt` ve şifreli metni içeren bir JSON nesnesi olarak birleştirilir ve Base64 formatında `localStorage`'a kaydedilir.
     3.  **Şifre Çözme (Veri Okuma):** `localStorage`'dan okunan Base64 veri çözülür. İçindeki `iv` ve şifreli metin, türetilen anahtar kullanılarak `AES-GCM` ile çözülür. Başarılı olursa, orijinal not içeriği elde edilir. Anahtar yanlışsa (şifre hatalıysa), şifre çözme işlemi başarısız olur.
+    4.  **Sahte Şifre Kontrolü:** Gerçek şifre ile giriş başarısız olduğunda, sistem sahte şifreyi (`hesapp_aux_key_v1`) kontrol eder. Sahte şifre doğruysa, sahte kasa (`hesapp_aux_data_v1`) açılır ve gerçek kasa içeriği gizlenir. Sahte kasa, gerçek kasa ile aynı şifreleme yöntemiyle korunur ancak ayrı bir localStorage anahtarında saklanır. Gizlilik için genel isimler kullanılır. Eski anahtar adları migration desteği ile korunmaktadır.
