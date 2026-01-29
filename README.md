@@ -1,8 +1,8 @@
-# Hesapp v1.3.99
+# Hesapp
 
 <div align="center">
 
-![Hesapp Logo](favicon/favicon-192x192.png)
+![Hesapp Logo](favicon/apple-touch-icon.png)
 
 **Hesap Makinesi & Gizli Kasa**
 
