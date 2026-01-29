@@ -17,7 +17,7 @@ Hesapp, bu iki ihtiyacı tek bir minimalist arayüzde birleştirerek şu sorunla
 *   **Keşfedilebilir Gizlilik:** Gizli kasanın varlığı, ilk kullanımda kullanıcıya net bir şekilde açıklanmalı (`=` tuşuna 3 kez basma), ancak sonrasında arayüzde dikkat dağıtmamalıdır.
 *   **Güven Veren Tasarım:** Güvenlik özellikleri (şifreleme, yerel depolama) kullanıcılara açıkça iletilmelidir. "Gizlilik & Güvenlik" ve "Kullanım Koşulları" gibi bilgilendirme ekranları, uygulamanın şeffaflığını ve güvenilirliğini pekiştirir.
 *   **Kesintisiz Akış:** Hesap makinesinden kasaya geçiş ve kasa içindeki işlemler (not oluşturma, yedekleme, geri yükleme) akıcı ve anlaşılır olmalıdır.
-*   **Kişiselleştirme:** Açık ve koyu tema seçeneği, kullanıcının görsel tercihlerine ve ortam ışığına uyum sağlayarak daha konforlu bir kullanım sunar.
+*   **Kişiselleştirme:** Açık ve koyu tema seçeneği ve görsel olarak zenginleştirilmiş başlangıç ekranı tercihi (Ana Sayfa veya Hesap Makinesi), kullanıcının görsel tercihlerine ve kullanım alışkanlıklarına uyum sağlar.
 
 ## 3. Nasıl Çalışmalı?
 
@@ -26,7 +26,7 @@ Hesapp, bu iki ihtiyacı tek bir minimalist arayüzde birleştirerek şu sorunla
 3.  **İlk Kurulum:** Kasa daha önce kurulmamışsa, kullanıcıdan yeni bir şifre oluşturması istenir. Bu şifrenin kurtarılamayacağı konusunda net bir uyarı gösterilir.
 4.  **Kasa Erişimi:** Kasa kuruluysa, kullanıcıdan şifresini girmesi istenir. Başarılı kimlik doğrulamasının ardından not defteri arayüzü görüntülenir. Eğer girilen şifre gerçek şifre değilse ve sahte şifre belirlenmişse, sahte şifre kontrol edilir. Sahte şifre doğruysa, boş veya sahte notlar içeren bir kasa açılır ve gerçek içerik gizlenir.
 5.  **Sahte Şifre Yönetimi:** Kullanıcı, ayarlar menüsünden "Sahte Şifre" seçeneğine tıklayarak sahte şifresini belirleyebilir, değiştirebilir veya silebilir. Sahte şifre, gerçek şifreden farklı olmalıdır ve ayrı bir şifrelenmiş kasa olarak saklanır.
-6.  **Veri Yönetimi:** Kullanıcı, kasa içindeyken notlarını düzenleyebilir. Ayrıca, şifrelenmiş verilerini bir dosya olarak dışa aktarabilir (yedekleme), daha önce yedeklediği bir dosyayı içe aktarabilir (geri yükleme) veya tüm kasa verilerini kalıcı olarak silebilir. Sahte şifre ile giriş yapıldığında, yalnızca sahte kasa verileri yönetilebilir.
+6.  **Veri Yönetimi:** Kullanıcı, kasa içindeyken notlarını düzenleyebilir, silebilir veya favorilere ekleyebilir. Silinen notlar, "Çöp Kutusu" özelliği aktifse önce çöp kutusuna taşınır ve buradan geri yüklenebilir veya kalıcı olarak silinebilir. Ayrıca, şifrelenmiş verilerini bir dosya olarak dışa aktarabilir (yedekleme), daha önce yedeklediği bir dosyayı içe aktarabilir (geri yükleme) veya tüm kasa verilerini kalıcı olarak silebilir. Sahte şifre ile giriş yapıldığında, yalnızca sahte kasa verileri yönetilebilir.
 7.  **Güvenli Çıkış:** Kullanıcı, kasayı kapattığında veya "Çıkış Yap" butonuna bastığında oturum sonlanır ve uygulama tekrar hesap makinesi moduna döner.
 8.  **Veri Kalıcılığı:** Tüm şifrelenmiş veriler (gerçek kasa ve sahte kasa), tarayıcının `localStorage` alanında ayrı anahtarlarda saklanır ve oturumlar arasında kalıcılığını korur. Hiçbir veri sunucuya gönderilmez.
 

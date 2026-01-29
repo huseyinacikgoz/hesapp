@@ -1,6 +1,6 @@
-const CACHE_NAME = 'hesapp-cache-v1.3.8';
+const CACHE_NAME = 'hesapp-v1.3.99';
 const URLS_TO_CACHE = [
-  '/',
+  './',
   'index.html',
   'css/style.css',
   'js/main.js',
@@ -10,8 +10,14 @@ const URLS_TO_CACHE = [
   'js/theme.js',
   'js/toast.js',
   'js/vault/crypto.js',
-  'js/vault/ui.js',
   'js/vault/vault.js',
+  'js/vault/ui/utils.js',
+  'js/vault/ui/modal-manager.js',
+  'js/vault/ui/info-modals.js',
+  'js/vault/ui/settings-modals.js',
+  'js/vault/ui/vault-list.js',
+  'js/vault/ui/vault-access.js',
+  'js/vault/ui/message-editor.js',
   'favicon/favicon.ico',
   'favicon/apple-touch-icon.png',
   'favicon/favicon-32x32.png',
@@ -20,60 +26,47 @@ const URLS_TO_CACHE = [
   'favicon/android-chrome-192x192.png',
   'favicon/android-chrome-512x512.png'
 ];
- 
-// Kurulum (Install) adımı: Önbelleği oluştur ve dosyaları ekle
+
+// Install adımı: Dosyaları önbelleğe al
 self.addEventListener('install', event => {
+  console.log('[Service Worker] Installing v1.3.99...');
+  // Yeni SW'nin bekleme süresini atlayıp hemen aktifleşmesini sağla
+  self.skipWaiting();
+
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
-        // Not: addAll atomik bir işlemdir. Herhangi bir dosya indirilemezse, tüm işlem başarısız olur.
-        return cache.addAll(URLS_TO_CACHE).then(() => {
-          // Kurulum tamamlandığında, bekleme adımını atla ve hemen aktivasyona geç.
-          // Bu, 'controllerchange' olayını tetikler ve istemcinin sayfayı yenilemesini sağlar.
-          return self.skipWaiting();
-        });
+        console.log('[Service Worker] Caching app shell');
+        return cache.addAll(URLS_TO_CACHE);
       })
   );
 });
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.action === 'skipWaiting') {
-    self.skipWaiting();
-  }
-});
-
-// Fetch adımı: İstekleri yakala ve önbellekten sun
+// Fetch adımı: Network First (Önce Ağ, Sonra Önbellek) stratejisi
 self.addEventListener('fetch', event => {
-  // Sadece GET isteklerini işle
-  if (event.request.method !== 'GET') {
-    return;
-  }
+  if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Önbellekte varsa, önbellekten döndür
-        if (response) {
-          return response;
-        }
-
-        // Önbellekte yoksa, ağdan iste.
-        // Önemli: fetch'ten dönen yanıtı hem tarayıcıya gönder hem de önbelleğe ekle.
-        // Bu, uygulama ilk kez çevrimdışı açıldığında eksik kalabilecek
-        // (örneğin Google Fonts gibi) kaynakların daha sonra önbelleğe alınmasını sağlar.
-        return fetch(event.request).then(networkResponse => {
-            // İsteği klonla çünkü bir response sadece bir kez kullanılabilir.
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
-            return networkResponse;
+    fetch(event.request)
+      .then(networkResponse => {
+        // Ağdan başarılı yanıt geldi
+        // Önbelleği güncelle
+        const responseToCache = networkResponse.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseToCache);
         });
+        return networkResponse;
+      })
+      .catch(() => {
+        // Ağ hatası (çevrimdışı) - Önbellekten döndür
+        return caches.match(event.request);
       })
   );
 });
 
-// Activate adımı: Eski önbellekleri temizle (ilerideki sürümler için)
+// Activate adımı: Eski önbellekleri temizle
 self.addEventListener('activate', event => {
+  console.log('[Service Worker] Activating v1.3.99...');
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -81,10 +74,14 @@ self.addEventListener('activate', event => {
         cacheNames.map(cacheName => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
             // Eğer bu cache adı whitelist'te değilse, sil.
+            console.log('[Service Worker] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
-      );
+      ).then(() => {
+        console.log('[Service Worker] Old caches cleared');
+        console.log('[Service Worker] v1.3.99 is now active');
+      });
     })
   );
   // Aktif olduğunda tüm istemcilerin kontrolünü hemen ele al.

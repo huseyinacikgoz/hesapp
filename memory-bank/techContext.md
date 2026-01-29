@@ -30,7 +30,8 @@
 
 *   **Bağımlılık Yönetimi:** Proje, harici bir paket yöneticisi (npm, yarn vb.) kullanmamaktadır. Tüm kodlar yereldir.
 *   **Build Süreci:** Herhangi bir derleme veya paketleme (bundling) adımı yoktur. Proje, statik dosyaların doğrudan sunulmasıyla çalışır.
-*   **Önbellek Yönetimi (Cache Busting):** Statik dosyalara (`.css`, `.js`) sürüm numarası içeren sorgu parametreleri (`?v=1.3.8`) eklenerek yeni sürümlerde tarayıcı önbelleğinin otomatik olarak güncellenmesi sağlanır. Tüm dosyalarda sürüm numarası v1.3.8 olarak tutarlı şekilde güncellenmiştir.
+*   **Önbellek Yönetimi (Cache Busting):** Statik dosyalara (`.css`, `.js`) sürüm numarası içeren sorgu parametreleri (`?v=1.3.98`) eklenerek yeni sürümlerde tarayıcı önbelleğinin otomatik olarak güncellenmesi sağlanır. Tüm dosyalarda sürüm numarası v1.3.98 olarak tutarlı şekilde güncellenmiştir.
+*   **Açık Kaynak:** Hesapp artık açık kaynak bir projedir. GitHub repository: https://github.com/huseyinacikgoz/Hesapp. MIT lisansı altında lisanslanmıştır.
 
 ## 3. Modül Yapısı
 

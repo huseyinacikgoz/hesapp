@@ -1,4 +1,4 @@
-# Hesapp
+# Hesapp v1.3.99
 
 <div align="center">
 
@@ -8,7 +8,7 @@
 
 [🌐 Canlı Demo](https://huseyinacikgoz.com.tr/hesapp/) • [📧 İletişim](mailto:mail@huseyinacikgoz.com.tr) • [🐦 Twitter](https://x.com/huseyinacikgoz_) • [💻 GitHub](https://github.com/huseyinacikgoz)
 
-[![Version](https://img.shields.io/badge/version-1.3.8-blue.svg)](https://huseyinacikgoz.com.tr/hesapp/)
+[![Sürüm](https://img.shields.io/badge/sürüm-v1.3.99-blue.svg)](https://huseyinacikgoz.com.tr/hesapp/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PWA](https://img.shields.io/badge/PWA-enabled-orange.svg)](https://huseyinacikgoz.com.tr/hesapp/)
 
@@ -27,17 +27,19 @@ Uygulama, basit bir hesap makinesi arayüzünün ardında, notlarınızı güven
 - Yüzde hesaplama
 - Sonuç kopyalama
 - Temiz ve minimalist arayüz
+- Klavye desteği
 
 ### 🔒 Gizli Kasa
 - **Güçlü Şifreleme**: AES-GCM şifreleme algoritması
 - **Anahtar Türetme**: PBKDF2 (600.000 iterasyon)
 - **Zero-Knowledge**: Verileriniz yalnızca cihazınızda saklanır
-- **Sahte Şifre (Honey Password)**: Gerçek kasanızı gizlemek için sahte şifre özelliği
-- **Favoriler**: Önemli notları favorilere ekleyin
+- **Sahte Parola (Honey Password)**: Gerçek kasanızı gizlemek için sahte parola özelliği
+- **Favori Notlar**: Önemli notları favorilere ekleyerek hızlı erişim sağlayın
 - **Yedekleme & Geri Yükleme**: Kasanızın şifreli yedeğini alın
 - **Otomatik Kilitleme**: Ayarlanabilir otomatik kilitleme süresi
 - **Parola Değiştirme**: Güvenli parola güncelleme
-- **Brute-Force Koruması**: Art arda yapılan hatalı şifre denemeleri engelleniyor
+- **Brute-Force Koruması**: Art arda yapılan hatalı parola denemeleri engelleniyor
+- **Çöp Kutusu**: Silinen notlar önce çöp kutusuna taşınır, buradan geri yüklenebilir veya kalıcı olarak silinebilir
 
 ### 🎨 Kullanıcı Deneyimi
 - **PWA Desteği**: Uygulamayı ana ekranınıza ekleyin, çevrimdışı kullanın
@@ -45,7 +47,15 @@ Uygulama, basit bir hesap makinesi arayüzünün ardında, notlarınızı güven
 - **Responsive Tasarım**: Tüm cihazlarda mükemmel görünüm
 - **Gizli Tetikleme**: Hesap makinesindeki `=` tuşuna 3 kez basarak kasayı açın
 
-## 🔐 Güvenlik
+## 🖼️ Ekran Görüntüleri
+
+| Hesap Makinesi | Gizli Kasa | Not Detayı |
+| :---: | :---: | :---: |
+| ![Hesap Makinesi Arayüzü](screenshots/hesapp-calculator.png) | ![Gizli Kasa Arayüzü](screenshots/hesapp-vault.png) | ![Not Detayı](screenshots/hesapp-vault2.png) |
+| **Mobil (Açık Tema)** | **Mobil (Koyu Tema)** | **Masaüstü (Koyu Tema)** |
+| ![Mobil Görünüm](screenshots/hesapp-mobile.png) | ![Mobil Koyu Tema](screenshots/hesapp-mobile-dark.png) | ![Koyu Tema](screenshots/hesapp-dark-mode.png) |
+
+## 🛡️ Güvenlik ve Gizlilik
 
 Hesapp, **"sıfır bilgi" (zero-knowledge)** prensibiyle çalışır:
 
@@ -54,11 +64,13 @@ Hesapp, **"sıfır bilgi" (zero-knowledge)** prensibiyle çalışır:
 - Tüm veriler yalnızca **cihazınızda** saklanır
 - Verileriniz **asla sunucuya gönderilmez**
 - Parolanız **asla saklanmaz veya bilinmez**
-- **Sahte Şifre**: Gerçek kasanızı gizlemek için opsiyonel sahte şifre özelliği
+- **Sahte Parola**: Gerçek kasanızı gizlemek için opsiyonel sahte parola özelliği
 
 > ⚠️ **Önemli**: Parolanızı unutmanız durumunda verilerinize erişim kalıcı olarak kaybolur. Parola kurtarma özelliği yoktur.
 
-> 🍯 **Sahte Şifre**: Sahte şifre özelliği, gerçek kasanızı gizlemek için kullanabileceğiniz güvenlik özelliğidir. Sahte şifre ile giriş yapıldığında, boş bir kasa gösterilir ve gerçek içeriğiniz gizlenir. Bu özellik, özellikle zorla şifre söyleme durumlarında gerçek verilerinizi korumanıza yardımcı olur.
+> 🍯 **Sahte Parola**: Sahte parola özelliği, gerçek kasanızı gizlemek için kullanabileceğiniz güvenlik özelliğidir. Sahte parola ile giriş yapıldığında, boş bir kasa gösterilir ve gerçek içeriğiniz gizlenir. Bu özellik, özellikle zorla parola söyleme durumlarında gerçek verilerinizi korumanıza yardımcı olur.
+
+> 📊 **Gizlilik Dostu Analytics**: Google Analytics kullanmıyoruz. Self-hosted, GDPR uyumlu [Umami Analytics](https://umami.is/) ile sadece anonim kullanım istatistikleri toplanır. Çerez kullanmaz, IP adresi saklamaz.
 
 ## 🚀 Kullanım
 
@@ -129,13 +141,15 @@ hesapp/
 
 3. **İlk Kullanım**: İlk kez kasayı açtığınızda, verilerinizi koruyacak bir parola oluşturmanız istenir.
 
-4. **Not Ekleme**: Kasa açıldıktan sonra "Yeni Not" butonuna tıklayarak not ekleyebilirsiniz.
+4. **Not Ekleme**: Kasa açıldıktan sonra "Yeni Not Ekle" butonuna tıklayarak notlarınızı oluşturun.
 
-5. **Favoriler**: Not düzenleme ekranından notları favorilere ekleyebilirsiniz.
+5. **Favoriler**: Not düzenleme ekranından notları favorilere ekleyerek hızlı erişim sağlayabilirsiniz.
 
-6. **Sahte Şifre**: Ayarlar menüsünden "Sahte Şifre" seçeneğine tıklayarak sahte şifrenizi belirleyebilirsiniz. Sahte şifre ile giriş yapıldığında, boş bir kasa gösterilir ve gerçek içeriğiniz gizlenir.
+6. **Sahte Parola**: Ayarlar menüsünden "Sahte Parola" seçeneğine tıklayarak sahte parolanızı belirleyebilirsiniz. Sahte parola ile giriş yapıldığında, boş bir kasa gösterilir ve gerçek içeriğiniz gizlenir.
 
-7. **Yedekleme**: Ayarlar menüsünden kasanızın şifreli yedeğini indirebilirsiniz.
+7. **Çöp Kutusu**: Silinen notlar varsayılan olarak çöp kutusuna taşınır. Çöp kutusundaki notları geri yükleyebilir veya kalıcı olarak silebilirsiniz. Ayarlar menüsünden çöp kutusu özelliğini tamamen kapatabilirsiniz.
+
+8. **Yedekleme & Geri Yükleme**: Ayarlar menüsünden kasanızın şifreli yedeğini indirebilir veya daha önceki bir yedeği geri yükleyebilirsiniz.
 
 ## 📝 Lisans
 
@@ -162,7 +176,7 @@ Katkılarınızı bekliyoruz! Lütfen:
 
 ## 📊 Versiyon
 
-**v1.3.8** - Güncel sürüm
+**v1.3.99** - Güncel sürüm
 
 ## 🔗 Bağlantılar
 
@@ -180,4 +194,3 @@ Katkılarınızı bekliyoruz! Lütfen:
 Made with ❤️ by [Hüseyin Açıkgöz](https://huseyinacikgoz.com.tr)
 
 </div>
-

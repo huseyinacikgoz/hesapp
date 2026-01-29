@@ -1,4 +1,5 @@
 import { showModal, hideModal, showVaultManagementScreen, openVaultAccessMode } from './ui.js';
+import { showCustomToast } from '../toast.js';
 
 let equalsPressCount = 0;
 let inactivityTimer;
@@ -20,11 +21,8 @@ function lockVaultDueToInactivity() {
     const securityBackdrop = document.getElementById('securityBackdrop');
     if (modalBackdrop.style.display === 'flex' || securityBackdrop.style.display === 'flex') {
         hideModal();
-        // Bu fonksiyon artık ui.js'de değil, toast.js'de
-        // window.showCustomToast('Kasa, işlem yapılmadığı için kilitlendi.');
-        // Doğrusu, toast modülünü import edip kullanmak, ama bu dosya ui'dan haberdar olmamalı.
-        // Şimdilik bu bildirimi atlayalım veya daha iyi bir yol bulalım.
-        // En iyisi, hideModal içinde bu kontrolü yapmak.
+        hideModal();
+        showCustomToast('İşlem yapılmadığı için kasa kilitlendi.');
     }
 }
 
@@ -41,7 +39,23 @@ export function handleEqualsPress() {
     setTimeout(() => { equalsPressCount = 0; }, 1500);
     if (equalsPressCount >= 3) {
         equalsPressCount = 0;
-        openVaultAccessMode();
+
+        // Trigger Animation
+        const pad = document.querySelector('.pad');
+        const screen = document.querySelector('.screen');
+
+        if (pad) pad.classList.add('animate-scatter-out');
+        if (screen) screen.classList.add('animate-scatter-out');
+
+        setTimeout(() => {
+            openVaultAccessMode();
+
+            // Reset animation classes
+            setTimeout(() => {
+                if (pad) pad.classList.remove('animate-scatter-out');
+                if (screen) screen.classList.remove('animate-scatter-out');
+            }, 500);
+        }, 300);
     }
 }
 

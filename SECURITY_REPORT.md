@@ -1,7 +1,7 @@
-# Güvenlik Raporu - Hesapp v1.3.8
+# Güvenlik Raporu - Hesapp v1.3.99
 
-**Tarih:** 2024  
-**Versiyon:** v1.3.8  
+**Rapor Tarihi:** 29 Ocak 2026
+**Uygulama Sürümü:** v1.3.99  
 **Durum:** ✅ Güvenlik açıkları düzeltildi
 
 ## 🔒 Güvenlik Kontrolü Sonuçları
@@ -27,6 +27,21 @@
   - Regex kontrolü zaten mevcuttu (`/^[0-9+\-*/().\s]*$/`)
 - **Dosyalar:** `js/calculator/calculator.js`
 
+### ✅ v1.3.99 Güvenlik Güncellemeleri
+
+#### 1. **Gizlilik İyileştirmesi: Google Analytics Kaldırıldı** ✅
+- **Değişiklik:** Google Analytics (gtag.js) tamamen kaldırıldı
+- **Neden:** Kullanıcı gizliliğini artırmak (degoogle)
+- **Alternatif:** Self-hosted Umami Analytics (gizlilik dostu, GDPR uyumlu)
+
+#### 2. **Hassas Dosya Koruması** ✅
+- **`.gitignore` güncellemesi:** Hassas dosyalar Git'ten hariç tutuldu
+  - `.env` (API anahtarları, hassas bilgiler)
+  - `AGENTS.md` (AI/agent yapılandırmaları)
+  - `memory-bank/` (geliştirme notları)
+  - `.htaccess` (sunucu yapılandırması)
+- **`.env.example`:** Geliştiriciler için güvenli şablon oluşturuldu
+
 ### ⚠️ Bilinen Güvenlik Notları
 
 #### 1. **Content Security Policy (CSP) Header**
@@ -34,7 +49,7 @@
 - **Not:** CSP header'ı sunucu tarafında (HTTP header) eklenmesi önerilir
 - **Öneri:** Sunucu konfigürasyonunda CSP header ekleyin:
   ```
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com;
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://umami.huseyinacikgoz.com.tr; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';
   ```
 
 #### 2. **Şifre Güçlülüğü**
@@ -73,6 +88,12 @@
    - ✅ Sahte şifre hash'lenmiş olarak saklanıyor
    - ✅ Ayrı localStorage anahtarları kullanılıyor
 
+6. **Gizlilik Dostu Analytics:**
+   - ✅ Self-hosted Umami Analytics
+   - ✅ GDPR uyumlu
+   - ✅ Kişisel veri toplamıyor
+   - ✅ Çerez kullanmıyor
+
 ### 📋 Güvenlik Önerileri
 
 1. **Sunucu Tarafı:**
@@ -104,9 +125,8 @@
 
 **Genel Güvenlik Durumu:** ✅ **İYİ**
 
-Tüm kritik ve orta seviye güvenlik açıkları düzeltildi. Uygulama güvenli bir şekilde kullanılabilir. Sunucu tarafı güvenlik önlemleri (CSP header) eklenmesi önerilir ancak bu zorunlu değildir.
+Tüm kritik ve orta seviye güvenlik açıkları düzeltildi. Google Analytics kaldırılarak kullanıcı gizliliği artırıldı. Uygulama güvenli bir şekilde kullanılabilir. Sunucu tarafı güvenlik önlemleri (CSP header) eklenmesi önerilir ancak bu zorunlu değildir.
 
 ---
 
 **Not:** Bu rapor, kod incelemesi ve güvenlik analizi sonucunda hazırlanmıştır. Düzenli güvenlik kontrolleri önerilir.
-

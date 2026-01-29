@@ -93,12 +93,12 @@ function safeEval(s) {
     // Güvenlik: Sadece matematiksel karakterlere izin ver
     s = s.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').replace(/,/g, '.');
     s = s.replace(/([*\/+\-])\s*([*\/+\-])/g, '$2');
-    
+
     // Güvenlik kontrolü: Sadece sayılar, operatörler, parantezler ve boşluklar
     if (!/^[0-9+\-*/().\s]*$/.test(s)) {
         throw new Error('Invalid characters');
     }
-    
+
     // Güvenlik: Parantez dengesini kontrol et
     let parenCount = 0;
     for (let i = 0; i < s.length; i++) {
@@ -107,10 +107,10 @@ function safeEval(s) {
         if (parenCount < 0) throw new Error('Invalid expression');
     }
     if (parenCount !== 0) throw new Error('Invalid expression');
-    
+
     // Güvenlik: Boş string kontrolü
     if (!s.trim()) return 0;
-    
+
     // Function constructor kullanımı - regex kontrolü ile güvenli
     // Not: Bu kullanım güvenli çünkü sadece matematiksel ifadeler kabul ediliyor
     try {
@@ -147,11 +147,45 @@ function equals() {
     }
 }
 
+function checkMagicNumbers() {
+    // Normalize input (remove commas if any, though usually expr has them)
+    // expr might contain operators, but magic numbers are usually single numbers.
+    // We check exact match.
+    const input = expr.replace(/,/g, '.');
+
+    const magicNumbers = {
+        '1923': 'Cumhuriyetin İlanı! 🇹🇷',
+        '1453': 'İstanbul\'un Fethi! 🏰',
+        '314': 'Pi Günü! 🥧',
+        '42': 'Hayatın, Evrenin ve Her Şeyin Anlamı 🌌'
+    };
+
+    if (magicNumbers[input]) {
+        showCustomToast(magicNumbers[input]);
+        return true;
+    }
+
+    return false;
+}
+
 function handleKeydown(e) {
     if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') {
         return;
     }
-    if (e.key === 'Enter' || e.key === '=') { equals(); handleEqualsPress(); e.preventDefault(); }
+
+    // Modal açıkken hesap makinesi girişini engelle
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    for (let i = 0; i < backdrops.length; i++) {
+        if (window.getComputedStyle(backdrops[i]).display !== 'none') {
+            return;
+        }
+    }
+    if (e.key === 'Enter' || e.key === '=') {
+        if (checkMagicNumbers()) { e.preventDefault(); return; }
+        equals();
+        handleEqualsPress();
+        e.preventDefault();
+    }
     else if (e.key === 'Backspace') { backspace(); e.preventDefault(); }
     else if (/^[0-9+\-*/().,%]$/.test(e.key)) { pushKey(e.key === '.' ? ',' : e.key); e.preventDefault(); }
 }
@@ -163,7 +197,12 @@ export function initCalculator() {
         if (b.dataset.action === 'clear') { clearAll(); return; }
         if (b.dataset.action === 'percentage') { handlePercentage(); return; }
         if (b.dataset.action === 'backspace') { backspace(); return; }
-        if (b.dataset.action === 'equals') { equals(); handleEqualsPress(); return; }
+        if (b.dataset.action === 'equals') {
+            if (checkMagicNumbers()) return;
+            equals();
+            handleEqualsPress();
+            return;
+        }
         if (b.dataset.key) pushKey(b.dataset.key);
     });
 

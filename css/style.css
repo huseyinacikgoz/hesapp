@@ -1,38 +1,39 @@
-:root{
-  --bg:#f8f9fa; 
-  --panel:#ffffff; 
-  --accent: #3b82f6;
-  --muted:#6c757d; 
-  --error: #e3342f; 
-  --delete-btn: #dc3545; 
-  --input-bg: #ffffff;
-  --input-text: #111827;
-  --input-readonly-bg: #f4f6fb;
-  --action-toggle-bg: #e0e3e9; 
-  --action-toggle-text: #111827; 
-  --key-bg: #e0e3e9;
-  --key-text: #111827;
-  --key-active-bg: #c0c3c9;
-  --func-key-bg: #d8dfe9;
-  --op-key-bg: #dbeafe;
-  --op-key-active-bg: #c5ccde;
-  --modal-border: #eee;
-  --security-highlight-text: #1d2129;
-  --prose-text: #333;
+:root {
+    --bg: #f3f4f6;
+    --panel: #fafafa;
+    --accent: #3b82f6;
+    --muted: #6c757d;
+    --error: #e3342f;
+    --delete-btn: #dc3545;
+    --input-bg: #ffffff;
+    --input-text: #111827;
+    --input-readonly-bg: #f4f6fb;
+    --action-toggle-bg: #e0e3e9;
+    --action-toggle-text: #111827;
+    --key-bg: #e0e3e9;
+    --key-text: #111827;
+    --key-active-bg: #c0c3c9;
+    --func-key-bg: #d8dfe9;
+    --op-key-bg: #dbeafe;
+    --op-key-active-bg: #c5ccde;
+    --modal-border: #eee;
+    --security-highlight-text: #1d2129;
+    --prose-text: #333;
+    --modal-bg: #fafafa;
 }
- 
+
 html[data-theme="dark"] {
-    --bg:#1a1b26; 
-    --panel:#24283b; 
-    --accent:#82aaff; 
-    --muted:#a8b2d1; 
-    --error: #ff757f; 
-    --delete-btn: #ff757f; 
+    --bg: #1a1b26;
+    --panel: #24283b;
+    --accent: #82aaff;
+    --muted: #a8b2d1;
+    --error: #ff757f;
+    --delete-btn: #ff757f;
     --input-bg: #2f334d;
     --input-text: #c0caf5;
     --input-readonly-bg: #2a2f45;
-    --action-toggle-bg: #414868; 
-    --action-toggle-text: #c0caf5; 
+    --action-toggle-bg: #414868;
+    --action-toggle-text: #c0caf5;
     --key-bg: #2a2f45;
     --key-text: #c0caf5;
     --key-active-bg: #414868;
@@ -41,8 +42,9 @@ html[data-theme="dark"] {
     --op-key-active-bg: #414868;
     --modal-border: #3a3f58;
     --prose-text: #e0e8ff;
-    --security-highlight-text: #c0caf5; 
+    --security-highlight-text: #c0caf5;
     --logo-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 8px rgba(130, 170, 255, 0.2);
+    --modal-bg: #24283b;
 }
 
 
@@ -50,36 +52,45 @@ html {
     padding: 0;
     margin: 0;
 }
-* { box-sizing: border-box; }
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: "Inter", -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    margin: 0; 
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
     padding: 0;
-    height: 100vh; /* Tam ekran yüksekliği */
-    height: 100dvh; /* Mobilde dinamik viewport height (address bar dahil) */
-    overflow: hidden; /* Kaydırma çubuklarını engelle */
-    display:flex; 
-    align-items:center; /* Her zaman yatayda ortala */
-    justify-content:center; /* Her zaman dikeyde ortala */
-    background:var(--bg); 
+    height: 100vh;
+    height: 100dvh;
+    /* Tam ekran yüksekliği - mobilde dinamik viewport */
+    overflow: hidden;
+    /* Kaydırma çubuklarını engelle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
     color: var(--prose-text);
     touch-action: manipulation;
     transition: background-color 0.2s ease, color 0.2s ease;
-    position: fixed; /* Mobilde kaymayı önlemek için */
-    width: 100%;
-    top: 0;
-    left: 0;
 }
 
-.device{
-    width:100%; max-width:100%; height:100%; background:var(--panel);
-    border-radius:0; padding: 18px; 
-    padding-bottom: calc(18px + env(safe-area-inset-bottom)); box-shadow:none; 
-    display:flex; flex-direction:column; gap:16px; position:relative;
+.device {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    background: var(--panel);
+    border-radius: 0;
+    padding: 18px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
     touch-action: manipulation;
-    transition: background-color 0.2s ease, box-shadow 0.3s ease, border-radius 0.3s ease, height 0.3s ease;
-    min-height: 0; /* Flexbox overflow sorununu önler */
-    overflow: hidden; /* İçerik taşmasını önler */
+    transition: background-color 0.2s ease, box-shadow 0.3s ease, border-radius 0.3s ease;
+    overflow: hidden;
+    /* İçerik taşmasını önler */
 }
 
 .device.hidden {
@@ -88,18 +99,36 @@ body {
     transition: visibility 0s 0.3s, opacity 0.3s ease;
 }
 
-.screen{
+.screen {
     background: var(--input-readonly-bg);
-    border-radius: 12px; padding:20px; min-height:160px; 
-    flex-grow: 0; flex-shrink: 0; display:flex; flex-direction:column; justify-content:flex-end; 
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); position: relative; z-index: 10;
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 160px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 10;
     transition: background-color 0.2s ease;
 }
-.result{
-    font-size:36px; color:var(--accent); text-align:right; padding: 0; line-height: 1.2; 
-    min-height: 48px; /* Tek satır için minimum yükseklik */
-    overflow-x: auto; overflow-y: hidden; white-space: nowrap; direction: ltr; 
+
+.result {
+    font-size: 36px;
+    color: var(--accent);
+    text-align: right;
+    padding: 0;
+    line-height: 1.2;
+    min-height: 48px;
+    /* Tek satır için minimum yükseklik */
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    direction: ltr;
 }
+
 .copy-toast {
     position: absolute;
     top: 50%;
@@ -116,14 +145,27 @@ body {
     transition: opacity 0.3s ease;
     pointer-events: none;
 }
+
 .copy-toast.show {
     opacity: 1;
 }
-.expr{
-    font-size:18px; color:var(--muted); text-align:right; margin-top:6px; min-height:22px; 
-    padding: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: rtl; 
+
+.expr {
+    font-size: 18px;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 6px;
+    min-height: 22px;
+    padding: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    direction: rtl;
 }
-.expr::before { content: "\200e"; }
+
+.expr::before {
+    content: "\200e";
+}
 
 .display-top {
     position: absolute;
@@ -136,6 +178,7 @@ body {
     align-items: center;
     gap: 8px;
 }
+
 .screen-icon-btn {
     background: var(--key-bg);
     border: none;
@@ -149,16 +192,19 @@ body {
     padding: 0;
     font-size: 20px;
     transition: background-color 0.2s ease, opacity 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     color: var(--accent);
 }
+
 .screen-icon-btn.hidden-icon {
     opacity: 0;
     pointer-events: none;
 }
+
 .screen-icon-btn:active {
     transform: scale(0.95);
 }
+
 #copyResultBtn svg {
     width: 22px;
     height: 22px;
@@ -172,7 +218,7 @@ body {
 
 #themeToggle svg {
     width: 22px;
-    height: 22px; 
+    height: 22px;
     stroke: currentColor;
 }
 
@@ -186,8 +232,15 @@ body {
     left: 50%;
 }
 
-#themeToggle .moon { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
-#themeToggle .sun { transform: translate(-50%, -50%) translateY(20px); opacity: 0; }
+#themeToggle .moon {
+    transform: translate(-50%, -50%) translateY(0);
+    opacity: 1;
+}
+
+#themeToggle .sun {
+    transform: translate(-50%, -50%) translateY(20px);
+    opacity: 0;
+}
 
 html[data-theme="dark"] #themeToggle .sun {
     color: #ffc107;
@@ -195,24 +248,41 @@ html[data-theme="dark"] #themeToggle .sun {
 
 html[data-theme="dark"] #themeToggle .sun svg {
     width: 24px;
-    height: 24px; 
-    fill: currentColor; /* Dolgu rengi ekle */
+    height: 24px;
+    fill: currentColor;
+    /* Dolgu rengi ekle */
 }
 
-html[data-theme="dark"] #themeToggle .moon { transform: translate(-50%, -50%) translateY(-20px); opacity: 0; }
-html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) translateY(0); opacity: 1; }
+html[data-theme="dark"] #themeToggle .moon {
+    transform: translate(-50%, -50%) translateY(-20px);
+    opacity: 0;
+}
 
-.pad{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:12px; flex-grow: 1;
-    flex-shrink: 1; min-height: 0; margin-top:auto; padding-bottom: 18px; touch-action: manipulation;
+html[data-theme="dark"] #themeToggle .sun {
+    transform: translate(-50%, -50%) translateY(0);
+    opacity: 1;
+}
+
+.pad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
+    margin-top: auto;
+    padding-bottom: 18px;
+    touch-action: manipulation;
 }
 
 /* Dropdown Menü Stilleri */
 .dropdown {
     position: relative;
     display: inline-block;
-    flex-shrink: 0; /* Üst üste binmeyi engellemek için */
+    flex-shrink: 0;
+    /* Üst üste binmeyi engellemek için */
 }
+
 .dropdown-content {
     display: none;
     position: absolute;
@@ -220,12 +290,13 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
     top: calc(100% + 5px);
     background-color: var(--panel);
     min-width: 180px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 100;
     border-radius: 10px;
     border: 1px solid var(--modal-border);
-    overflow: hidden; 
+    overflow: hidden;
 }
+
 .dropdown-content a {
     color: var(--prose-text);
     padding: 12px 16px;
@@ -233,15 +304,19 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
     display: block;
     font-size: 15px;
 }
+
 .dropdown-content a:hover {
     background-color: var(--key-bg);
 }
+
 .dropdown-content a:not(:last-child) {
     border-bottom: 1px solid var(--modal-border);
 }
+
 .dropdown-content a.destructive {
     color: var(--delete-btn);
 }
+
 .show-dropdown {
     display: block;
 }
@@ -253,7 +328,7 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
     width: 95%;
     display: flex;
     flex-direction: column;
-    max-height: 90vh;
+    max-height: 85vh;
 }
 
 .settings-modal .modal-scroll-content,
@@ -265,6 +340,7 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--muted) transparent;
+    scrollbar-gutter: stable;
 }
 
 .settings-modal .modal-scroll-content::-webkit-scrollbar,
@@ -289,27 +365,44 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
     opacity: 0.8;
 }
 
+/* Kasa kategorileri - masaüstünde de responsive */
+#modalBackdrop .note-filter-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+#modalBackdrop .note-filter-buttons .filter-btn {
+    flex: 1;
+    min-width: calc(33.333% - 6px);
+    max-width: 150px;
+    white-space: nowrap;
+    /* Metnin alt satıra geçmesini engelle */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 6px 4px;
+    /* Padding'i azalt */
+    font-size: 13px;
+    /* Fontu biraz küçült */
+}
+
 @media (max-width: 600px) {
-    /* Mobilde hesap makinesi padding'lerini eşitle */
-    .device {
-        padding-top: 18px;
-        padding-bottom: calc(18px + env(safe-area-inset-bottom));
-    }
+
     .pad {
         padding-bottom: 0;
     }
-    
+
     .modal-backdrop {
         padding: 8px;
     }
-    
+
     #settingsModalBackdrop,
     #infoModalBackdrop,
     #modalBackdrop {
         align-items: center;
         padding: 8px;
     }
-    
+
     /* Tüm modallar için ortak mobil düzeni - hepsi aynı genişlikte */
     .modal,
     .settings-modal,
@@ -324,9 +417,9 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
         height: auto;
         display: flex;
         flex-direction: column;
-        padding: 0;
+        padding: 0 !important;
     }
-    
+
     /* Tüm modallar için ortak header stili */
     .modal-header,
     #modalBackdrop .modal-header,
@@ -340,7 +433,7 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
         align-items: center;
         gap: 10px;
     }
-    
+
     /* Ayarlar ve bilgi modalları header içindeki h3 */
     .settings-modal .modal-header h3,
     .info-modal .modal-header h3 {
@@ -348,122 +441,135 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
         flex-grow: 1;
         text-align: left;
     }
-    
+
     /* Kasa yönetimi header içindeki h3 */
     #modalBackdrop .modal-header h3 {
         margin: 0;
         flex-grow: 1;
     }
-    
+
     /* Kasa yönetimi content */
-    #modalBackdrop #modalContent {
+    /* Kasa yönetimi ve Hakkında content */
+    #modalBackdrop #modalContent,
+    #aboutBackdrop #modalContent {
         flex: 1;
         overflow-y: auto;
-        padding: 12px 16px;
+        padding: 12px 20px;
         min-height: 0;
         -webkit-overflow-scrolling: touch;
         max-height: none;
+        scrollbar-gutter: stable;
     }
-    
+
     /* Ayarlar ve bilgi modalları content */
     .settings-modal .modal-scroll-content,
-    .info-modal .modal-scroll-content {
+    .info-modal .modal-scroll-content,
+    .security-modal .modal-scroll-content {
         flex: 1;
         overflow-y: auto;
-        padding: 12px 16px;
+        padding: 12px 20px;
         min-height: 0;
         -webkit-overflow-scrolling: touch;
+        scrollbar-gutter: stable;
     }
-    
+
     /* Kasa yönetimi modal footer (butonlar) */
-    #modalBackdrop .modal > div:not(.modal-header):not(#modalContent):not(#modalNote) {
+    #modalBackdrop .modal>div:not(.modal-header):not(#modalContent):not(#modalNote) {
         padding: 12px 16px;
         border-top: 1px solid var(--modal-border);
         flex-shrink: 0;
         margin-top: 0;
     }
-    
+
+    /* Security modal footer */
+    .security-footer {
+        padding: 12px 20px;
+        margin-top: 0;
+    }
+
     /* Modal note (hata mesajları) */
     #modalBackdrop .modal #modalNote {
         padding: 8px 16px 12px 16px;
         flex-shrink: 0;
     }
-    
+
     /* Kasa yönetimi - arama alanı ve filtreler */
     #modalBackdrop .search-field {
         margin-bottom: 10px;
     }
-    
+
     #modalBackdrop .note-filter-buttons {
         flex-wrap: wrap;
         gap: 6px !important;
         margin-bottom: 10px !important;
         margin-top: 6px !important;
     }
-    
+
     #modalBackdrop .note-filter-buttons .filter-btn {
         flex: 1;
         min-width: calc(33.333% - 4px);
-        font-size: 13.5px !important;
-        padding: 6px 8px !important;
+        font-size: 12px !important;
+        /* Mobilde fontu daha da küçült */
+        padding: 6px 2px !important;
+        /* Mobilde padding'i minimuma indir */
+        white-space: nowrap;
     }
-    
+
     /* Kasa yönetimi - not listesi */
     #modalBackdrop #messageList {
-        max-height: calc(100vh - 350px) !important;
         margin-bottom: 10px !important;
     }
-    
+
     /* Kasa yönetimi - not öğeleri */
     #modalBackdrop .message-item {
         padding: 10px 5px !important;
     }
-    
+
     #modalBackdrop .view-title {
         font-size: 16px !important;
     }
-    
+
     #modalBackdrop .message-date {
         font-size: 13px !important;
     }
-    
+
     /* Not görüntüleme ekranındaki tarihleri de büyüt */
     #modalBackdrop .note-dates {
         font-size: 14px !important;
     }
-    
+
     #modalBackdrop .note-dates div {
         font-size: 14px !important;
     }
-    
+
     .security-modal {
         width: 100%;
         padding: 16px;
         max-height: calc(100vh - 16px);
     }
-    
-    
-    
+
+
+
     .settings-option {
         padding: 14px 12px;
         gap: 14px;
         margin-bottom: 6px;
     }
-    
+
     .settings-option-icon {
         width: 36px;
         height: 36px;
     }
-    
+
     .settings-option-icon svg {
         width: 20px;
         height: 20px;
     }
-    
+
     .settings-option-title {
         font-size: 15px;
     }
-    
+
     .settings-option-desc {
         font-size: 12px;
     }
@@ -555,215 +661,93 @@ html[data-theme="dark"] #themeToggle .sun { transform: translate(-50%, -50%) tra
     border-color: rgba(220, 53, 69, 0.2);
 }
 
-html[data-theme="dark"] .settings-option-destructive .settings-option-icon {
-    /* Arka plan kaldırıldı */
-}
-
 html[data-theme="dark"] .settings-option-destructive:hover {
     background: rgba(255, 117, 127, 0.08);
     border-color: rgba(255, 117, 127, 0.3);
 }
 
-/* Yapılacaklar Listesi - 2 Renk Paleti */
-.todo-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 20px;
-}
 
-.todo-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px;
-    border-radius: 12px;
-    border: 1px solid var(--modal-border);
-    background: var(--input-bg);
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
 
-.todo-item:hover {
-    border-color: var(--accent);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transform: translateY(-1px);
-}
 
-.todo-item.palette-primary {
-    border-left: 4px solid var(--accent);
-}
-
-.todo-item.palette-secondary {
-    border-left: 4px solid #ff9500;
-}
-
-.todo-checkbox {
-    flex-shrink: 0;
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    border: 2px solid var(--muted);
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2px;
-}
-
-.todo-checkbox:hover {
-    border-color: var(--accent);
-}
-
-.todo-checkbox.checked {
-    background: var(--accent);
-    border-color: var(--accent);
-}
-
-.todo-checkbox.checked::after {
-    content: '✓';
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.todo-item.palette-secondary .todo-checkbox.checked {
-    background: #ff9500;
-    border-color: #ff9500;
-}
-
-.todo-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.todo-text {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--input-text);
-    line-height: 1.5;
-    margin-bottom: 4px;
-}
-
-.todo-item.completed .todo-text {
-    text-decoration: line-through;
-    color: var(--muted);
-    opacity: 0.7;
-}
-
-.todo-meta {
-    font-size: 12px;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.todo-date {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.todo-priority {
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.todo-priority.high {
-    background: rgba(220, 53, 69, 0.1);
-    color: var(--delete-btn);
-}
-
-.todo-priority.medium {
-    background: rgba(255, 149, 0, 0.1);
-    color: #ff9500;
-}
-
-.todo-priority.low {
-    background: rgba(59, 130, 246, 0.1);
-    color: var(--accent);
-}
-
-html[data-theme="dark"] .todo-priority.high {
-    background: rgba(255, 117, 127, 0.15);
-}
-
-html[data-theme="dark"] .todo-priority.medium {
-    background: rgba(255, 149, 0, 0.15);
-}
-
-html[data-theme="dark"] .todo-priority.low {
-    background: rgba(130, 170, 255, 0.15);
-}
-
-button.key{
-    font-size:24px; padding:18px 0; border-radius:18px; border:0;
+button.key {
+    font-size: 24px;
+    padding: 18px 0;
+    border-radius: 18px;
+    border: 0;
     background: var(--key-bg);
-    box-shadow:none; cursor:pointer; 
-    transition:background-color 0.1s;
-    min-height: 60px; 
+    box-shadow: none;
+    cursor: pointer;
+    transition: background-color 0.1s;
+    min-height: 60px;
     color: var(--key-text);
-    -webkit-user-select: none; 
+    -webkit-user-select: none;
     user-select: none;
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     justify-content: center;
     text-align: center;
 }
+
 button.key.func svg {
     width: 24px;
     height: 24px;
     stroke: currentColor;
-    pointer-events: none; /* SVG'nin tıklama olayını engelle */
-}
-button.key.func {
-    display: flex; align-items: center; justify-content: center;
-}
-button.key:active{
-    background: var(--key-active-bg);
-}
-button.key.clear-btn {
-    font-family: "Arial", sans-serif;
-    font-weight: normal; /* Kalınlığı kaldırıp sayı tuşlarıyla aynı yap */
-    font-size: 26px; /* Görsel denge için hafifçe büyüt */
+    pointer-events: none;
+    /* SVG'nin tıklama olayını engelle */
 }
 
-button.op{
+button.key.func {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.key:active {
+    background: var(--key-active-bg);
+}
+
+button.key.clear-btn {
+    font-family: "Arial", sans-serif;
+    font-weight: normal;
+    /* Kalınlığı kaldırıp sayı tuşlarıyla aynı yap */
+    font-size: 26px;
+    /* Görsel denge için hafifçe büyüt */
+}
+
+button.op {
     background: var(--op-key-bg);
-    border:none; 
-    color:var(--accent); 
-    font-weight:600; 
-    font-size: 28px; /* Operatörlerin sayılarla aynı boyutta görünmesi için */
-    display: flex; 
-    align-items: center; 
+    border: none;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 28px;
+    /* Operatörlerin sayılarla aynı boyutta görünmesi için */
+    display: flex;
+    align-items: center;
     justify-content: center;
     text-align: center;
 }
+
 /* Bölme işareti için özel stil */
 button.op[data-key="/"] {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 32px;
     font-weight: 400;
 }
-button.op:active{
+
+button.op:active {
     background: var(--op-key-active-bg);
 }
 
 button.key.comma-key {
-    font-size: 30px; /* Virgülün daha iyi görünmesi için */
+    font-size: 30px;
+    /* Virgülün daha iyi görünmesi için */
 }
 
 button.key.op[data-action="equals"] {
-    background: linear-gradient(to right, #ff9500, #ea580c) !important; 
-    color: #fff !important; 
-    font-weight: 700; 
-    border: none; 
+    background: linear-gradient(to right, #ff9500, #ea580c) !important;
+    color: #fff !important;
+    font-weight: 700;
+    border: none;
     font-size: 28px;
     box-shadow: 0 10px 25px rgba(255, 149, 0, 0.4) !important;
     transition: all 0.3s ease;
@@ -791,7 +775,7 @@ button.key.op[data-action="equals"]:hover {
     transform: scale(1.05);
 }
 
-button.key.op[data-action="equals"]:active { 
+button.key.op[data-action="equals"]:active {
     background: linear-gradient(to right, #e08400, #c2410c) !important;
     transform: scale(0.95);
     box-shadow: 0 5px 15px rgba(255, 149, 0, 0.4) !important;
@@ -804,134 +788,206 @@ button.key.op[data-action="equals"]:active {
     border-radius: 8px;
     padding: 2px 10px;
     display: inline-block;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
     cursor: default;
     user-select: none;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.2;
 }
 
-input[type="password"], textarea, input[type="text"]{
-    padding:12px;border-radius:10px;border:1px solid var(--op-key-bg);font-size:16px;width:100%;
-    background:var(--input-bg); color: var(--input-text);
+input[type="password"],
+textarea,
+input[type="text"] {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--op-key-bg);
+    font-size: 16px;
+    width: 100%;
+    background: var(--input-bg);
+    color: var(--input-text);
     box-sizing: border-box;
 }
-textarea[readonly]{
-    background:var(--input-readonly-bg);
+
+textarea[readonly] {
+    background: var(--input-readonly-bg);
 }
-button.wide{grid-column:span 2}
+
+button.wide {
+    grid-column: span 2
+}
 
 textarea.show-icons {
-    padding-right: 50px !important; 
+    padding-right: 50px !important;
 }
 
-.vault-btn, .delete-btn, .action-toggle-btn{
-    color:#fff; padding:10px 20px; border-radius:10px; border:none; cursor:pointer; font-size: 15px; font-weight: 600;
+.vault-btn,
+.delete-btn,
+.action-toggle-btn {
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
 }
-.vault-btn{background:var(--accent); color: #fff;}
-.delete-btn{background:var(--delete-btn); color: #fff;}
+
+.vault-btn {
+    background: var(--accent);
+    color: #fff;
+}
+
+.delete-btn {
+    background: var(--delete-btn);
+    color: #fff;
+}
 
 .action-toggle-btn {
     background: var(--action-toggle-bg);
     color: var(--action-toggle-text);
     padding: 10px 15px;
 }
+
 .action-toggle-btn:active {
     background: #c0c3c9;
 }
 
-.security-close-btn{
+.security-close-btn {
     background: transparent;
     color: var(--delete-btn);
     border: none;
-    padding: 0; 
-    font-size: 20px; 
-    font-weight: 600; 
+    padding: 0;
+    font-size: 20px;
+    font-weight: 600;
     cursor: pointer;
-    line-height: 1; 
-    width: 32px; 
-    height: 32px; 
-    border-radius: 50%; 
-    display: flex; 
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
     transition: filter 0.15s;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
+
 .security-close-btn:hover {
     filter: brightness(1.2);
 }
+
 .security-close-btn svg {
     width: 26px;
     height: 26px;
 }
 
 #vaultBackBtn {
-    font-size: 24px; 
+    font-size: 24px;
     font-weight: 800;
-    width: 28px; /* Buton boyutunu küçült */
+    width: 28px;
+    /* Buton boyutunu küçült */
     height: 28px;
     background: var(--action-toggle-bg);
     color: var(--action-toggle-text);
 }
+
 #vaultBackBtn:hover {
     background: var(--key-active-bg);
 }
+
 #vaultBackBtn svg {
-    width: 18px; /* İkonu orantılı olarak küçült */
+    width: 18px;
+    /* İkonu orantılı olarak küçült */
     height: 18px;
     stroke: currentColor;
     stroke-width: 2.5;
 }
 
-.link-like{background:transparent;border:0;color:var(--accent);cursor:pointer;padding:0;font-size:15px}
-.note{font-size:14px;color:var(--muted);margin-top:8px}
-.note.error{color:var(--error);font-weight:600}
-.note.warning {color: var(--delete-btn); font-weight: 600;} 
-.hidden { display: none !important; }
-.info-btn { 
-    background: transparent; 
-    border: none; 
-    color: var(--accent); 
-    cursor: pointer; 
-    font-size: 20px; 
+.link-like {
+    background: transparent;
+    border: 0;
+    color: var(--accent);
+    cursor: pointer;
     padding: 0;
-    width: 32px; 
-    height: 32px; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
+    font-size: 15px
+}
+
+.note {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px
+}
+
+.note.error {
+    color: var(--error);
+    font-weight: 600
+}
+
+.note.warning {
+    color: var(--delete-btn);
+    font-weight: 600;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.info-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
     justify-content: center;
     transition: background-color 0.15s;
-    font-style: normal; 
+    font-style: normal;
     font-weight: 600;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
+
 .info-btn:hover {
     background: var(--key-active-bg);
 }
+
 .info-btn svg {
     width: 22px;
     height: 22px;
     stroke: currentColor;
-    fill: none; /* Bazı ikonlar fill kullanabilir, stroke'u zorlamak için */
+    fill: none;
+    /* Bazı ikonlar fill kullanabilir, stroke'u zorlamak için */
 }
 
-.copy-container { 
-    position: relative; 
+.copy-container {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 8px; 
+    gap: 8px;
 }
-.icon-btn{
-    background: transparent; color: var(--accent); border: none; 
-    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-    padding: 0; border-radius:8px; cursor:pointer; font-size: 22px; 
-    transition:color 0.1s; 
+
+.icon-btn {
+    background: transparent;
+    color: var(--accent);
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 22px;
+    transition: color 0.1s;
     /* position: absolute; kaldırıldı */
     z-index: 10;
 }
+
 .icon-actions {
     position: absolute;
     right: 5px;
@@ -939,22 +995,28 @@ textarea.show-icons {
     display: flex;
     gap: 5px;
 }
-.icon-btn.disabled{color:#cfd4dc;cursor:not-allowed;}
+
+.icon-btn.disabled {
+    color: #cfd4dc;
+    cursor: not-allowed;
+}
 
 .copy-btn svg {
     width: 22px;
     height: 22px;
 }
+
 .visibility-btn svg {
     width: 22px;
     height: 22px;
 }
 
 
-.security-modal { 
-    text-align: left; 
-    padding-top: 15px; 
+.security-modal {
+    text-align: left;
+    padding-top: 15px;
 }
+
 /* Modal başlığı en büyük olmalı - .modal h3 ile kontrol ediliyor */
 .security-modal h2 {
     color: var(--input-text);
@@ -963,15 +1025,17 @@ textarea.show-icons {
     margin: 0 0 20px 0;
     line-height: 1.3;
 }
+
 /* İçerik başlıkları modal başlığından küçük olmalı */
 .security-modal .modal-scroll-content h3 {
-    color: var(--input-text); 
-    font-size: 18px; 
-    margin: 24px 0 10px 0; 
+    color: var(--input-text);
+    font-size: 18px;
+    margin: 24px 0 10px 0;
     font-weight: 700;
     padding: 0;
     line-height: 1.4;
 }
+
 .security-modal .modal-scroll-content h4 {
     color: var(--accent);
     font-size: 16px;
@@ -979,6 +1043,7 @@ textarea.show-icons {
     font-weight: 600;
     line-height: 1.4;
 }
+
 .security-modal .modal-scroll-content h5 {
     color: var(--input-text);
     font-size: 14px;
@@ -986,13 +1051,15 @@ textarea.show-icons {
     font-weight: 600;
     line-height: 1.4;
 }
-.security-modal p { 
-    font-size: 15px; 
+
+.security-modal p {
+    font-size: 15px;
     color: var(--prose-text);
-    line-height: 1.6; 
-    margin-top: 0; 
+    line-height: 1.6;
+    margin-top: 0;
     margin-bottom: 16px;
 }
+
 .security-modal ul,
 .security-modal ol {
     font-size: 15px;
@@ -1001,19 +1068,23 @@ textarea.show-icons {
     margin: 12px 0 16px 0;
     padding-left: 24px;
 }
+
 .security-modal li {
     margin-bottom: 8px;
 }
+
 .security-modal hr {
     border: none;
     border-top: 1px solid var(--modal-border);
     margin: 24px 0;
 }
+
 .security-modal strong.security-highlight,
-.security-modal p strong { 
+.security-modal p strong {
     color: var(--security-highlight-text);
     font-weight: 700;
 }
+
 .security-footer {
     border-top: 1px solid var(--modal-border);
     padding-top: 10px;
@@ -1021,13 +1092,15 @@ textarea.show-icons {
     font-size: 13px;
     color: var(--muted);
     text-align: center;
-    line-height: 1.6; 
+    line-height: 1.6;
 }
+
 .security-footer a {
     color: var(--accent);
     text-decoration: none;
     font-weight: 600;
 }
+
 .no-recovery-warning {
     background-color: rgba(227, 52, 47, 0.1);
     border: 1px solid var(--error);
@@ -1039,10 +1112,12 @@ textarea.show-icons {
     line-height: 1.4;
     font-weight: 600;
 }
+
 .no-recovery-warning .confirm-icon.warning svg {
     width: 20px;
     height: 20px;
 }
+
 .no-recovery-warning strong {
     color: var(--error);
 }
@@ -1064,6 +1139,13 @@ textarea.show-icons {
 
 .modal-scroll-content::-webkit-scrollbar-thumb:hover {
     opacity: 0.8;
+}
+
+/* Add scrollbar-gutter to info modal */
+#securityBackdrop .modal-scroll-content,
+#termsBackdrop .modal-scroll-content,
+#howToUseBackdrop .modal-scroll-content {
+    scrollbar-gutter: stable both-edges;
 }
 
 /* Radio Options Group */
@@ -1098,8 +1180,8 @@ textarea.show-icons {
     accent-color: var(--accent);
 }
 
-.radio-label input[type="radio"]:checked ~ .theme-option-content span,
-.radio-label input[type="radio"]:checked + span {
+.radio-label input[type="radio"]:checked~.theme-option-content span,
+.radio-label input[type="radio"]:checked+span {
     font-weight: 600;
     color: var(--accent);
 }
@@ -1135,7 +1217,7 @@ textarea.show-icons {
     stroke-width: 1.5;
 }
 
-.radio-label input[type="radio"]:checked ~ .theme-option-content .theme-option-icon {
+.radio-label input[type="radio"]:checked~.theme-option-content .theme-option-icon {
     color: var(--accent);
 }
 
@@ -1143,23 +1225,28 @@ textarea.show-icons {
     position: relative;
     margin-bottom: 15px;
 }
+
 .search-field input {
     width: 100%;
-    padding-left: 35px; /* İkon için boşluk */
+    padding-left: 35px;
+    /* İkon için boşluk */
 }
+
 .search-field .search-icon {
     position: absolute;
     left: 12px;
-    top: 50%; 
-    transform: translateY(-50%); 
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--muted);
 }
+
 .search-field .search-icon svg {
     width: 18px;
     height: 18px;
 }
 
 @media (max-height: 700px) {
+
     #securityBackdrop .modal.security-modal,
     #termsBackdrop .modal.security-modal,
     #howToUseBackdrop .modal.security-modal {
@@ -1167,6 +1254,7 @@ textarea.show-icons {
         display: flex;
         flex-direction: column;
     }
+
     #securityBackdrop .modal-scroll-content,
     #termsBackdrop .modal-scroll-content,
     #howToUseBackdrop .modal-scroll-content {
@@ -1181,64 +1269,77 @@ textarea.show-icons {
     margin-bottom: 15px;
     text-align: center;
 }
+
 .welcome-logo svg {
     width: 80px;
     height: 80px;
     border-radius: 18px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
     transition: box-shadow 0.2s ease;
 }
+
 html[data-theme="dark"] .welcome-logo svg {
     box-shadow: var(--logo-shadow);
 }
 
 .welcome-modal h3 {
-    color: var(--accent); 
-    font-size: 26px; 
-    font-weight: 800; 
+    color: var(--accent);
+    font-size: 26px;
+    font-weight: 800;
     margin-bottom: 25px;
     margin-top: 0;
     text-align: center;
 }
+
 .welcome-features {
     text-align: left;
     margin-bottom: 25px;
 }
+
 .feature-item {
     margin-bottom: 15px;
 }
+
 .feature-item h4 {
     margin: 0 0 3px 0;
     font-size: 16px;
     color: var(--input-text);
     font-weight: 700;
 }
+
 .welcome-modal p {
-    font-size: 15px; 
+    font-size: 15px;
     color: var(--prose-text);
-    line-height: 1.5; 
+    line-height: 1.5;
     margin: 0;
 }
+
 .welcome-instruction {
-    font-size: 16px; 
-    color: var(--prose-text); 
-    line-height: 1.5; 
-    margin-bottom: 20px; 
-    padding: 10px; 
+    font-size: 16px;
+    color: var(--prose-text);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding: 10px;
     text-align: center;
     background-color: var(--key-bg);
     border-radius: 10px;
 }
-.welcome-icon svg { width: 22px; height: 22px; color: var(--accent); }
+
+.welcome-icon svg {
+    width: 22px;
+    height: 22px;
+    color: var(--accent);
+}
 
 .welcome-secret {
-    font-size: 18px; 
-    font-weight: 700; 
-    color: var(--delete-btn); 
-    display: block; 
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--delete-btn);
+    display: block;
     margin: 15px 0 10px 0;
     padding: 0 5px;
 }
+
 .welcome-actions {
     display: flex;
     justify-content: space-between;
@@ -1247,12 +1348,17 @@ html[data-theme="dark"] .welcome-logo svg {
     padding-top: 10px;
     margin-top: 15px;
 }
+
 .checkbox-field {
-    display: flex; align-items: center; gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
     user-select: none;
-    font-size: 14px; color: var(--prose-text);
+    font-size: 14px;
+    color: var(--prose-text);
 }
+
 .checkbox-field input[type="checkbox"] {
     width: 16px;
     height: 16px;
@@ -1271,35 +1377,56 @@ html[data-theme="dark"] .welcome-logo svg {
     opacity: 1;
     transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
 }
+
 .splash-screen.hidden {
     opacity: 0;
     visibility: hidden;
 }
-.splash-logo svg, #welcome-page .clay-shadow svg {
+
+.splash-logo svg,
+#welcome-page .clay-shadow svg {
     width: 120px;
     height: 120px;
     border-radius: 28px;
-    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.1));
     animation: splash-pop 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
+
 @keyframes splash-pop {
-    0% { transform: scale(0.8); opacity: 0; }
-    60% { transform: scale(1.05); opacity: 1; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
-html[data-theme="dark"] .splash-logo svg, html[data-theme="dark"] #welcome-page .clay-shadow svg {
-    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.3));
+
+html[data-theme="dark"] .splash-logo svg,
+html[data-theme="dark"] #welcome-page .clay-shadow svg {
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.3));
 }
 
 /* Welcome Page Animations */
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0px) translateX(0);
     }
+
     50% {
         transform: translateY(-20px) translateX(10px);
     }
 }
+
 .animate-float {
     animation: float 6s ease-in-out infinite;
 }
@@ -1308,8 +1435,9 @@ html[data-theme="dark"] .splash-logo svg, html[data-theme="dark"] #welcome-page 
 .welcome-page {
     position: fixed;
     inset: 0;
-    background-color: var(--bg); 
-    display: block; /* Flex'ten block'a çevirerek ortalamayı kaldırıyoruz */
+    background-color: var(--bg);
+    display: block;
+    /* Flex'ten block'a çevirerek ortalamayı kaldırıyoruz */
     z-index: 150;
     box-sizing: border-box;
     padding: 0;
@@ -1317,18 +1445,23 @@ html[data-theme="dark"] .splash-logo svg, html[data-theme="dark"] #welcome-page 
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease-in, visibility 0.4s;
-    text-align: center; /* text-align'i visible class'ından bağımsız hale getir */
+    text-align: center;
+    /* text-align'i visible class'ından bağımsız hale getir */
 }
+
 .welcome-page.visible {
     opacity: 1;
     visibility: visible;
 }
-.welcome-page.visible .welcome-content > * {
+
+.welcome-page.visible .welcome-content>* {
     opacity: 1;
     transform: translateY(0);
 }
+
 .welcome-content {
-    margin: auto; /* İçeriği dikeyde ortalar, sığmazsa üste yaslanır */
+    margin: auto;
+    /* İçeriği dikeyde ortalar, sığmazsa üste yaslanır */
     max-width: 500px;
     width: 100%;
     text-align: center;
@@ -1336,11 +1469,13 @@ html[data-theme="dark"] .splash-logo svg, html[data-theme="dark"] #welcome-page 
     flex-direction: column;
     align-items: center;
 }
-.welcome-content > * {
+
+.welcome-content>* {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .welcome-header {
     display: flex;
     align-items: center;
@@ -1349,26 +1484,34 @@ html[data-theme="dark"] .splash-logo svg, html[data-theme="dark"] #welcome-page 
     margin-bottom: 10px;
     transition-delay: 0.1s;
 }
+
 .welcome-logo {
     flex-shrink: 0;
 }
+
 .welcome-branding {
     text-align: left;
 }
+
 .welcome-app-name {
+    font-size: 2.5rem;
+    /* Fallback for older browsers */
     font-size: clamp(2rem, 8vw, 2.5rem);
     font-weight: 900;
     color: var(--input-text);
     margin: 0;
     line-height: 1;
 }
+
 .welcome-title {
-    color: var(--input-text);
+    font-size: 1.1rem;
+    /* Fallback for older browsers */
     font-size: clamp(1rem, 4vw, 1.1rem);
     font-weight: 800;
     line-height: 1.1;
     margin: 5px 0 0 0;
 }
+
 .welcome-subtitle {
     color: var(--muted);
     font-size: 0.95rem;
@@ -1377,16 +1520,19 @@ html[data-theme="dark"] .splash-logo svg, html[data-theme="dark"] #welcome-page 
     line-height: 1.6;
     transition-delay: 0.2s;
 }
+
 .welcome-features {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
     width: 100%;
     margin-bottom: 35px;
-    text-align: left; 
+    text-align: left;
     transition-delay: 0.4s;
-    justify-content: center; /* Kartları ortala */
+    justify-content: center;
+    /* Kartları ortala */
 }
+
 .feature-item {
     flex: 1;
     background: var(--panel);
@@ -1394,48 +1540,59 @@ html[data-theme="dark"] .splash-logo svg, html[data-theme="dark"] #welcome-page 
     border-radius: 16px;
     border: 1px solid var(--modal-border);
     min-width: 200px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
+
 html[data-theme="dark"] .feature-item {
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
+
 .feature-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     border-color: var(--accent);
 }
+
 .feature-icon {
     color: var(--accent);
     margin-bottom: 8px;
 }
+
 .feature-icon svg {
     width: 24px;
     height: 24px;
 }
+
 .feature-item h4 {
     margin: 0 0 5px 0;
     font-size: 1rem;
     color: var(--input-text);
     font-weight: 700;
 }
+
 .feature-item p {
     font-size: 0.9rem;
     color: var(--muted);
     line-height: 1.5;
     margin: 0;
 }
+
 .welcome-actions {
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    gap: 15px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
     width: 100%;
-    margin-top: 40px; /* Bilgi kartlarıyla arasındaki boşluğu artır */
+    margin-top: 40px;
+    /* Bilgi kartlarıyla arasındaki boşluğu artır */
     transition-delay: 0.5s;
     max-width: 350px;
-    margin-left: auto; margin-right: auto; /* Buton bloğunu yatayda ortala */
+    margin-left: auto;
+    margin-right: auto;
+    /* Buton bloğunu yatayda ortala */
 }
+
 .welcome-start-btn {
     background-color: #ff9500;
     color: #fff;
@@ -1444,16 +1601,18 @@ html[data-theme="dark"] .feature-item {
     font-size: 1.05rem;
     padding: 15px 30px;
     border-radius: 12px;
-    width: 100%; 
+    width: 100%;
     box-shadow: 0 5px 15px rgba(255, 149, 0, 0.25);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
     -webkit-user-select: none;
     user-select: none;
 }
+
 .welcome-start-btn:active {
     background-color: #e08400;
 }
+
 .welcome-start-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(255, 149, 0, 0.3);
@@ -1462,6 +1621,7 @@ html[data-theme="dark"] .feature-item {
 html[data-theme="dark"] .welcome-start-btn {
     box-shadow: 0 5px 20px rgba(255, 149, 0, 0.3);
 }
+
 html[data-theme="dark"] .welcome-start-btn:hover {
     box-shadow: 0 8px 25px rgba(255, 149, 0, 0.4);
 }
@@ -1470,13 +1630,16 @@ html[data-theme="dark"] .welcome-start-btn:hover {
     box-shadow: 0 5px 20px rgba(255, 149, 0, 0.4), 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.7);
     transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .orange-glow:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(255, 149, 0, 0.5), 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.7);
 }
+
 html[data-theme="dark"] .orange-glow {
     box-shadow: 0 5px 20px rgba(255, 149, 0, 0.4), 5px 5px 15px rgba(0, 0, 0, 0.4), -5px -5px 15px rgba(255, 255, 255, 0.08);
 }
+
 html[data-theme="dark"] .orange-glow:hover {
     box-shadow: 0 8px 25px rgba(255, 149, 0, 0.5), 5px 5px 15px rgba(0, 0, 0, 0.4), -5px -5px 15px rgba(255, 255, 255, 0.08);
 }
@@ -1486,47 +1649,60 @@ html[data-theme="dark"] .orange-glow:hover {
 /* Welcome Page Ekstra Bilgi Bölümü */
 .welcome-extra-info {
     width: 100%;
-    max-width: 900px; /* Daha geniş bir alana yayılabilir */
-    margin-top: 40px; /* Özellikler ile arasındaki boşluğu artır */
-    padding-top: 0; 
+    max-width: 900px;
+    /* Daha geniş bir alana yayılabilir */
+    margin-top: 40px;
+    /* Özellikler ile arasındaki boşluğu artır */
+    padding-top: 0;
     transition-delay: 0.5s;
 }
+
 .welcome-extra-info h3 {
     font-size: 1.4rem;
     color: var(--input-text);
     margin: 0 0 20px 0;
 }
+
 .info-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
 }
+
 .final-pitch {
     text-align: center;
     max-width: 480px;
     margin: 0 auto;
 }
+
 .final-pitch p {
-    font-size: 0.95rem; color: var(--muted); line-height: 1.6; margin: 0 0 15px 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 15px 0;
 }
+
 .info-item {
     background: var(--panel);
     padding: 20px;
     border-radius: 16px;
     border: 1px solid transparent;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
+
 .info-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
 }
+
 .info-item h4 {
     font-size: 1rem;
     font-weight: 700;
     color: var(--accent);
     margin: 0 0 5px 0;
 }
+
 .info-item p {
     font-size: 0.9rem;
     color: var(--muted);
@@ -1539,11 +1715,14 @@ html[data-theme="dark"] .orange-glow:hover {
     max-width: 480px;
     margin-top: 25px;
     display: flex;
-    margin-left: auto; margin-right: auto; /* Footer'ı yatayda ortala */
+    margin-left: auto;
+    margin-right: auto;
+    /* Footer'ı yatayda ortala */
     align-items: center;
     justify-content: space-between;
     transition-delay: 0.6s;
 }
+
 .copyright-text {
     font-size: 0.8rem;
     color: var(--muted);
@@ -1551,6 +1730,7 @@ html[data-theme="dark"] .orange-glow:hover {
     margin: 0;
     flex-grow: 1;
 }
+
 .welcome-footer-link {
     font-weight: 600;
     color: var(--muted);
@@ -1562,12 +1742,15 @@ html[data-theme="dark"] .orange-glow:hover {
     font-size: inherit;
     transition: color 0.2s ease;
 }
+
 .welcome-footer-link:hover {
     color: #2563eb;
 }
+
 html[data-theme="dark"] .welcome-footer-link {
     color: rgba(168, 178, 209, 1);
 }
+
 html[data-theme="dark"] .welcome-footer-link:hover {
     color: #60a5fa;
 }
@@ -1575,31 +1758,40 @@ html[data-theme="dark"] .welcome-footer-link:hover {
 /* Küçük Yüksekliğe Sahip Ekranlar İçin Optimizasyon */
 @media (max-height: 700px) {
     .welcome-page {
-        align-items: flex-start; /* İçerik sığmazsa yukarıdan başlasın */
+        align-items: flex-start;
+        /* İçerik sığmazsa yukarıdan başlasın */
     }
+
     .welcome-logo svg {
         width: 60px;
         height: 60px;
     }
+
     .welcome-app-name {
         font-size: clamp(1.8rem, 8vw, 2.2rem);
     }
+
     .welcome-title {
         font-size: clamp(0.9rem, 4vw, 1rem);
     }
+
     .welcome-subtitle {
         margin-bottom: 20px;
     }
+
     .welcome-features {
         margin-bottom: 25px;
     }
+
     .welcome-start-btn {
         font-size: 0.85rem;
         padding: 10px 22px;
     }
+
     .welcome-footer {
         margin-top: 25px;
     }
+
     .copyright-text {
         font-size: 0.75rem;
     }
@@ -1610,8 +1802,10 @@ html[data-theme="dark"] .welcome-footer-link:hover {
         grid-template-columns: repeat(2, 1fr);
         text-align: left;
     }
+
     .welcome-features {
-        flex-wrap: nowrap; /* Kartların yan yana kalmasını sağla */
+        flex-wrap: nowrap;
+        /* Kartların yan yana kalmasını sağla */
         text-align: left;
     }
 }
@@ -1623,22 +1817,33 @@ html[data-theme="dark"] .welcome-footer-link:hover {
     gap: 10px;
     color: var(--prose-text);
     text-align: left;
-    font-size: 16px; 
-    line-height: 1.5; 
+    font-size: 16px;
+    line-height: 1.5;
     margin: 0 0 20px 0;
 }
+
 .confirm-icon {
     flex-shrink: 0;
 }
+
 .confirm-icon svg {
     width: 24px;
     height: 24px;
 }
-.confirm-icon.destructive { color: var(--delete-btn); }
-.confirm-icon.warning { color: var(--delete-btn); } /* Veya farklı bir uyarı rengi */
+
+.confirm-icon.destructive {
+    color: var(--delete-btn);
+}
+
+.confirm-icon.warning {
+    color: var(--delete-btn);
+}
+
+/* Veya farklı bir uyarı rengi */
 #confirmModal p .confirm-icon {
     margin-top: 3px;
 }
+
 #confirmModal p strong {
     color: var(--delete-btn);
     font-weight: 700;
@@ -1663,13 +1868,15 @@ html[data-theme="dark"] .welcome-footer-link:hover {
     justify-content: center;
     width: 100%;
 }
+
 .about-logo svg {
     width: 90px;
     height: 90px;
     border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.2s ease;
 }
+
 html[data-theme="dark"] .about-logo svg {
     box-shadow: var(--logo-shadow);
 }
@@ -1694,15 +1901,18 @@ html[data-theme="dark"] .about-logo svg {
 .about-footer {
     border-top: 1px solid var(--modal-border);
     padding-top: 15px;
-    margin-top: auto; /* Footer'ı en alta iter */
+    margin-top: auto;
+    /* Footer'ı en alta iter */
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .developer-info {
     text-align: left;
 }
+
 .footer-label {
     display: block;
     font-size: 11px;
@@ -1712,34 +1922,42 @@ html[data-theme="dark"] .about-logo svg {
     color: var(--muted);
     text-align: left;
 }
+
 .developer-name {
     font-weight: 600;
     color: var(--input-text);
     font-size: 15px;
     text-align: left;
 }
+
 .developer-name-link {
     text-decoration: none;
 }
+
 .developer-name-link .developer-name {
     transition: color 0.2s ease;
 }
+
 .developer-name-link:hover .developer-name {
     color: var(--accent);
 }
+
 .all-links {
     display: flex;
     align-items: center;
     gap: 18px;
 }
+
 .all-links a {
     color: var(--muted);
     transition: color 0.2s ease;
     display: inline-flex;
 }
+
 .all-links a:hover {
     color: var(--accent);
 }
+
 .all-links svg {
     width: 24px;
     height: 24px;
@@ -1748,30 +1966,42 @@ html[data-theme="dark"] .about-logo svg {
 @media (min-width: 600px) {
     .device {
         max-width: 400px;
-        height: auto; /* Yüksekliği içeriğe göre ayarla */
-        min-height: 600px; /* Minimum yüksekliği koru */
-        max-height: 95vh; /* Ekran yüksekliğinin %95'ini geçmesin */
+        height: auto;
+        /* Yüksekliği içeriğe göre ayarla */
+        min-height: 600px;
+        /* Minimum yüksekliği koru */
+        max-height: 95vh;
+        /* Ekran yüksekliğinin %95'ini geçmesin */
         border-radius: 24px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.05);
     }
+
     html[data-theme="dark"] .device {
-        border-color: rgba(255,255,255,0.1);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     }
+
     .modal {
         transform: scale(0.85);
     }
+
     .pad {
-        flex-grow: 1; /* Tuş takımının esneyerek boşluğu doldurmasını sağla */
-        padding-bottom: 20px; /* Alt boşluğu sabitle */
-        gap: 15px; /* Tuşlar arası boşluğu ayarla */
+        flex-grow: 1;
+        /* Tuş takımının esneyerek boşluğu doldurmasını sağla */
+        padding-bottom: 20px;
+        /* Alt boşluğu sabitle */
+        gap: 15px;
+        /* Tuşlar arası boşluğu ayarla */
     }
+
     /* Masaüstü görünümünde, transform uygulanan .device elementi fixed pozisyonlamayı bozduğu için,
        banner'ları .device'ın dışına taşıyormuş gibi davranmasını sağlıyoruz. */
     .update-banner {
-        transform: none; /* .device'ın scale transform'unu sıfırla */
-        width: 100%; /* Tam genişlik kapla */
+        transform: none;
+        /* .device'ın scale transform'unu sıfırla */
+        width: 100%;
+        /* Tam genişlik kapla */
     }
 }
 
@@ -1787,6 +2017,7 @@ header svg,
 
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
+
     header svg,
     .welcome-page header svg {
         width: 100% !important;
@@ -1796,34 +2027,58 @@ header svg,
     }
 }
 
-.modal-backdrop{position:fixed;inset:0;background:rgba(10,12,20,0.55);display:none;align-items:center;justify-content:center;z-index:50;backdrop-filter: blur(3px)}
-.modal{
-    background:var(--panel);
-    border-radius:18px; 
-    padding:20px; 
-    width:95%; 
-    max-width:400px; 
-    box-shadow:0 10px 20px rgba(0,0,0,0.2);
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 12, 20, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    backdrop-filter: blur(3px)
+}
+
+/* Ayarlar ve Bilgi modalları için şeffaf backdrop (kasa modalı üzerinde açılınca çift koyuluk olmasın) */
+#settingsModalBackdrop,
+#infoModalBackdrop {
+    background: rgba(10, 12, 20, 0.55);
+    backdrop-filter: blur(3px);
+}
+
+.modal {
+    background: var(--panel);
+    border-radius: 18px;
+    padding: 20px;
+    width: 95%;
+    max-width: 400px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 /* Security modal'lar için özel padding - footer ile düzgün çalışması için */
-.modal h3{margin:0; color:var(--input-text); font-size:20px; font-weight: 700;}
-.modal-header { 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-    margin-bottom: 15px; 
+.modal h3 {
+    margin: 0;
+    color: var(--input-text);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
 }
 
 /* Ana modal içeriği için kaydırma */
 #modalContent {
-    max-height: calc(90vh - 250px);
+    max-height: calc(85vh - 100px);
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: var(--muted) transparent;
+    scrollbar-gutter: stable;
 }
 
 #modalContent::-webkit-scrollbar {
@@ -1848,7 +2103,7 @@ header svg,
 #aboutBackdrop .modal {
     display: flex;
     flex-direction: column;
-    max-height: 90vh;
+    max-height: 85vh;
 }
 
 #aboutBackdrop #modalContent {
@@ -1859,6 +2114,7 @@ header svg,
     scrollbar-width: thin;
     scrollbar-color: var(--muted) transparent;
     /* İçerik sığıyorsa kaydırma çubuğu görünmez */
+    scrollbar-gutter: stable;
 }
 
 /* Küçük ekranlarda hakkında modalı optimizasyonu */
@@ -1867,33 +2123,33 @@ header svg,
         max-height: 95vh;
         padding: 15px;
     }
-    
+
     #aboutBackdrop .modal-header {
         margin-bottom: 10px;
     }
-    
+
     .about-logo svg {
         width: 75px;
         height: 75px;
         margin-bottom: 8px;
     }
-    
+
     .about-title {
         font-size: 24px;
         margin-bottom: 4px;
     }
-    
+
     .about-version {
         font-size: 14px;
         margin-bottom: 12px;
     }
-    
+
     #aboutBackdrop #modalContent p {
         font-size: 14px;
         margin-bottom: 12px;
         line-height: 1.4;
     }
-    
+
     .about-footer {
         padding-top: 10px;
         margin-top: 8px;
@@ -1918,7 +2174,13 @@ header svg,
     opacity: 0.8;
 }
 
-.field{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;padding: 0 1.5px;}
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 0 1.5px;
+}
 
 /* Not Tarihleri Stilleri */
 .note-dates {
@@ -1944,6 +2206,12 @@ header svg,
     line-height: 1.5;
 }
 
+/* Message Item Icons Resize */
+.message-item-content svg {
+    width: 16px !important;
+    height: 16px !important;
+}
+
 /* NOT İÇERİK ALANI STİL DÜZELTMESİ */
 /* Bu kural, 'textarea' elementinin tema renklerini doğru kullanmasını sağlar. */
 .modal .field textarea {
@@ -1963,17 +2231,29 @@ header svg,
     margin-right: 0 !important;
 }
 
-input[type="password"], textarea, input[type="text"]{
-    padding:12px;border-radius:10px;border:1px solid #e7eaf0;font-size:15px;width:calc(100% - 3px);
-    background:var(--input-bg); color: var(--input-text);
+input[type="password"],
+textarea,
+input[type="text"] {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e7eaf0;
+    font-size: 15px;
+    width: calc(100% - 3px);
+    background: var(--input-bg);
+    color: var(--input-text);
     border-color: var(--op-key-bg);
     box-sizing: border-box;
 }
-textarea[readonly]{
-    background:var(--input-readonly-bg); color:var(--input-text); 
-    resize:vertical; border-color:#e6eaf3; 
+
+textarea[readonly] {
+    background: var(--input-readonly-bg);
+    color: var(--input-text);
+    resize: vertical;
+    overflow: auto;
+    border-color: #e6eaf3;
     border-color: var(--op-key-bg);
 }
+
 html[data-theme="dark"] input::placeholder,
 html[data-theme="dark"] textarea::placeholder {
     color: var(--muted);
@@ -1981,115 +2261,176 @@ html[data-theme="dark"] textarea::placeholder {
 }
 
 textarea.show-icons {
-    padding-right: 50px !important; 
+    padding-right: 50px !important;
 }
 
-.vault-btn, .delete-btn, .action-toggle-btn{
-    color:#fff; padding:10px 20px; border-radius:10px; border:none; cursor:pointer; font-size: 15px; font-weight: 600;
+.vault-btn,
+.delete-btn,
+.action-toggle-btn {
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
 }
-.vault-btn{background:var(--accent); color: #fff;}
-.delete-btn{background:var(--delete-btn); color: #fff;} 
+
+.vault-btn {
+    background: var(--accent);
+    color: #fff;
+}
+
+.delete-btn {
+    background: var(--delete-btn);
+    color: #fff;
+}
 
 .action-toggle-btn {
     background: var(--action-toggle-bg);
     color: var(--action-toggle-text);
     padding: 10px 15px;
 }
+
 .action-toggle-btn:active {
     background: #c0c3c9;
 }
 
-.security-close-btn{
+.security-close-btn {
     background: transparent;
     color: var(--delete-btn);
     border: none;
-    padding: 0; 
-    font-size: 20px; 
-    font-weight: 600; 
+    padding: 0;
+    font-size: 20px;
+    font-weight: 600;
     cursor: pointer;
-    line-height: 1; 
-    width: 32px; 
-    height: 32px; 
-    border-radius: 50%; 
-    display: flex; 
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
     transition: filter 0.15s;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
+
 .security-close-btn:hover {
     filter: brightness(1.2);
 }
+
 .security-close-btn svg {
     width: 26px;
     height: 26px;
 }
 
 #vaultBackBtn {
-    font-size: 24px; 
+    font-size: 24px;
     font-weight: 800;
-    width: 28px; /* Buton boyutunu küçült */
+    width: 28px;
+    /* Buton boyutunu küçült */
     height: 28px;
     background: var(--action-toggle-bg);
     color: var(--action-toggle-text);
 }
+
 #vaultBackBtn:hover {
     background: var(--key-active-bg);
 }
+
 #vaultBackBtn svg {
-    width: 18px; /* İkonu orantılı olarak küçült */
+    width: 18px;
+    /* İkonu orantılı olarak küçült */
     height: 18px;
     stroke: currentColor;
     stroke-width: 2.5;
 }
 
-.link-like{background:transparent;border:0;color:var(--accent);cursor:pointer;padding:0;font-size:15px}
-.note{font-size:14px;color:var(--muted);margin-top:8px}
-.note.error{color:var(--error);font-weight:600} 
-.note.warning {color: var(--delete-btn); font-weight: 600;} 
-.hidden { display: none !important; }
-.info-btn { 
-    background: transparent; 
-    border: none; 
-    color: var(--accent); 
-    cursor: pointer; 
-    font-size: 20px; 
+.link-like {
+    background: transparent;
+    border: 0;
+    color: var(--accent);
+    cursor: pointer;
     padding: 0;
-    width: 32px; 
-    height: 32px; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
+    font-size: 15px
+}
+
+.note {
+    font-size: 14px;
+    color: var(--muted);
+    margin-top: 8px
+}
+
+.note.error {
+    color: var(--error);
+    font-weight: 600
+}
+
+.note.warning {
+    color: var(--delete-btn);
+    font-weight: 600;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.info-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
     justify-content: center;
     transition: background-color 0.15s;
-    font-style: normal; 
+    font-style: normal;
     font-weight: 600;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
+
 .info-btn:hover {
     background: var(--key-active-bg);
 }
+
 .info-btn svg {
     width: 22px;
     height: 22px;
     stroke: currentColor;
-    fill: none; /* Bazı ikonlar fill kullanabilir, stroke'u zorlamak için */
+    fill: none;
+    /* Bazı ikonlar fill kullanabilir, stroke'u zorlamak için */
 }
 
-.copy-container { 
-    position: relative; 
+.copy-container {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 8px; 
+    gap: 8px;
 }
-.icon-btn{
-    background: transparent; color: var(--accent); border: none; 
-    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
-    padding: 0; border-radius:8px; cursor:pointer; font-size: 22px; 
-    transition:color 0.1s; 
+
+.icon-btn {
+    background: transparent;
+    color: var(--accent);
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 22px;
+    transition: color 0.1s;
     /* position: absolute; kaldırıldı */
     z-index: 10;
 }
+
 .icon-actions {
     position: absolute;
     right: 5px;
@@ -2097,12 +2438,17 @@ textarea.show-icons {
     display: flex;
     gap: 5px;
 }
-.icon-btn.disabled{color:#cfd4dc;cursor:not-allowed;}
+
+.icon-btn.disabled {
+    color: #cfd4dc;
+    cursor: not-allowed;
+}
 
 .copy-btn svg {
     width: 22px;
     height: 22px;
 }
+
 .visibility-btn svg {
     width: 22px;
     height: 22px;
@@ -2130,23 +2476,28 @@ textarea.show-icons {
     position: relative;
     margin-bottom: 15px;
 }
+
 .search-field input {
     width: 100%;
-    padding-left: 35px; /* İkon için boşluk */
+    padding-left: 35px;
+    /* İkon için boşluk */
 }
+
 .search-field .search-icon {
     position: absolute;
     left: 12px;
-    top: 50%; 
-    transform: translateY(-50%); 
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--muted);
 }
+
 .search-field .search-icon svg {
     width: 18px;
     height: 18px;
 }
 
 @media (max-height: 740px) {
+
     #securityBackdrop .modal.security-modal,
     #termsBackdrop .modal.security-modal,
     #howToUseBackdrop .modal.security-modal {
@@ -2154,12 +2505,14 @@ textarea.show-icons {
         display: flex;
         flex-direction: column;
     }
+
     #securityBackdrop .modal.security-modal .modal-scroll-content,
     #termsBackdrop .modal.security-modal .modal-scroll-content,
     #howToUseBackdrop .modal.security-modal .modal-scroll-content {
         overflow-y: auto;
         flex-grow: 1;
-        padding-right: 10px; /* Kaydırma çubuğu için boşluk */
+        padding-right: 10px;
+        /* Kaydırma çubuğu için boşluk */
     }
 }
 
@@ -2168,64 +2521,77 @@ textarea.show-icons {
     margin-bottom: 15px;
     text-align: center;
 }
+
 .welcome-logo svg {
     width: 80px;
     height: 80px;
     border-radius: 18px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
     transition: box-shadow 0.2s ease;
 }
+
 html[data-theme="dark"] .welcome-logo svg {
     box-shadow: var(--logo-shadow);
 }
 
 .welcome-modal h3 {
-    color: var(--accent); 
-    font-size: 26px; 
-    font-weight: 800; 
+    color: var(--accent);
+    font-size: 26px;
+    font-weight: 800;
     margin-bottom: 25px;
     margin-top: 0;
     text-align: center;
 }
+
 .welcome-features {
     text-align: left;
     margin-bottom: 25px;
 }
+
 .feature-item {
     margin-bottom: 15px;
 }
+
 .feature-item h4 {
     margin: 0 0 5px 0;
     font-size: 16px;
     color: var(--input-text);
     font-weight: 700;
 }
+
 .welcome-modal p {
-    font-size: 15px; 
+    font-size: 15px;
     color: var(--prose-text);
-    line-height: 1.5; 
+    line-height: 1.5;
     margin: 0;
 }
+
 .welcome-instruction {
-    font-size: 16px; 
-    color: var(--prose-text); 
-    line-height: 1.5; 
-    margin-bottom: 20px; 
-    padding: 10px; 
+    font-size: 16px;
+    color: var(--prose-text);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding: 10px;
     text-align: center;
     background-color: var(--key-bg);
     border-radius: 10px;
 }
-.welcome-icon svg { width: 20px; height: 20px; color: var(--accent); }
+
+.welcome-icon svg {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+}
 
 .welcome-secret {
-    font-size: 18px; 
-    font-weight: 700; 
-    color: var(--delete-btn); 
-    display: block; 
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--delete-btn);
+    display: block;
     margin: 15px 0 10px 0;
     padding: 0 5px;
 }
+
 .welcome-actions {
     display: flex;
     justify-content: space-between;
@@ -2234,12 +2600,17 @@ html[data-theme="dark"] .welcome-logo svg {
     padding-top: 10px;
     margin-top: 15px;
 }
+
 .checkbox-field {
-    display: flex; align-items: center; gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
     user-select: none;
-    font-size: 14px; color: var(--prose-text);
+    font-size: 14px;
+    color: var(--prose-text);
 }
+
 .checkbox-field input[type="checkbox"] {
     width: 16px;
     height: 16px;
@@ -2253,22 +2624,33 @@ html[data-theme="dark"] .welcome-logo svg {
     gap: 10px;
     color: var(--prose-text);
     text-align: left;
-    font-size: 16px; 
-    line-height: 1.5; 
+    font-size: 16px;
+    line-height: 1.5;
     margin: 0 0 20px 0;
 }
+
 .confirm-icon {
     flex-shrink: 0;
 }
+
 .confirm-icon svg {
     width: 24px;
     height: 24px;
 }
-.confirm-icon.destructive { color: var(--delete-btn); }
-.confirm-icon.warning { color: var(--delete-btn); } /* Veya farklı bir uyarı rengi */
+
+.confirm-icon.destructive {
+    color: var(--delete-btn);
+}
+
+.confirm-icon.warning {
+    color: var(--delete-btn);
+}
+
+/* Veya farklı bir uyarı rengi */
 #confirmModal p .confirm-icon {
     margin-top: 3px;
 }
+
 #confirmModal p strong {
     color: var(--delete-btn);
     font-weight: 700;
@@ -2291,14 +2673,17 @@ html[data-theme="dark"] .welcome-logo svg {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-top: 80px; /* Header için boşluk */
+    padding-top: 80px;
+    /* Header için boşluk */
 }
+
 .welcome-page-body {
     max-width: 900px;
     width: 100%;
     margin: 0 auto;
     padding: 20px;
 }
+
 .welcome-page-header {
     display: flex;
     align-items: center;
@@ -2306,6 +2691,7 @@ html[data-theme="dark"] .welcome-logo svg {
     position: relative;
     text-align: center;
 }
+
 .welcome-page-header h3 {
     flex-grow: 1;
     margin: 0;
@@ -2313,6 +2699,7 @@ html[data-theme="dark"] .welcome-logo svg {
     font-weight: 700;
     color: var(--input-text);
 }
+
 .welcome-page-back-btn {
     display: inline-flex;
     align-items: center;
@@ -2334,45 +2721,62 @@ html[data-theme="dark"] .welcome-logo svg {
     align-items: center;
     padding: 15px 5px;
 }
+
 .toggle-label {
     font-size: 15px;
     color: var(--prose-text);
 }
+
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 28px;
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
 }
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
+
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: var(--key-bg);
-  transition: .4s;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--key-bg);
+    transition: .4s;
 }
+
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
 }
-input:checked + .slider { background-color: var(--accent); }
-input:checked + .slider:before { transform: translateX(22px); }
-.slider.round { border-radius: 34px; }
-.slider.round:before { border-radius: 50%; }
+
+input:checked+.slider {
+    background-color: var(--accent);
+}
+
+input:checked+.slider:before {
+    transform: translateX(22px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
 
 @media (min-width: 600px) {
     .device {
@@ -2382,26 +2786,35 @@ input:checked + .slider:before { transform: translateX(22px); }
         max-height: 90vh;
         border-radius: 24px;
         transform: scale(0.85);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.05);
     }
+
     html[data-theme="dark"] .device {
-        border-color: rgba(255,255,255,0.1);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
     }
+
     .modal {
         transform: scale(0.85);
     }
+
     .pad {
-        flex-grow: 1; /* Sadece masaüstünde tuş takımının boşluğu doldurmasını sağla */
-        padding-bottom: 20px; /* Alt boşluğu sabitle */
-        gap: 15px; /* Tuşlar arası boşluğu ayarla */
+        flex-grow: 1;
+        /* Sadece masaüstünde tuş takımının boşluğu doldurmasını sağla */
+        padding-bottom: 20px;
+        /* Alt boşluğu sabitle */
+        gap: 15px;
+        /* Tuşlar arası boşluğu ayarla */
     }
+
     /* Masaüstü görünümünde, transform uygulanan .device elementi fixed pozisyonlamayı bozduğu için,
        banner'ları .device'ın dışına taşıyormuş gibi davranmasını sağlıyoruz. */
     .update-banner {
-        transform: none; /* .device'ın scale transform'unu sıfırla */
-        width: 100%; /* Tam genişlik kapla */
+        transform: none;
+        /* .device'ın scale transform'unu sıfırla */
+        width: 100%;
+        /* Tam genişlik kapla */
     }
 }
 
@@ -2417,6 +2830,7 @@ header svg,
 
 /* iOS Safari specific fixes */
 @supports (-webkit-touch-callout: none) {
+
     header svg,
     .welcome-page header svg {
         width: 100% !important;
@@ -2425,6 +2839,7 @@ header svg,
         min-height: 40px;
     }
 }
+
 /* Pricing Cards */
 .pricing-card {
     position: relative;
@@ -2506,8 +2921,10 @@ html[data-theme="dark"] .pricing-card.selected {
     animation: slideDown 0.3s ease-out;
     max-height: calc(100vh - 100px);
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    overscroll-behavior: contain; /* Prevent scroll chaining */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+    overscroll-behavior: contain;
+    /* Prevent scroll chaining */
 }
 
 html[data-theme="dark"] #welcome-hamburger-menu {
@@ -2546,7 +2963,7 @@ html[data-theme="dark"] #welcome-hamburger-menu .welcome-menu-item.active {
         backdrop-filter: none !important;
         border-radius: 0 !important;
     }
-    
+
     #welcome-hamburger-menu {
         right: 16px;
         top: 88px;
@@ -2556,18 +2973,19 @@ html[data-theme="dark"] #welcome-hamburger-menu .welcome-menu-item.active {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
     }
-    
+
     #welcome-hamburger-menu .welcome-menu-item {
         min-width: auto;
         padding: 12px 16px;
         gap: 10px;
-        min-height: 44px; /* Minimum touch target */
+        min-height: 44px;
+        /* Minimum touch target */
     }
-    
+
     #welcome-hamburger-menu .welcome-menu-item .material-symbols-outlined {
         font-size: 20px;
     }
-    
+
     #welcome-hamburger-menu .welcome-menu-text {
         font-size: 14px;
     }
@@ -2583,7 +3001,7 @@ html[data-theme="dark"] #welcome-hamburger-menu .welcome-menu-item.active {
         backdrop-filter: none !important;
         border-radius: 0 !important;
     }
-    
+
     #welcome-hamburger-menu {
         right: 12px;
         top: 84px;
@@ -2594,17 +3012,17 @@ html[data-theme="dark"] #welcome-hamburger-menu .welcome-menu-item.active {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
     }
-    
+
     #welcome-hamburger-menu .welcome-menu-item {
         padding: 10px 12px;
         gap: 8px;
         min-height: 44px;
     }
-    
+
     #welcome-hamburger-menu .welcome-menu-item .material-symbols-outlined {
         font-size: 18px;
     }
-    
+
     #welcome-hamburger-menu .welcome-menu-text {
         font-size: 13px;
     }
@@ -2613,7 +3031,8 @@ html[data-theme="dark"] #welcome-hamburger-menu .welcome-menu-item.active {
 /* Touch Device Detection */
 @media (pointer: coarse) {
     #welcome-hamburger-menu .welcome-menu-item {
-        min-height: 44px; /* Minimum touch target size */
+        min-height: 44px;
+        /* Minimum touch target size */
     }
 }
 
@@ -2630,6 +3049,7 @@ html[data-theme="dark"] #welcome-hamburger-menu .welcome-menu-item.active {
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -2651,12 +3071,422 @@ html[data-theme="dark"] #welcome-hamburger-menu .welcome-menu-item.active {
 
 /* Scroll offset for anchor links (account for header) */
 .welcome-page section {
-    scroll-margin-top: 80px;
+    scroll-margin-top: 20px;
 }
 
 /* Mobile scroll offset adjustment */
 @media (max-width: 768px) {
     .welcome-page section {
-        scroll-margin-top: 60px;
+        scroll-margin-top: 10px;
     }
+}
+
+/* Onay Penceresi (Confirmation Modal) için Özel Stiller */
+#confirmModal {
+    padding: 20px;
+}
+
+@media (max-width: 640px) {
+    #confirmBackdrop {
+        padding: 20px;
+    }
+
+    #confirmModal {
+        padding: 20px !important;
+        /* !important, diğer mobil kurallarını geçersiz kılar */
+    }
+}
+
+/* Bilgi modallarındaki ilk başlığın üst boşluğunu kaldır */
+.security-modal .modal-scroll-content>h3:first-child {
+    margin-top: 0;
+}
+
+
+/* 
+  Bu dosya, özellikle eski veya uyumsuz mobil tarayıcılarda (örn. iOS Safari)
+  karşılaşılan CSS düzeni sorunlarını çözmek için oluşturulmuştur.
+*/
+
+/* 
+  SORUN 1: Hamburger menü ikonunun devasa boyuta ulaşması.
+  ÇÖZÜM: SVG ikonuna, Tailwind sınıfları çalışmasa bile geçerli olacak
+  sabit bir boyut vererek bu sorunu engelliyoruz.
+*/
+.welcome-page #welcome-hamburger-btn svg {
+    width: 24px;
+    /* Sabit genişlik */
+    height: 24px;
+    /* Sabit yükseklik */
+}
+
+/* 
+  SORUN 2: Karşılama sayfasındaki başlık ve logonun aşağı kayması.
+  ÇÖZÜM: Sayfanın ana kapsayıcısına, eski tarayıcıların bile doğru yorumladığı
+  `display: block` kuralını uygulayarak dikey hizalama sorununu çözüyoruz.
+*/
+.welcome-page>.relative.flex.min-h-screen {
+    /* display: block !important; BU SATIR SİLİNDİ - Flex yapısını bozduğu için elementler üst üste biniyordu. */
+    min-height: 100dvh;
+    /* Mobil tarayıcılarda adres çubuğu değişimine uyum sağlamak için dvh kullanıyoruz. */
+}
+
+/* 
+  SORUN 3: Mobilde başlık ve içerik çakışması.
+  ÇÖZÜM: Header'ın z-index değerini artırarak her zaman üstte kalmasını sağlıyoruz.
+  Ayrıca ana içeriğin üst boşluğunu artırarak header'ın altına girmesini engelliyoruz.
+*/
+@media (max-width: 768px) {
+
+    /* Header'ı kesinlikle en üstte tut */
+    /* Header'ı mobilde gizle */
+    .welcome-page header {
+        display: none !important;
+    }
+
+    /* Ana içeriği hizala */
+    .welcome-page main#top {
+        padding-top: 20px !important;
+        /* Header olmadığı için az boşluk yeterli */
+        justify-content: center !important;
+        /* Ortala */
+        min-height: 100dvh !important;
+        /* Ekranı doldur */
+    }
+
+    /* İçerik kapsayıcısını da kontrol et */
+    .welcome-page main#top>div {
+        margin-top: 20px !important;
+    }
+
+    /* Ekran çok kısaysa (örn. yatay mod) */
+    @media (max-height: 600px) {
+        .welcome-page main#top {
+            padding-top: 20px !important;
+        }
+    }
+}
+
+/* --- Micro-Animations & Empty States (v1.4.0) --- */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+    animation: slideInUp 0.4s ease-out forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+}
+
+/* Empty State Styles */
+.empty-state-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--muted);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.empty-state-svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    color: var(--muted);
+    opacity: 0.6;
+    transition: color 0.3s ease;
+}
+
+.empty-state-text {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--input-text);
+}
+
+.empty-state-subtext {
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* List Item Animations */
+.message-item {
+    opacity: 0;
+    /* Start hidden for animation */
+    animation: slideInUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    /* Swipe Action Styles */
+    position: relative;
+    overflow: hidden;
+    /* For swipe background */
+    touch-action: pan-y;
+    /* Allow vertical scroll, handle horizontal in JS */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    border-bottom: 1px solid var(--modal-border);
+    min-height: 60px;
+    /* Ensure consistent height for swipe actions */
+    display: flex;
+    align-items: stretch;
+}
+
+/* Swipe Actions Container */
+.swipe-actions {
+    position: absolute;
+    inset: 0;
+    /* Fill entire parent */
+    padding: 12px 0;
+    /* Match content vertical padding */
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.2s;
+    box-sizing: border-box;
+}
+
+.message-item.swiped-left .swipe-actions,
+.message-item.swiped-right .swipe-actions {
+    opacity: 1;
+    /* Show when swiped */
+}
+
+.swipe-action {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: none;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: opacity 0.2s;
+    box-sizing: border-box;
+}
+
+.swipe-favorite {
+    background: #ff9500;
+}
+
+.swipe-delete {
+    background: var(--delete-btn);
+}
+
+.swipe-action .material-symbols-outlined {
+    font-size: 24px;
+    /* Larger icon without text */
+}
+
+.message-item-content {
+    position: relative;
+    z-index: 1;
+    background: var(--modal-bg);
+    width: 100%;
+    flex: 1;
+    /* Fill parent height */
+    display: flex;
+    /* Add flex here instead of inline */
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 5px;
+    box-sizing: border-box;
+    transition: transform 0.1s linear;
+}
+
+/* Onay modalı her zaman en üstte olmalı */
+#confirmBackdrop {
+    z-index: 2000 !important;
+}
+
+/* Filter Buttons */
+.filter-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--modal-border);
+    background: var(--input-bg);
+    color: var(--input-text);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.filter-btn:hover {
+    background: var(--key-bg);
+}
+
+.filter-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+/* Favoriler: Sadece aktifken turuncu */
+.filter-btn.filter-important.active {
+    background: #ff9500;
+    color: #fff;
+    border-color: #ff9500;
+}
+
+/* Çöp Kutusu: Sadece aktifken kırmızı */
+.filter-btn.filter-trash.active {
+    background: var(--delete-btn);
+    color: #fff;
+    border-color: var(--delete-btn);
+}
+
+/* Dark mode düzeltmeleri gerekirse buraya eklenebilir ama active state için renkler sabit */
+
+/* Appearance Settings Card Layout */
+.appearance-options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.appearance-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.appearance-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 15px;
+    background: var(--input-bg);
+    border: 2px solid var(--modal-border);
+    border-radius: 16px;
+    transition: all 0.2s ease;
+    height: 100%;
+    min-height: 120px;
+}
+
+.card-icon {
+    margin-bottom: 12px;
+    color: var(--prose-text);
+    transition: all 0.2s ease;
+}
+
+.card-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--input-text);
+    text-align: center;
+}
+
+/* Hover State */
+.appearance-card:hover .card-content {
+    background: var(--key-bg);
+    border-color: var(--accent);
+}
+
+/* Selected State */
+.appearance-card input[type="radio"]:checked+.card-content {
+    background: var(--key-bg);
+    /* Theme compatible background */
+    border-color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+.appearance-card input[type="radio"]:checked+.card-content .card-title {
+    color: var(--accent);
+}
+
+.appearance-card input[type="radio"]:checked+.card-content .card-icon {
+    color: var(--accent);
+}
+
+/* Dark Mode Adjustments */
+html[data-theme="dark"] .appearance-card input[type="radio"]:checked+.card-content {
+    background-color: rgba(130, 170, 255, 0.15);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .appearance-card input[type="radio"]:checked+.card-content .card-icon {
+    color: var(--accent);
+}
+
+/* How to Use Modal Styling */
+#howToUseBackdrop .modal-scroll-content h3 {
+    color: var(--input-text);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#howToUseBackdrop .modal-icon-svg {
+    width: 24px;
+    height: 24px;
+    color: var(--input-text);
+    /* Make icons match text color as requested */
+}
+
+#howToUseBackdrop strong {
+    color: var(--prose-text);
+    font-weight: 700;
 }

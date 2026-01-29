@@ -1,18 +1,6 @@
 // PWA Güncelleme Mantığı
+// Otomatik güncelleme yapıldığı için manuel banner kaldırıldı.
 let newWorker;
-
-function showUpdateBanner() {
-    const updateBanner = document.getElementById('update-notification');
-    const updateButton = document.getElementById('update-now-btn');
-    
-    updateBanner.style.display = 'flex';
-    
-    updateButton.addEventListener('click', () => {
-        // Service Worker zaten skipWaiting() çağrısı yaptığı için,
-        // controllerchange olayını bekleyip sayfayı yenilemek yeterlidir.
-        updateButton.disabled = true;
-    });
-}
 
 // PWA Yükleme Mantığı
 let deferredPrompt;
@@ -20,7 +8,7 @@ let deferredPrompt;
 function setupInstallButton() {
     const installButton = document.getElementById('installAppBtn');
     const installOption = document.getElementById('infoInstallApp');
-    
+
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         window.deferredPrompt = e;
@@ -46,20 +34,20 @@ function setupInstallButton() {
 
 export function initPwa() {
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/hesapp/service-worker.js').then(reg => {
+        navigator.serviceWorker.register('./service-worker.js').then(reg => {
+            // Yeni bir service worker bulunduğunda
             reg.addEventListener('updatefound', () => {
                 newWorker = reg.installing;
                 newWorker.addEventListener('statechange', () => {
-                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                        showUpdateBanner();
-                    }
+                    // Durum değiştiğinde (örneğin installed olduğunda)
+                    // Service Worker'da skipWaiting() olduğu için otomatik aktifleşecek
+                    // ve controllerchange tetiklenecek.
                 });
             });
         });
 
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-            // Yeni Service Worker kontrolü devraldığında, en son varlıkları
-            // yüklemek için sayfayı yeniden yükle.
+            // Yeni Service Worker kontrolü devraldığında sayfayı yenile
             window.location.reload();
         });
     }

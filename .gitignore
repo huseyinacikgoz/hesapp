@@ -1,0 +1,63 @@
+# ======================
+# Hesapp .gitignore
+# ======================
+
+# Environment Variables (API keys, secrets, etc.)
+.env
+.env.local
+.env.*.local
+
+# Agent/AI Assistant Files
+AGENTS.md
+memory-bank/
+SECURITY_REPORT.md
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+.cache/
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+*.sublime-project
+
+# Server config (may contain sensitive paths/rules)
+.htaccess
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Backup files
+*.bak
+*.backup
