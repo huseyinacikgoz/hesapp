@@ -287,7 +287,7 @@ export function setupInfoHandlers() {
         infoReportBug.onclick = () => {
             if (infoModalBackdrop) infoModalBackdrop.style.display = 'none';
 
-            const appVersion = document.body.getAttribute('data-version') || 'v1.3.99';
+            const appVersion = document.body.getAttribute('data-version') || 'v1.3.991';
             const userAgent = navigator.userAgent;
             const body = `\n\n\n---\nUygulama Sürümü: ${appVersion}\nTarayıcı: ${userAgent}`;
             const subject = encodeURIComponent('Hesapp Hata Bildirimi');
