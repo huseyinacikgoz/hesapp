@@ -190,11 +190,6 @@ export function setupInfoHandlers() {
             if (window.deferredPrompt) {
                 window.deferredPrompt.prompt();
                 window.deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    } else {
-                        console.log('User dismissed the install prompt');
-                    }
                     window.deferredPrompt = null;
                     installAppOption.style.display = 'none';
                 });
@@ -292,7 +287,7 @@ export function setupInfoHandlers() {
         infoReportBug.onclick = () => {
             if (infoModalBackdrop) infoModalBackdrop.style.display = 'none';
 
-            const appVersion = document.body.getAttribute('data-version') || 'v1.3.99';
+            const appVersion = document.body.getAttribute('data-version') || 'v1.3.991';
             const userAgent = navigator.userAgent;
             const body = `\n\n\n---\nUygulama Sürümü: ${appVersion}\nTarayıcı: ${userAgent}`;
             const subject = encodeURIComponent('Hesapp Hata Bildirimi');

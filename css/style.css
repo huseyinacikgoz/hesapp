@@ -988,6 +988,11 @@ textarea.show-icons {
     z-index: 10;
 }
 
+.icon-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
 .icon-actions {
     position: absolute;
     right: 5px;
@@ -2431,6 +2436,11 @@ textarea.show-icons {
     z-index: 10;
 }
 
+.icon-btn svg {
+    width: 22px;
+    height: 22px;
+}
+
 .icon-actions {
     position: absolute;
     right: 5px;
@@ -2442,16 +2452,6 @@ textarea.show-icons {
 .icon-btn.disabled {
     color: #cfd4dc;
     cursor: not-allowed;
-}
-
-.copy-btn svg {
-    width: 22px;
-    height: 22px;
-}
-
-.visibility-btn svg {
-    width: 22px;
-    height: 22px;
 }
 
 .modal-scroll-content::-webkit-scrollbar {
@@ -3489,4 +3489,27 @@ html[data-theme="dark"] .appearance-card input[type="radio"]:checked+.card-conte
 #howToUseBackdrop strong {
     color: var(--prose-text);
     font-weight: 700;
+}
+
+/* Responsive Fix for Text-heavy Modals on Large Screens */
+@media (min-width: 601px) {
+
+    #securityBackdrop .modal,
+    #termsBackdrop .modal,
+    #howToUseBackdrop .modal,
+    #aboutBackdrop .modal {
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #securityBackdrop .modal-scroll-content,
+    #termsBackdrop .modal-scroll-content,
+    #howToUseBackdrop .modal-scroll-content,
+    #aboutBackdrop #modalContent {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+        -webkit-overflow-scrolling: touch;
+    }
 }

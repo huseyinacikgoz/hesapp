@@ -4,7 +4,8 @@ import {
     TRASH_BIN_ENABLED_KEY,
     modalNote, modalTitle, modalOK, modalBackdrop, modalContent, leftActions,
     escapeHtml, hasVault, lockoutInterval, setLockoutInterval,
-    currentVaultPassword, setCurrentVaultPassword, vaultCloseBtn
+    currentVaultPassword, setCurrentVaultPassword, vaultCloseBtn,
+    createInactivityAbortController, cleanupInactivityListeners
 } from './utils.js';
 
 import { showModal, hideModal, showConfirmation } from './modal-manager.js';
@@ -13,7 +14,26 @@ import { resetInactivityTimer } from '../vault.js';
 import { showVaultManagementScreen, handleImport } from './vault-list.js';
 import { showHowToUseModal, showTermsModal, showSecurityModal } from './info-modals.js';
 
-// --- Brute-Force Protection ---
+/**
+ * --- Brute-Force Protection ---
+ * 
+ * Bu koruma, yerel cihazda çalışan bir offline uygulama için tasarlanmıştır.
+ * Veriler localStorage'da saklandığından, sunucu tarafında koruma mümkün değildir.
+ * 
+ * ÇALIŞMA MANTIĞı:
+ * - 3 başarısız deneme: 1 dakika bekleme
+ * - 6 başarısız deneme: 3 dakika bekleme
+ * - 9+ başarısız deneme: 5 dakika bekleme
+ * 
+ * NOT: Bu koruma client-side olduğundan, localStorage temizlenirse sıfırlanır.
+ * Ancak bu, offline bir uygulama için kabul edilebilir bir trade-off'tur.
+ * Gerçek güvenlik, AES-256-GCM şifreleme ve PBKDF2 600,000 iteration ile sağlanır.
+ * 
+ * Bu yaklaşımın avantajları:
+ * 1. Casual saldırganları caydırır
+ * 2. Otomatik deneme araçlarını yavaşlatır
+ * 3. Kullanıcıya yanlış parola hatırlatması sağlar
+ */
 
 export function getLoginAttempts() {
     try {
@@ -195,11 +215,14 @@ export function openVaultAccessMode() {
         }
     }
 
-    // Start inactivity timer
-    window.addEventListener('mousemove', resetInactivityTimer);
-    window.addEventListener('keydown', resetInactivityTimer);
-    window.addEventListener('mousedown', resetInactivityTimer);
-    window.addEventListener('touchstart', resetInactivityTimer);
+    // Start inactivity timer with cleanup support
+    const abortController = createInactivityAbortController();
+    const signal = abortController.signal;
+
+    window.addEventListener('mousemove', resetInactivityTimer, { signal });
+    window.addEventListener('keydown', resetInactivityTimer, { signal });
+    window.addEventListener('mousedown', resetInactivityTimer, { signal });
+    window.addEventListener('touchstart', resetInactivityTimer, { signal, passive: true });
     resetInactivityTimer();
 
     // Close button handler is now handled in modal-manager.js showModal
@@ -249,13 +272,9 @@ export async function handleVaultUnlock() {
         }
         // --- YENİ EKLENEN KISIM SONU ---
 
-        // Google Analytics event: Kasa girişi
-        if (typeof gtag === 'function') {
-            gtag('event', 'vault_login', {
-                'event_category': 'Kasa',
-                'event_label': 'Başarılı Giriş',
-                'value': messages.length // Not sayısı
-            });
+        // Umami Analytics: Kasa girişi
+        if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+            umami.track('vault_login', { notes_count: messages.length });
         }
         setCurrentVaultPassword(pwVal);
         showVaultManagementScreen(pwVal, messages);
@@ -312,12 +331,9 @@ export async function handleVaultUnlock() {
                                     honeyMessages = [];
                                 }
                             }
-                            // Google Analytics event: Sahte parola girişi
-                            if (typeof gtag === 'function') {
-                                gtag('event', 'honey_password_login', {
-                                    'event_category': 'Kasa',
-                                    'event_label': 'Sahte Parola Girişi'
-                                });
+                            // Umami Analytics: Sahte parola giris̏i
+                            if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+                                umami.track('honey_password_login');
                             }
                             showVaultManagementScreen(pwVal, honeyMessages);
                             return;
@@ -379,13 +395,9 @@ export async function handleVaultSetup() {
         // YENİ İSTEK: Başlangıçta karşılama ekranını gizle ayarını aktif et.
         localStorage.setItem('hesapp_show_welcome_on_startup', 'false');
 
-        // Google Analytics event: Kasa oluşturma
-        if (typeof gtag === 'function') {
-            gtag('event', 'vault_created', {
-                'event_category': 'Kasa',
-                'event_label': 'Yeni Kasa Oluşturuldu',
-                'value': 1
-            });
+        // Umami Analytics: Kasa olus̏turma
+        if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+            umami.track('vault_created');
         }
 
         setCurrentVaultPassword(p1);

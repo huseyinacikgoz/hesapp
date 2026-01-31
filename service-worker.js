@@ -57,9 +57,33 @@ self.addEventListener('fetch', event => {
         });
         return networkResponse;
       })
-      .catch(() => {
+      .catch(async () => {
         // Ağ hatası (çevrimdışı) - Önbellekten döndür
-        return caches.match(event.request);
+        const cachedResponse = await caches.match(event.request);
+
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+
+        // Cache'te yoksa ve navigation isteği ise, index.html döndür (SPA desteği)
+        if (event.request.mode === 'navigate') {
+          const indexResponse = await caches.match('./index.html');
+          if (indexResponse) {
+            return indexResponse;
+          }
+        }
+
+        // Cache'te yoksa offline response döndür
+        return new Response(
+          '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Çevrimdışı</title></head><body style="font-family:system-ui;text-align:center;padding:50px;"><h1>📵 Çevrimdışısınız</h1><p>İnternet bağlantınızı kontrol edin ve sayfayı yenileyin.</p></body></html>',
+          {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: new Headers({
+              'Content-Type': 'text/html; charset=utf-8'
+            })
+          }
+        );
       })
   );
 });

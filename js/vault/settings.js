@@ -1,6 +1,10 @@
 /**
  * @module settings
  * @description Manages the settings and info modals, including their interaction with the main vault modal.
+ * 
+ * @deprecated Bu modül artık kullanılmamaktadır. 
+ * Tüm işlevsellik settings-modals.js'e taşınmıştır.
+ * Bu dosya geriye dönük uyumluluk için tutulmaktadır.
  */
 
 /**

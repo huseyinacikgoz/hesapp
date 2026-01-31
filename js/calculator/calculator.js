@@ -89,6 +89,17 @@ function handlePercentage() {
     updateDisplay();
 }
 
+/**
+ * Güvenli Matematik Parser - Recursive Descent Parser
+ * Function() veya eval() kullanmadan matematiksel ifadeleri hesaplar
+ * 
+ * Desteklenen operasyonlar: +, -, *, /, parantezler
+ * 
+ * Grammar:
+ * expression = term (('+' | '-') term)*
+ * term = factor (('*' | '/') factor)*
+ * factor = number | '(' expression ')'
+ */
 function safeEval(s) {
     // Güvenlik: Sadece matematiksel karakterlere izin ver
     s = s.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').replace(/,/g, '.');
@@ -109,15 +120,99 @@ function safeEval(s) {
     if (parenCount !== 0) throw new Error('Invalid expression');
 
     // Güvenlik: Boş string kontrolü
-    if (!s.trim()) return 0;
+    s = s.replace(/\s/g, '');
+    if (!s) return 0;
 
-    // Function constructor kullanımı - regex kontrolü ile güvenli
-    // Not: Bu kullanım güvenli çünkü sadece matematiksel ifadeler kabul ediliyor
+    let pos = 0;
+
+    function parseExpression() {
+        let result = parseTerm();
+        
+        while (pos < s.length) {
+            const op = s[pos];
+            if (op === '+') {
+                pos++;
+                result += parseTerm();
+            } else if (op === '-') {
+                pos++;
+                result -= parseTerm();
+            } else {
+                break;
+            }
+        }
+        
+        return result;
+    }
+
+    function parseTerm() {
+        let result = parseFactor();
+        
+        while (pos < s.length) {
+            const op = s[pos];
+            if (op === '*') {
+                pos++;
+                result *= parseFactor();
+            } else if (op === '/') {
+                pos++;
+                const divisor = parseFactor();
+                if (divisor === 0) throw new Error('Division by zero');
+                result /= divisor;
+            } else {
+                break;
+            }
+        }
+        
+        return result;
+    }
+
+    function parseFactor() {
+        // Negatif sayıları işle
+        if (s[pos] === '-') {
+            pos++;
+            return -parseFactor();
+        }
+        
+        // Pozitif işaret
+        if (s[pos] === '+') {
+            pos++;
+            return parseFactor();
+        }
+        
+        // Parantez
+        if (s[pos] === '(') {
+            pos++; // '(' atla
+            const result = parseExpression();
+            if (s[pos] !== ')') throw new Error('Missing closing parenthesis');
+            pos++; // ')' atla
+            return result;
+        }
+        
+        // Sayı parse et
+        const start = pos;
+        while (pos < s.length && (/[0-9.]/.test(s[pos]))) {
+            pos++;
+        }
+        
+        if (start === pos) throw new Error('Expected number');
+        
+        const numStr = s.substring(start, pos);
+        const num = parseFloat(numStr);
+        
+        if (isNaN(num)) throw new Error('Invalid number');
+        
+        return num;
+    }
+
     try {
-        const result = Function('"use strict";return(' + s + ')')();
+        const result = parseExpression();
+        
+        // İfadenin sonuna ulaşıldığından emin ol
+        if (pos < s.length) throw new Error('Unexpected character');
+        
         if (typeof result !== 'number' || !isFinite(result)) {
             throw new Error('Invalid result');
         }
+        
         return parseFloat(result.toPrecision(15));
     } catch (e) {
         throw new Error('Invalid expression');

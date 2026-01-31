@@ -231,8 +231,8 @@ export function showThemeModal() {
                 if (themeModalBackdrop) themeModalBackdrop.style.display = 'none';
                 showCustomToast('Tema ayarı güncellendi.');
 
-                if (typeof gtag === 'function') {
-                    gtag('event', 'theme_changed', { 'theme': selectedTheme });
+                if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+                    umami.track('theme_changed', { theme: selectedTheme });
                 }
             }
         };
@@ -298,7 +298,7 @@ export function showChangePasswordModal(currentPassword) {
                 const plainJson = await decryptMessage(currentPass, JSON.parse(localStorage.getItem(STORAGE_KEY)));
                 const newEncryptedPayload = await encryptMessage(newPass1, plainJson);
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(newEncryptedPayload));
-                if (typeof gtag === 'function') gtag('event', 'feature_used', { 'feature_name': 'change_password' });
+                if (typeof umami !== 'undefined' && typeof umami.track === 'function') umami.track('change_password');
                 if (changePasswordBackdrop) changePasswordBackdrop.style.display = 'none';
                 showCustomToast('Parola başarıyla değiştirildi!');
                 hideModal();
@@ -462,8 +462,8 @@ export async function showHoneyPasswordModal() {
                 const honeyVaultEnc = await encryptMessage(p1, JSON.stringify(emptyMessages));
                 localStorage.setItem(HONEY_VAULT_KEY, JSON.stringify(honeyVaultEnc));
 
-                if (typeof gtag === 'function') {
-                    gtag('event', 'feature_used', { 'feature_name': 'honey_password_set' });
+                if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+                    umami.track('honey_password_set');
                 }
                 if (honeyPasswordBackdrop) honeyPasswordBackdrop.style.display = 'none';
                 // Güvenlik: Sahte parola ayarlandığında mesaj gösterme
@@ -489,8 +489,8 @@ export async function showHoneyPasswordModal() {
                 // Eski anahtarları da temizle
                 localStorage.removeItem(OLD_HONEY_PASSWORD_KEY);
                 localStorage.removeItem(OLD_HONEY_VAULT_KEY);
-                if (typeof gtag === 'function') {
-                    gtag('event', 'feature_used', { 'feature_name': 'honey_password_deleted' });
+                if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+                    umami.track('honey_password_deleted');
                 }
                 if (honeyPasswordBackdrop) honeyPasswordBackdrop.style.display = 'none';
                 // Güvenlik: Sahte parola silindiğinde mesaj gösterme
@@ -744,12 +744,9 @@ export function setupSettingsHandlers() {
                 </div>
             `);
             if (confirmed) {
-                // Google Analytics event: Kasa silme
-                if (typeof gtag === 'function') {
-                    gtag('event', 'vault_deleted', {
-                        'event_category': 'Kasa',
-                        'event_label': 'Kasa Silindi'
-                    });
+                // Umami Analytics: Kasa silme
+                if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+                    umami.track('vault_deleted');
                 }
                 localStorage.removeItem(STORAGE_KEY);
                 // TERMS_KEY silinmeli mi? Orijinal kod siliyor.

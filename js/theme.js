@@ -20,11 +20,9 @@ function toggleTheme() {
         newTheme = 'dark';
     }
 
-    // Google Analytics: Tema değiştirme olayını gönder
-    if (typeof gtag === 'function') {
-        gtag('event', 'theme_changed', {
-            'theme': newTheme
-        });
+    // Umami Analytics: Tema değiştirme olayını gönder
+    if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+        umami.track('theme_changed', { theme: newTheme });
     }
 }
 

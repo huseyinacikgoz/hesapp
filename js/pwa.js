@@ -20,8 +20,8 @@ function setupInstallButton() {
         installButton.addEventListener('click', async (e) => {
             e.preventDefault();
             if (window.deferredPrompt) {
-                if (typeof gtag === 'function') {
-                    gtag('event', 'pwa_install_prompted', { 'event_category': 'PWA' });
+                if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+                    umami.track('pwa_install_prompted');
                 }
                 window.deferredPrompt.prompt();
                 installButton.style.display = 'none';
