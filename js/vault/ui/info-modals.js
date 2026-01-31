@@ -190,11 +190,6 @@ export function setupInfoHandlers() {
             if (window.deferredPrompt) {
                 window.deferredPrompt.prompt();
                 window.deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    } else {
-                        console.log('User dismissed the install prompt');
-                    }
                     window.deferredPrompt = null;
                     installAppOption.style.display = 'none';
                 });

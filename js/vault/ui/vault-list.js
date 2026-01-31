@@ -271,7 +271,6 @@ export function showVaultManagementScreen(password, messages) {
     if (vaultCloseBtn) {
         vaultCloseBtn.onclick = (e) => {
             e.stopPropagation(); // Event bubbling'i engelle
-            console.log('Vault close button clicked');
             document.removeEventListener('keydown', handleVaultShortcuts);
             hideModal();
         };
@@ -376,11 +375,8 @@ export function setupSwipe(element, password, messages, index) {
 }
 
 export function handleExport() {
-    if (typeof gtag === 'function') {
-        gtag('event', 'vault_backup', {
-            'event_category': 'Kasa',
-            'event_label': 'Kasa Yedeklendi'
-        });
+    if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+        umami.track('vault_backup');
     }
     const encryptedData = localStorage.getItem(STORAGE_KEY);
     if (!encryptedData) {
@@ -471,12 +467,9 @@ export function handleImport() {
                 console.warn('hideModal error:', hideError);
             }
 
-            // Google Analytics event: Geri yükleme (hatası geri yüklemeyi engellemez)
-            if (typeof gtag === 'function') {
-                gtag('event', 'vault_restore', {
-                    'event_category': 'Kasa',
-                    'event_label': 'Kasa Geri Yüklendi'
-                });
+            // Umami Analytics: Geri yükleme
+            if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+                umami.track('vault_restore');
             }
 
             showCustomToast('Kasa yedeği başarıyla geri yüklendi!');

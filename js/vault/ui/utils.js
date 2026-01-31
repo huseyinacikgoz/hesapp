@@ -55,6 +55,7 @@ export let currentFilter = 'all';
 export let lockoutInterval = null;
 export let backdropClickTimeout = null;
 export let confirmationResolver = null;
+export let inactivityAbortController = null; // Event listener cleanup için
 
 // State setters
 export function setCurrentVaultPassword(password) {
@@ -75,6 +76,22 @@ export function setBackdropClickTimeout(timeout) {
 
 export function setConfirmationResolver(resolver) {
     confirmationResolver = resolver;
+}
+
+// Inactivity listener cleanup
+export function cleanupInactivityListeners() {
+    if (inactivityAbortController) {
+        inactivityAbortController.abort();
+        inactivityAbortController = null;
+    }
+}
+
+export function createInactivityAbortController() {
+    // Önce eski listener'ları temizle
+    cleanupInactivityListeners();
+    // Yeni controller oluştur
+    inactivityAbortController = new AbortController();
+    return inactivityAbortController;
 }
 
 // ===== UTILITY FUNCTIONS =====

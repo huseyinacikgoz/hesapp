@@ -48,7 +48,12 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- Yeni Tasarım için Eklenenler -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- 
+        NOT: Tailwind CDN, SRI (Subresource Integrity) desteklememektedir çünkü 
+        hash değeri her istek için dinamik olarak değişir. Güvenlik için crossorigin 
+        attribute eklendi. Production için Tailwind'i lokal olarak derlemeyi düşünün.
+    -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
@@ -71,9 +76,9 @@
         }
     </script>
 
-    <!-- Umami Analytics -->
+    <!-- Umami Analytics (Self-hosted, GDPR uyumlu) -->
     <script defer src="https://umami.huseyinacikgoz.com.tr/script.js"
-        data-website-id="a7015e21-8b1e-443c-9248-147d8ca22fe2"></script>
+        data-website-id="a7015e21-8b1e-443c-9248-147d8ca22fe2" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="css/style.css?v=1.3.99">
 

@@ -7,7 +7,7 @@ import {
     appearanceModalBackdrop, themeModalBackdrop,
     backdropClickTimeout, setBackdropClickTimeout,
     confirmationResolver, setConfirmationResolver,
-    vaultCloseBtn
+    vaultCloseBtn, cleanupInactivityListeners
 } from './utils.js';
 
 // --- Confirmation Modal ---
@@ -126,7 +126,6 @@ export function showModal(html, note = '', isError = false, showInfo = false, sh
         vaultCloseBtn.onclick = (e) => {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Default vault close button clicked');
             hideModal();
         };
     }
@@ -138,6 +137,9 @@ export function hideModal() {
         clearTimeout(backdropClickTimeout);
         setBackdropClickTimeout(null);
     }
+
+    // Inactivity listener'ları temizle (memory leak önleme)
+    cleanupInactivityListeners();
 
     // Tüm modal'ları gizle
     if (modalBackdrop) {
