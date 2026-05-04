@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hesapp-v1.3.99';
+const CACHE_NAME = 'hesapp-v1.3.992';
 const URLS_TO_CACHE = [
   './',
   'index.html',
@@ -29,7 +29,7 @@ const URLS_TO_CACHE = [
 
 // Install adımı: Dosyaları önbelleğe al
 self.addEventListener('install', event => {
-  console.log('[Service Worker] Installing v1.3.99...');
+  console.log('[Service Worker] Installing v1.3.992...');
   // Yeni SW'nin bekleme süresini atlayıp hemen aktifleşmesini sağla
   self.skipWaiting();
 

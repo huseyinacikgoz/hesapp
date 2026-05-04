@@ -14,7 +14,7 @@
 
 **Hesap Makinesi & Gizli Kasa**
 
-[![Sürüm](https://img.shields.io/badge/sürüm-v1.3.991-blue?style=flat-square)](https://huseyinacikgoz.com.tr/hesapp/)
+[![Sürüm](https://img.shields.io/badge/sürüm-v1.3.992-blue?style=flat-square)](https://huseyinacikgoz.com.tr/hesapp/)
 [![Lisans](https://img.shields.io/badge/lisans-MIT-green?style=flat-square)](LICENSE)
 [![PWA](https://img.shields.io/badge/PWA-aktif-orange?style=flat-square)](https://huseyinacikgoz.com.tr/hesapp/)
 [![Durum](https://img.shields.io/badge/durum-Yayında-success?style=flat-square)](https://huseyinacikgoz.com.tr/hesapp/)
@@ -106,7 +106,7 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 5. Pull Request açın
 
 ### 📊 Versiyon
-**v1.3.991** - Güncel sürüm
+**v1.3.992** - Güncel sürüm
 
 ### 🔗 Bağlantılar
 - [🌐 Canlı Demo](https://huseyinacikgoz.com.tr/hesapp/)
@@ -126,7 +126,7 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 
 **Calculator & Secret Vault**
 
-[![Version](https://img.shields.io/badge/version-v1.3.991-blue?style=flat-square)](https://huseyinacikgoz.com.tr/hesapp/)
+[![Version](https://img.shields.io/badge/version-v1.3.992-blue?style=flat-square)](https://huseyinacikgoz.com.tr/hesapp/)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 [![PWA](https://img.shields.io/badge/PWA-enabled-orange?style=flat-square)](https://huseyinacikgoz.com.tr/hesapp/)
 [![Status](https://img.shields.io/badge/status-Live-success?style=flat-square)](https://huseyinacikgoz.com.tr/hesapp/)
@@ -218,7 +218,7 @@ This project is licensed under the [MIT License](LICENSE).
 5. Open a Pull Request
 
 ### 📊 Version
-**v1.3.991** - Current version
+**v1.3.992** - Current version
 
 ### 🔗 Links
 - [🌐 Live Demo](https://huseyinacikgoz.com.tr/hesapp/)
